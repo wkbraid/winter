@@ -13,7 +13,6 @@ class Tile {
   Tile(this.x, this.y, this.ts, this.type);  
 }
 
-
 class GameMap {
   // Represents a game map instance
   // Interactions with the map should be abstracted to be independent of
@@ -46,10 +45,34 @@ class GameMap {
   }
   
   //finds the tile that the Actor will be moving to
-  Tile collisions(x, y, vx, vy) {
-    num ty = (y + vy) ~/ ts;
-    num tx = (x + vx) ~/ ts;
-    var ttype = data[ty][tx];
-    return new Tile(tx * ts, ty * ts, ts, ttype); 
+  List<Tile> collisions(List<Point> points) {
+    return points.map((p) {
+      // cheating
+      num ty = (p.y- 0.001) ~/ ts;
+      num tx = p.x ~/ ts;
+      num ttype;
+      if ((tx > 0 && tx < data[0].length) && (ty > 0 && ty < data.length))
+        ttype = data[ty][tx];
+      else
+        ttype = 1;
+      return new Tile(tx * ts, ty * ts, ts, ttype);
+    }).toList();
+  }
+  
+  List<Tile> collisionsLeft(x,y,width,height) {
+    return collisions([new Point(x-width/2, y-height/2 + 0.001), 
+                       new Point(x-width/2, y+height/2 - 0.001)]);
+  }
+  List<Tile> collisionsRight(x,y,width,height) {
+    return collisions([new Point(x+width/2, y-height/2 + 0.001), 
+                       new Point(x+width/2, y+height/2 - 0.001)]);
+  }
+  List<Tile> collisionsUp(x,y,width,height) {
+    return collisions([new Point(x-width/2 + 0.001, y-height/2), 
+                       new Point(x+width/2 - 0.001, y-height/2)]);
+  }
+  List<Tile> collisionsDown(x,y,width,height) {
+    return collisions([new Point(x-width/2 + 0.001, y+height/2),
+                       new Point(x+width/2 - 0.001, y+height/2)]);
   }
 }

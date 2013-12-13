@@ -13,8 +13,9 @@ class Game {
     view = new Viewport(canvas);
     stage = new Stage(mdata, view);
     
-    // Initialize keyboard interaction
+    // Initialize mouse and keyboard interaction
     Keyboard.init();
+    Mouse.init();
     
     // start the main game loop
     window.requestAnimationFrame(loop);

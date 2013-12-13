@@ -12,26 +12,24 @@ class Hero extends Actor {
   }
   
   void update() {
+    
+    // work out accelleration of the hero
     if (Keyboard.isDown(KeyCode.LEFT)) vx -= 0.2;
     if (Keyboard.isDown(KeyCode.RIGHT)) vx += 0.2;
-    if (Keyboard.isDown(KeyCode.UP) && y > 190)  vy -= 30; //only jump if on a surface
+    if (Keyboard.isDown(KeyCode.UP) && down)  vy -= 25; //only jump if on a surface
     if (Keyboard.isDown(KeyCode.DOWN)) vy += 0.2;
     vx *= 0.95; //horizontal fricton
-    vy = 0.95*vy + 3; //vertical friction + gravity 
-    if (y + vy > 200) {
-      vy = 0;
-      y = 200; //temporary floor 
+    vy = (vy + 0.8)*0.95; //vertical friction + gravity 
+    
+    // move
+    move(vx, vy);
+  }
+  
+  Tile walkable(Iterable tiles) {
+    for (var tile in tiles) {
+      if (tile.type == 1) return tile;
     }
-    if (map.collisions(x, y, vx, vy).type == 1) {
-      if ((vx > 0) && (x == map.collisions(x, y, vx, vy).x)) {
-        //collision from right
-      }
-      x += (map.collisions(x, y, vx, vy).x - x - map.collisions(x, y, vx, vy).ts - (width / 2));
-      vy = 0;
-      vx = 0;
-    }
-    x += vx; //updated x
-    y += vy; //updated y
+    return null;
   }
   
   void draw() {
