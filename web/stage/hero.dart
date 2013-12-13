@@ -22,7 +22,14 @@ class Hero extends Actor {
       vy = 0;
       y = 200; //temporary floor 
     }
-    //if map.collisions(x, y, vx, vy)
+    if (map.collisions(x, y, vx, vy).type == 1) {
+      if ((vx > 0) && (x == map.collisions(x, y, vx, vy).x)) {
+        //collision from right
+      }
+      x += (map.collisions(x, y, vx, vy).x - x - map.collisions(x, y, vx, vy).ts - (width / 2));
+      vy = 0;
+      vx = 0;
+    }
     x += vx; //updated x
     y += vy; //updated y
   }
