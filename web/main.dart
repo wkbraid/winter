@@ -1,4 +1,5 @@
 import 'dart:html';
+import 'keyboard.dart';
 
 class Map {
   // Represents a game map instance
@@ -48,7 +49,16 @@ class Viewport {
   // Is the context currently located at the origin (ie where the gui will be drawn)
   bool origin = true;
   
-  Viewport(this.following, this.canvas);
+  Viewport(this.canvas, {this.width, this.height}) {
+    // if no dimensions are provided, take the entire canvas by default
+    if (width == null) width = canvas.width;
+    if (height == null) height = canvas.height;
+  }
+  
+  // follow an actor
+  void follow(tofollow) {
+    following = tofollow;
+  }
   
   // get the context for drawing the game map
   CanvasRenderingContext2D get viewcontext {
@@ -72,7 +82,7 @@ class Viewport {
   
   // return the current viewable rectangle
   Rectangle get rect {
-    Rectangle(x,y,width,height);
+    new Rectangle(x,y,width,height);
   }
   
   void update() {
@@ -81,19 +91,67 @@ class Viewport {
       canvas.context2D.translate(x, y);
     }
     origin = true;
-    x = following.x;
-    y = following.y;
+    // center the viewport on following
+    // could add smooth movement towards following probably
+    x = following.x - width/2;
+    y = following.y - height/2;
   }
 }
 
 class Actor {
   // Base class for all map dwellers
   
-  // Current x and y coordinates of the actor
-  num x,y;
+  // The map the actor is on
+  Map map;
   
-  Actor(this.x,this.y);
+  // Actor dimensions
+  num x,y,width,height;
+  
+  Actor(this.map,this.x,this.y);
+  
+  void update() {
+    
+  }
+  
+  void draw() {
+    
+  }
+  
 }
+
+class Hero extends Actor {
+  // Our very own hero!
+  
+  // Call the default actor constructor
+  Hero(map,x,y) : super(map,x,y) {
+    // set the hero's height
+    height = 28;
+    width = 20;
+  }
+  
+  void update() {
+    if (Keyboard.isDown(KeyCode.LEFT)) x -= 2;
+    if (Keyboard.isDown(KeyCode.RIGHT)) x += 2;
+    if (Keyboard.isDown(KeyCode.UP)) y -= 2;
+    if (Keyboard.isDown(KeyCode.DOWN)) y += 2;
+  }
+  
+  void draw() {
+    // get the viewcontext from the map we are on
+    var context = map.view.viewcontext;
+    context.fillStyle = "red";
+    context.lineWidth = 2;
+    context.strokeStyle = "darkred";
+    context.fillRect(x-width/2, y-width/2, width, height);
+    context.strokeRect(x-width/2, y-width/2, width, height);
+  }
+}
+
+// Game variables
+Viewport view;
+Actor hero;
+Map map;
+
 
 void main() {
   List<List> mdata = [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -119,12 +177,30 @@ void main() {
   // get the main canvas from the page
   var canvas = querySelector("#area");
   
-  var hero = new Actor(50,50);
-  var view = new Viewport(hero,canvas);
+  // set up our basic world
+  view = new Viewport(canvas);
+  map = new Map(mdata,view);
+  hero = new Hero(map,50,50);
+  view.follow(hero);
+  
+  // Initialize keyboard interaction
+  Keyboard.init();
+  
+  // start the main game loop
+  window.requestAnimationFrame(loop);
+}
+
+void loop(num time) {
+  // update the hero
+  hero.update();
+  
+  // update the viewport
   view.update();
-  var map = new Map(mdata,view);
+  // note currently does not clear the screen
+  // draw the map
   map.draw();
-  hero.x = 200;
-  view.update();
-  map.draw();
+  hero.draw();
+  
+  // ask for the next cycle
+  window.requestAnimationFrame(loop);
 }
