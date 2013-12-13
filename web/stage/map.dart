@@ -1,6 +1,19 @@
 // file: map.dart
 part of stage;
 
+class Tile {
+  //Represents a piece of the map 
+  //The size of the tile
+  num ts;
+  //Location of the center of the tile
+  num x, y;
+  //Tile "type"
+  num type;
+  
+  Tile(this.x, this.y, this.ts, this.type);  
+}
+
+
 class GameMap {
   // Represents a game map instance
   // Interactions with the map should be abstracted to be independent of
@@ -30,5 +43,13 @@ class GameMap {
         context.fillRect(x*ts,y*ts,ts,ts);
       }
     }
+  }
+  
+  //finds the tile that the Actor will be moving to
+  Tile collisions(x, y, vx, vy) {
+    num ty = (y + vy) ~/ ts;
+    num tx = (x + vx) ~/ ts;
+    var ttype = data[ty][tx];
+    return new Tile(tx * ts, ty * ts, ts, ttype); 
   }
 }

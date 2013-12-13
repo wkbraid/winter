@@ -5,17 +5,26 @@ class Hero extends Actor {
   // Our very own hero!
   
   // Call the default actor constructor
-  Hero(map,x,y) : super(map,x,y) {
+  Hero(map,x,y,vx,vy) : super(map,x,y,vx,vy) {
     // set the hero's height
     height = 28;
     width = 20;
   }
   
   void update() {
-    if (Keyboard.isDown(KeyCode.LEFT)) x -= 2;
-    if (Keyboard.isDown(KeyCode.RIGHT)) x += 2;
-    if (Keyboard.isDown(KeyCode.UP)) y -= 2;
-    if (Keyboard.isDown(KeyCode.DOWN)) y += 2;
+    if (Keyboard.isDown(KeyCode.LEFT)) vx -= 0.2;
+    if (Keyboard.isDown(KeyCode.RIGHT)) vx += 0.2;
+    if (Keyboard.isDown(KeyCode.UP) && y > 190)  vy -= 30; //only jump if on a surface
+    if (Keyboard.isDown(KeyCode.DOWN)) vy += 0.2;
+    vx *= 0.95; //horizontal fricton
+    vy = 0.95*vy + 3; //vertical friction + gravity 
+    if (y + vy > 200) {
+      vy = 0;
+      y = 200; //temporary floor 
+    }
+    //if map.collisions(x, y, vx, vy)
+    x += vx; //updated x
+    y += vy; //updated y
   }
   
   void draw() {

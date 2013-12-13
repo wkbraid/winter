@@ -8,10 +8,12 @@ class Actor {
   // The map the actor is on
   GameMap map;
   
-  // Actor dimensions
-  num x,y,width,height;
+  // Actor dimensions: x,y are the current coordinates of the actor,
+  //width and height are the size of the actor
+  //vx and vy and are the x and y velocities of the actor
+  num x,y,width,height,vx,vy;
   
-  Actor(this.map,this.x,this.y);
+  Actor(this.map,this.x,this.y,this.vx,this.vy);
   
   void update() {
     
@@ -19,6 +21,7 @@ class Actor {
   
   void draw() {
     
-  }
+ 
   
 }
+  }
