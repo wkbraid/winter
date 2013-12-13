@@ -16,20 +16,13 @@ class Hero extends Actor {
     // work out accelleration of the hero
     if (Keyboard.isDown(KeyCode.LEFT)) vx -= 0.2;
     if (Keyboard.isDown(KeyCode.RIGHT)) vx += 0.2;
-    if (Keyboard.isDown(KeyCode.UP) && down)  vy -= 25; //only jump if on a surface
+    if (Keyboard.isDown(KeyCode.UP))  vy -= 0.2; //only jump if on a surface
     if (Keyboard.isDown(KeyCode.DOWN)) vy += 0.2;
     vx *= 0.95; //horizontal fricton
-    vy = (vy + 0.8)*0.95; //vertical friction + gravity 
+    vy = vy*0.95; //vertical friction + gravity 
     
-    // move
-    move(vx, vy);
-  }
-  
-  Tile walkable(Iterable tiles) {
-    for (var tile in tiles) {
-      if (tile.type == 1) return tile;
-    }
-    return null;
+    y += vy;
+    x += vx;
   }
   
   void draw() {
