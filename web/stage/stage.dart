@@ -16,7 +16,7 @@ class Stage {
   Stage(mdata,view) {
     this.view = view;
     map = new GameMap(mdata,this.view);
-    hero = new Hero(map,50,50,0,0);
+    hero = new Hero(map,150,120,0,0);
     this.view.follow(hero);
   }
   
