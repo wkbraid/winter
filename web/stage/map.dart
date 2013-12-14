@@ -34,6 +34,9 @@ class GameMap {
   
   // get the tile at position x,y
   num get(x,y) {
-    return data[y ~/ ts][x ~/ ts];
+    if (x >= 0 && x < data[0].length*ts && y >= 0 && y < data.length*ts)
+      return data[y ~/ ts][x ~/ ts];
+    else
+      return 1;
   }
 }

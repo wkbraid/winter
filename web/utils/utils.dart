@@ -38,17 +38,20 @@ class Mouse {
   // keep track of the current position and whether the mouse is pressed
   static bool down = false;
   static num x, y;
+  static var canvas;
   
   static void init() {
     // start listening for mouse events
+    canvas = querySelector("#area");
     document.onMouseMove.listen(_moved);
     document.onMouseDown.listen(_pressed);
     document.onMouseUp.listen(_released);
   }
   
   static void _moved(MouseEvent e) {
-    x = e.client.x;
-    y = e.client.y;
+    var rect = canvas.getBoundingClientRect();
+    x = e.client.x - rect.left;
+    y = e.client.y - rect.top;
   }
   
   static void _pressed(MouseEvent e) {

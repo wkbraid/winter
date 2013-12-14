@@ -5,23 +5,34 @@ class Hero extends Actor {
   // Our very own hero!
   
   // Call the default actor constructor
-  Hero(map,x,y,vx,vy) : super(map,x,y,vx,vy) {
+  Hero(x,y,map,actors) : super(x,y,map,actors) {
     // set the hero's height
-    height = 120;
-    width = 120;
+    height = 60;
+    width = 60;
   }
   
   void update() {
     
     // work out accelleration of the hero
-    if (Keyboard.isDown(KeyCode.LEFT)) vx -= 0.2;
-    if (Keyboard.isDown(KeyCode.RIGHT)) vx += 0.2;
-    if (Keyboard.isDown(KeyCode.UP) && down)  vy -= 20; //only jump if on a surface
-    if (Keyboard.isDown(KeyCode.DOWN)) vy += 0.2;
+    if (Keyboard.isDown(KeyCode.A)) vx -= 0.2;
+    if (Keyboard.isDown(KeyCode.D)) vx += 0.2;
+    if (Keyboard.isDown(KeyCode.W) && down)  vy -= 20; //only jump if on a surface
+    if (Keyboard.isDown(KeyCode.S)) vy += 0.2;
     
     // growing commands
-    if (Keyboard.isDown(KeyCode.A)) { height += 1; width += 1; y -= 1/2;}
-    if (Keyboard.isDown(KeyCode.S)) { height -= 1; width -= 1; }
+    if (Keyboard.isDown(KeyCode.E)) { height += 1; width += 1; y -= 1/2;}
+    if (Keyboard.isDown(KeyCode.Q)) { height -= 1; width -= 1; }
+    
+    // projectile commands
+    if (Mouse.down) {
+      num posx = map.view.width/2;
+      num posy = map.view.height/2;
+      num dist = sqrt(pow(posx-Mouse.x,2)+pow(posy - Mouse.y, 2));
+      actors.add(new Projectile(x,y,
+          vx + (Mouse.x - posx)*20/dist,
+          vy + (Mouse.y - posy)*20/dist,
+        map,actors)); 
+    }
     
     vx *= 0.95; //horizontal fricton
     vy += 0.7; // gravity

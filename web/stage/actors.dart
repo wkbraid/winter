@@ -11,15 +11,20 @@ class Actor {
   // The map the actor is on
   GameMap map;
   
+  // the actors currently on the stage
+  List<Actor> actors;
+  
   // is the actor touching anything in the downwards direction
   bool down = false;
   
   // Actor dimensions: x,y are the current coordinates of the actor,
   //width and height are the size of the actor
   //vx and vy and are the x and y velocities of the actor
-  num x,y,width,height,vx,vy;
+  num x,y,width,height;
+  num vx = 0;
+  num vy = 0;
   
-  Actor(this.map,this.x,this.y,this.vx,this.vy);
+  Actor(this.x,this.y, this.map, this.actors);
   
   void update() {
     
@@ -34,15 +39,13 @@ class Actor {
       // check right
       var right = sumHorz(x+dx+width/2);
       if (right != 0) {
-        vx = 0; // stop the horizontal speed
-        dx = 0; // don't move any farther
+        dx = collideX(dx);
       }
     }else if (dx < 0) {
       // check left
       var left = sumHorz(x+dx-width/2);
       if (left != 0) {
-        vx = 0; // stop the horizontal speed
-        dx = 0; // don't move any farther
+        dx = collideX(dx);
       }
     }
     
@@ -51,21 +54,29 @@ class Actor {
       // check downwards
       var downwards = sumVert(y+dy+height/2);
       if (downwards != 0) {
-        vy = 0; // stop the vertical speed
-        dy = 0; // don't move any farther
-        down = true;
+        dy = collideY(dy);
       }
     }else if (dy < 0) {
       // check upwards
       var upwards = sumVert(y+dy-height/2);
       if (upwards != 0) {
-        vy = 0; // stop the vertical speed
-        dy = 0; // don't move any farther
+        dy = collideY(dy);
       }
     }
     
     y += dy;
     x += dx;
+  }
+  
+  num collideX(num dx) {
+    vx = 0;
+    return 0;
+  }
+  
+  num collideY(num dy) {
+    if (dy > 0) down = true;
+    vy = 0;
+    return 0;
   }
   
   // sum over the map coordinates along the ypos along the edge along the width of the actor
@@ -84,6 +95,10 @@ class Actor {
       sum += map.get(xpos, ypos);
     }
     return sum + map.get(xpos,y+height/2);
+  }
+  
+  bool dead() {
+    return false;
   }
   
   void draw() {
