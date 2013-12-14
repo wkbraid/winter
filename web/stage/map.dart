@@ -32,13 +32,8 @@ class GameMap {
     }
   }
   
-  void collide(Actor actor) {
-    // only implement center collision for now
-    num tx = actor.x ~/ ts;
-    num ty = actor.y ~/ ts;
-    num dx = (actor.x - tx*ts) < ts/2 ? tx*ts - actor.x : (tx + 1)*ts - actor.x;
-    num dy = (actor.y - ty*ts) < ts/2 ? ty*ts - actor.y : (ty + 1)*ts - actor.y;
-    if (dx.abs() > dy.abs()) actor.x += dx;
-    else actor.y += dy;
+  // get the tile at position x,y
+  num get(x,y) {
+    return data[y ~/ ts][x ~/ ts];
   }
 }
