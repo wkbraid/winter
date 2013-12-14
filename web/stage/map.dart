@@ -1,18 +1,6 @@
 // file: map.dart
 part of stage;
 
-class Tile {
-  //Represents a piece of the map 
-  //The size of the tile
-  num ts;
-  //Location of the center of the tile
-  num x, y;
-  //Tile "type"
-  num type;
-  
-  Tile(this.x, this.y, this.ts, this.type);  
-}
-
 class GameMap {
   // Represents a game map instance
   // Interactions with the map should be abstracted to be independent of
@@ -44,4 +32,13 @@ class GameMap {
     }
   }
   
+  void collide(Actor actor) {
+    // only implement center collision for now
+    num tx = actor.x ~/ ts;
+    num ty = actor.y ~/ ts;
+    num dx = (actor.x - tx*ts) < ts/2 ? tx*ts - actor.x : (tx + 1)*ts - actor.x;
+    num dy = (actor.y - ty*ts) < ts/2 ? ty*ts - actor.y : (ty + 1)*ts - actor.y;
+    if (dx.abs() > dy.abs()) actor.x += dx;
+    else actor.y += dy;
+  }
 }

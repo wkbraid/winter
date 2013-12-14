@@ -2,7 +2,6 @@ import 'dart:html';
 import 'utils/utils.dart';
 import 'stage/stage.dart';
 
-
 class Game {
   // The main game object, keeps track of global variables
   // The main viewport everything should draw to

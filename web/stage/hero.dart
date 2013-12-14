@@ -21,9 +21,12 @@ class Hero extends Actor {
     vx *= 0.95; //horizontal fricton
     vy = vy*0.95; //vertical friction + gravity 
     
+    move(vx,vy);
+    
     y += vy;
     x += vx;
   }
+
   
   void draw() {
     // get the viewcontext from the map we are on
