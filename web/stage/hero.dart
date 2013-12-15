@@ -2,7 +2,7 @@
 part of stage;
 
 class Hero extends Actor {
-  // Our very own hero!
+  // Our very own genderless hero!
   
   // Call the default actor constructor
   Hero(x,y,map,actors) : super(x,y,map,actors) {
@@ -13,7 +13,7 @@ class Hero extends Actor {
   
   void update() {
     
-    // work out accelleration of the hero
+    // work out acceleration of the hero
     if (Keyboard.isDown(KeyCode.A)) vx -= 0.2;
     if (Keyboard.isDown(KeyCode.D)) vx += 0.2;
     if (Keyboard.isDown(KeyCode.W) && down)  vy -= 20; //only jump if on a surface
@@ -21,7 +21,7 @@ class Hero extends Actor {
     
     // growing commands
     if (Keyboard.isDown(KeyCode.E)) { height += 1; width += 1; y -= 1/2;}
-    if (Keyboard.isDown(KeyCode.Q)) { height -= 1; width -= 1; }
+    if (Keyboard.isDown(KeyCode.Q)) { if (height > 1){height -= 1; width -= 1; }}
     
     // projectile commands
     if (Mouse.down) {
