@@ -13,13 +13,13 @@ class Stage {
   // The non-gui part of the game, containing the map and all actors
   Viewport view;
   GameMap map;
-  Actor hero;
+  Hero hero;
   List<Actor> actors = [];
   
   Stage(mdata,view) {
     this.view = view;
     map = new GameMap(mdata,this.view);
-    hero = new Hero(150,120,map,actors);
+    hero = new Hero(50,650,map,actors);
     this.view.follow(hero);
   }
   
