@@ -20,12 +20,14 @@ class Stage {
     this.view = view;
     map = new GameMap(mdata,this.view);
     hero = new Hero(50,650,this);
-    
+
     actors.add(new FlyingEnemy(50,600,this));
+
     actors.add(new RandEnemy(100,650,this));
     actors.add(new RandEnemy(900,650,this));
     actors.add(new RandEnemy(400,900,this));
     actors.add(new RandEnemy(200,50,this));
+
     this.view.follow(hero);
   }
   

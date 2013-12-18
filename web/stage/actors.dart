@@ -48,15 +48,16 @@ class FlyingEnemy extends Actor {
 // Basic enemy with randomized movement,
   // if moving left, more likely to accel in that direction
   FlyingEnemy(x,y,stage) : super(x,y,stage) {
-    width = 30;
-    height = 10;
+    width = 40;
+    height = 15;
   }
   
   void update() {
     // decide whether we should randomly jump
     var rand = new Random();
-    if (rand.nextDouble() < 0.1 && down)
-      vy -= 10;
+    if (rand.nextDouble() < 0.1)
+      vy -= 3;
+   
     // now decide which way we should push
     if (vx.abs() < 1)
       vx += (rand.nextDouble() - 0.7);
@@ -64,9 +65,9 @@ class FlyingEnemy extends Actor {
       vx += vx/14;
     
     // physics
-    vx *= 0.3; //horizontal fricton
-    vy += 0.1; // gravity
-    vy *= 0.3; //vertical friction
+    vx *= 0.95; //horizontal fricton
+    vy += 0.7; // gravity
+    vy *= 0.95; //vertical friction
     move(vx,vy);
   }
   void draw() {
@@ -74,7 +75,7 @@ class FlyingEnemy extends Actor {
     var context = stage.view.viewcontext;
     context.fillStyle = "lightgreen";
     context.lineWidth = 1;
-    context.strokeStyle = "green";
+    context.strokeStyle = "blue";
     context.fillRect(x-width/2, y-height/2, width, height);
     context.strokeRect(x-width/2, y-height/2, width, height);
   }
