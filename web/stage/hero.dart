@@ -1,14 +1,11 @@
 // file: hero.dart
 part of stage;
 
-class Hero extends Actor {
+class Hero extends Being {
   // Our very own genderless hero!
   
-  // basic stats
-  num hp;
+  // Add mana to basic stats
   num mp;
-  // stat maximums, should be set elsewhere probably
-  num hpmax = 100;
   num mpmax = 100;
   
   // Call the default actor constructor
@@ -16,7 +13,6 @@ class Hero extends Actor {
     // set the hero's height
     height = 30;
     width = 30;
-    hp = hpmax/2;
     mp = mpmax;
   }
   
@@ -50,6 +46,10 @@ class Hero extends Actor {
     // summon enemies!
     if (Keyboard.isDown(KeyCode.SPACE)) {
       stage.actors.add(new RandEnemy(x,y,stage));
+    }
+    // summon enemies!
+    if (Keyboard.isDown(KeyCode.Z)) {
+      stage.actors.add(new FlyingEnemy(x,y,stage));
     }
     
     vx *= 0.95; //horizontal fricton

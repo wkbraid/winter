@@ -1,7 +1,7 @@
 // file: enemies.dart
 part of stage;
 
-class RandEnemy extends Actor {
+class RandEnemy extends Being {
   // Basic enemy with randomized movement,
   // if moving left, more likely to accel in that direction
   

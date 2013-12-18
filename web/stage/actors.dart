@@ -1,78 +1,55 @@
 // file: actors.dart
 part of stage;
 
+class Being extends Actor {
+  // High level Actor subclass of beings containing
+  // basic stats such as hp
+  num hpmax = 100;
+  num hp = 100;
+  
+  Being(x,y,stage) : super(x,y,stage);
+}
+
 class Actor {
   // Base class for all map dwellers
   
-  // The type of the actor
-  String type = "";
+  String type = ""; // The type of the actor
+  Stage stage; // The stage the actor is on
+  bool dead = false; // Is the actor dead?
+  bool down = false; // Is there something below the actor, should be moved eventually
 
-  // The stage the actor is on
-  Stage stage;
-  
-  // is the actor dead?
-  bool dead = false;
-  
-  // is the actor touching anything in the downwards direction
-  bool down = false;
-  
-  // Actor dimensions: x,y are the current coordinates of the actor,
-  //width and height are the size of the actor
-  //vx and vy and are the x and y velocities of the actor
-  num x,y,width,height;
-  num vx = 0;
-  num vy = 0;
+  num x,y,width,height; // The dimensions of the actor, (x,y) is at the center of the Actor
+  num vx = 0,vy = 0; // The horizontal and vertical components of the actor's velocity
   
   Actor(this.x,this.y, this.stage);
   
-  void update() {
-    
-  }
+  // Placeholder functions
+  void update() { } // update the actor
+  void draw() { } // draw the actor
+  void collide(Actor other) { } // The actor collided with other
   
-  void move(num dx, num dy) {
-    // reset ground status
-    down = false;
+  // default functions
+  void move(num dx, num dy) { // move the actor by dx,dy
+    down = false; // reset the ground status
     
-    // HORIZONTAL MOVEMENT
-    if (dx > 0) {
-      // check right
-      var right = sumHorz(x+dx+width/2);
-      if (right != 0) {
-        dx = collideX(dx);
-      }
-    }else if (dx < 0) {
-      // check left
-      var left = sumHorz(x+dx-width/2);
-      if (left != 0) {
-        dx = collideX(dx);
-      }
-    }
+    if (dx > 0 && sumHorz(x+dx+width/2) != 0)
+      dx = collideX(dx); // collide right
+    if (dx < 0 && sumHorz(x+dx-width/2) != 0)
+      dx = collideX(dx); // collide left
     
-    // VERTICAL MOVEMENT
-    if (dy > 0) {
-      // check downwards
-      var downwards = sumVert(y+dy+height/2);
-      if (downwards != 0) {
-        dy = collideY(dy);
-      }
-    }else if (dy < 0) {
-      // check upwards
-      var upwards = sumVert(y+dy-height/2);
-      if (upwards != 0) {
-        dy = collideY(dy);
-      }
-    }
+    if (dy > 0 && sumVert(y+dy+height/2) != 0)
+      dy = collideY(dy);
+    if (dy < 0 && sumVert(y+dy-height/2) != 0)
+      dy = collideY(dy);
     
+    x += dx; // move the hero
     y += dy;
-    x += dx;
   }
-  
-  num collideX(num dx) {
+  num collideX(num dx) { // collide with a wall in the x direction
     vx = 0;
     return 0;
   }
-  
-  num collideY(num dy) {
+  num collideY(num dy) { // collide with a wall in the y direction
     if (dy > 0) down = true;
     vy = 0;
     return 0;
@@ -94,16 +71,6 @@ class Actor {
       sum += stage.map.get(xpos, ypos);
     }
     return sum + stage.map.get(xpos,y+height/2);
-  }
-  
-  void collide(Actor other) {
-    
-  }
-  
-  
-  
-  void draw() {
-    
   }
 }
 
