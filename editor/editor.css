@@ -12,16 +12,19 @@ h1, p {
   color: #333;
 }
 
-#sample_container_id {
+#container {
   width: 100%;
-  height: 400px;
-  position: relative;
-  border: 1px solid #ccc;
-  background-color: #fff;
+  overflow: hidden;
 }
 
-#sample_text_id {
-  font-size: 24pt;
-  text-align: center;
-  margin-top: 140px;
+#area, #gui {
+  float: left;
+  display: inline;
+}
+
+#gui {
+  margin-left: 10px;
+  width: 200px;
+  height: 400px;
+  padding: 5px;
 }

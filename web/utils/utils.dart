@@ -37,7 +37,7 @@ class Keyboard {
 class Mouse {
   // keep track of the current position and whether the mouse is pressed
   static bool down = false;
-  static num x, y;
+  static num x = 0, y = 0;
   static var canvas;
   
   static void init() {
