@@ -25,8 +25,14 @@ class Stage {
     actors.add(new RandEnemy(900,650,map,actors));
     actors.add(new RandEnemy(400,900,map,actors));
     actors.add(new RandEnemy(200,50,map,actors));
+    
+    actors.add(new FlyingEnemy(50,600,map,actors));
+    //actors.add(new FlyingEnemy(700,480,map,actors));
+    //actors.add(new FlyingEnemy(300,900,map,actors));
+   
     this.view.follow(hero);
   }
+  
   
   void update() {
     // update the hero
