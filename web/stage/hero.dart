@@ -68,7 +68,7 @@ class Hero extends Being {
   }
   
   void collide(Actor other) {
-    if (other.type == "enemy")
+    if (other is Enemy)
       hp -= 1;
   }
 }

@@ -5,7 +5,6 @@ class Enemy extends Being {
   // Basic enemy class, abstracts most functionality other than AI decisions
   
   Enemy(x,y,stage) : super(x,y,stage) {
-    type = "enemy"; // set the type
     color = "lightgreen"; // drawing colors
     bordercolor = "green";
   }
@@ -24,8 +23,18 @@ class Enemy extends Being {
   }
   
   void collide(Actor other) {
-    if (other.type == "projectile")
-      hp -= 1;
+    if (other is Projectile)
+      hp -= other.damage;
+  }
+  void draw() {
+    var ctx = stage.view.viewcontext;
+    ctx.fillStyle = "red";
+    ctx.strokeStyle = "darkred";
+    ctx.fillRect(x-hp/10, y-8-height/2, hp/5, 5);
+    ctx.lineWidth = 1;
+    ctx.strokeRect(x-hp/10,y-8-height/2,hp/5,5);
+    
+    super.draw(); // draw the enemy body
   }
 }
 

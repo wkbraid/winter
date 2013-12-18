@@ -14,8 +14,7 @@ class Being extends Actor {
 
 class Actor {
   // Base class for all map dwellers
-  
-  String type = ""; // The type of the actor
+
   Stage stage; // The stage the actor is on
   bool dead = false; // Is the actor dead?
   bool down = false; // Is there something below the actor, should be moved eventually

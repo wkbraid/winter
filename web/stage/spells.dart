@@ -45,6 +45,7 @@ class PelletSpell extends Spell {
     caster.stage.actors.add(new Projectile(caster.x,caster.y,
         caster.vx + (Mouse.x - posx)*20/dist,
         caster.vy + (Mouse.y - posy)*20/dist,
+        10,
         caster.stage));
   }
 }

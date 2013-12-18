@@ -2,11 +2,12 @@
 part of stage;
 
 class Projectile extends Actor {
+  num damage;
   
-  Projectile(x,y,vx,vy,stage) : super(x,y,stage) {
-    type = "projectile";
+  Projectile(x,y,vx,vy,damage,stage) : super(x,y,stage) {
     this.vx = vx;
     this.vy = vy;
+    this.damage = damage;
     width = 5;
     height = 5;
     color = "purple";
@@ -33,7 +34,7 @@ class Projectile extends Actor {
   }
   
   void collide(Actor other) {
-    if (other.type == "enemy")
+    if (other is Enemy)
       dead = true;
   }
 }
