@@ -47,6 +47,11 @@ class Hero extends Actor {
         stage));
     }
     
+    // summon enemies!
+    if (Keyboard.isDown(KeyCode.SPACE)) {
+      stage.actors.add(new RandEnemy(x,y,stage));
+    }
+    
     vx *= 0.95; //horizontal fricton
     vy += 0.7; // gravity
     vy *= 0.95; //vertical friction
@@ -62,6 +67,11 @@ class Hero extends Actor {
       hp -= vy*vy*vy/49;
     vy = 0;
     return 0;
+  }
+  
+  void collide(Actor other) {
+    if (other.type == "enemy")
+      hp -= 1;
   }
   
   void draw() {

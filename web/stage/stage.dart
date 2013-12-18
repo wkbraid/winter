@@ -32,7 +32,7 @@ class Stage {
     // update the hero
     hero.update();
     // remove all the dead actors
-    actors.removeWhere((act) => act.dead());
+    actors.removeWhere((act) => act.dead);
     
     // update the other actors
     for (Actor act in actors) {
@@ -40,9 +40,27 @@ class Stage {
     }
     
     // actor-actor collision
-    for (Actor act1 in actors) {
-      for (Actor act2 in actors) {
+    for (var i = 0; i < actors.length; i++) {
+      Actor act1 = actors[i];
+      // independently check for hero collisions? this seems terrible
+      if (hero.x - hero.width/2 < act1.x + act1.width/2
+          && hero.x + hero.width/2 > act1.x - act1.width/2
+          && hero.y - hero.height/2 < act1.y + act1.height/2
+          && hero.y + hero.height/2 > act1.y - act1.height/2) {
+          
+          hero.collide(act1);
+          act1.collide(hero);
+        }
+      for (var j = i+1; j < actors.length; j++) {
+        Actor act2 = actors[j];
         // check for collision
+        if (act1.x - act1.width/2 < act2.x + act2.width/2
+          && act1.x + act1.width/2 > act2.x - act2.width/2
+          && act1.y - act1.height/2 < act2.y + act2.height/2
+          && act1.y + act1.height/2 > act2.y - act2.height/2) {
+          act1.collide(act2);
+          act2.collide(act1);
+        }
       }
     }
   }
