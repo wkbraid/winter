@@ -3,7 +3,7 @@ part of stage;
 
 class Projectile extends Actor {
   
-  Projectile(x,y,vx,vy,map,actors) : super(x,y,map,actors) {
+  Projectile(x,y,vx,vy,stage) : super(x,y,stage) {
     this.vx = vx;
     this.vy = vy;
     width = 5;
@@ -29,7 +29,7 @@ class Projectile extends Actor {
  
   void draw() {
     // get the viewcontext from the map we are on
-    var context = map.view.viewcontext;
+    var context = stage.view.viewcontext;
     context.fillStyle = "purple";
     context.lineWidth = 1;
     context.strokeStyle = "darkpurple";

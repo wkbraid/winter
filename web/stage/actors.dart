@@ -4,7 +4,7 @@ part of stage;
 class RandEnemy extends Actor {
   // Basic enemy with randomized movement,
   // if moving left, more likely to accel in that direction
-  RandEnemy(x,y,map,actors) : super(x,y,map,actors) {
+  RandEnemy(x,y,stage) : super(x,y,stage) {
     width = 20;
     height = 20;
   }
@@ -28,7 +28,7 @@ class RandEnemy extends Actor {
   }
   void draw() {
     // get the viewcontext from the map we are on
-    var context = map.view.viewcontext;
+    var context = stage.view.viewcontext;
     context.fillStyle = "lightgreen";
     context.lineWidth = 1;
     context.strokeStyle = "green";
@@ -39,15 +39,9 @@ class RandEnemy extends Actor {
 
 class Actor {
   // Base class for all map dwellers
-  
-  // this really shouldn't be here
-  num ts = 32;
-  
-  // The map the actor is on
-  GameMap map;
-  
-  // the actors currently on the stage
-  List<Actor> actors;
+
+  // The stage the actor is on
+  Stage stage;
   
   // is the actor touching anything in the downwards direction
   bool down = false;
@@ -59,7 +53,7 @@ class Actor {
   num vx = 0;
   num vy = 0;
   
-  Actor(this.x,this.y, this.map, this.actors);
+  Actor(this.x,this.y, this.stage);
   
   void update() {
     
@@ -117,19 +111,19 @@ class Actor {
   // sum over the map coordinates along the ypos along the edge along the width of the actor
   num sumVert(ypos) {
     num sum = 0;
-    for (num xpos = x - width/2; xpos < x + width/2; xpos += ts/2) {
-      sum += map.get(xpos, ypos);
+    for (num xpos = x - width/2; xpos < x + width/2; xpos += stage.map.ts/2) {
+      sum += stage.map.get(xpos, ypos);
     }
-    return sum + map.get(x + width/2, ypos);
+    return sum + stage.map.get(x + width/2, ypos);
   }
   
   // sum over the map coordinates along the xpos along the edge along the height of the actor
   num sumHorz(xpos) {
     num sum = 0;
-    for (num ypos = y - height/2; ypos < y + height/2; ypos += ts/2) {
-      sum += map.get(xpos, ypos);
+    for (num ypos = y - height/2; ypos < y + height/2; ypos += stage.map.ts/2) {
+      sum += stage.map.get(xpos, ypos);
     }
-    return sum + map.get(xpos,y+height/2);
+    return sum + stage.map.get(xpos,y+height/2);
   }
   
   bool dead() {
