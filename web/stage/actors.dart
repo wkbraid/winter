@@ -44,6 +44,42 @@ class RandEnemy extends Actor {
   }
 }
 
+class FlyingEnemy extends Actor {
+// Basic enemy with randomized movement,
+  // if moving left, more likely to accel in that direction
+  FlyingEnemy(x,y,stage) : super(x,y,stage) {
+    width = 30;
+    height = 10;
+  }
+  
+  void update() {
+    // decide whether we should randomly jump
+    var rand = new Random();
+    if (rand.nextDouble() < 0.1 && down)
+      vy -= 10;
+    // now decide which way we should push
+    if (vx.abs() < 1)
+      vx += (rand.nextDouble() - 0.7);
+    else
+      vx += vx/14;
+    
+    // physics
+    vx *= 0.3; //horizontal fricton
+    vy += 0.1; // gravity
+    vy *= 0.3; //vertical friction
+    move(vx,vy);
+  }
+  void draw() {
+    // get the viewcontext from the map we are on
+    var context = map.view.viewcontext;
+    context.fillStyle = "lightgreen";
+    context.lineWidth = 1;
+    context.strokeStyle = "green";
+    context.fillRect(x-width/2, y-height/2, width, height);
+    context.strokeRect(x-width/2, y-height/2, width, height);
+  }
+}
+
 class Actor {
   // Base class for all map dwellers
   
