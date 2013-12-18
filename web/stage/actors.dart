@@ -48,9 +48,19 @@ class FlyingEnemy extends Actor {
 // Basic enemy with randomized movement,
   // if moving left, more likely to accel in that direction
   FlyingEnemy(x,y,stage) : super(x,y,stage) {
+    type = 'enemy';
     width = 40;
     height = 15;
+    life = 40;
   }
+  
+  void collide(Actor other) {
+    if (other.type == "projectile")
+      life -= 1;
+     if (life <= 0)
+     dead = true;
+  }
+ 
   
   void update() {
     // decide whether we should randomly jump
@@ -111,7 +121,7 @@ class Actor {
   // Actor dimensions: x,y are the current coordinates of the actor,
   //width and height are the size of the actor
   //vx and vy and are the x and y velocities of the actor
-  num x,y,width,height;
+  num x,y,width,height,life;
   num vx = 0;
   num vy = 0;
   
