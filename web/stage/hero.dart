@@ -8,6 +8,8 @@ class Hero extends Being {
   num mp;
   num mpmax = 100;
   
+  // Spell keybindings for the hero
+  
   // Call the default actor constructor
   Hero(x,y,stage) : super(x,y,stage) {
     width = 30; // set the hero's dimension
@@ -38,8 +40,8 @@ class Hero extends Being {
     }
     
     // summon enemies!
-    if (Keyboard.isDown(KeyCode.SPACE)) {
-      stage.actors.add(new RandEnemy(x,y,stage));
+    if (Keyboard.isDown(KeyCode.SPACE) && mp > spawnSpell.mana) {
+      mp -= spawnSpell.cast(this);
     }
     // summon enemies!
     if (Keyboard.isDown(KeyCode.Z)) {

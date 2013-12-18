@@ -28,6 +28,7 @@ class Spell {
 // Game Spells
 //===========================================
 Spell pelletSpell = new Spell((Being by) {
+  // creates a simple projectile
   num posx = by.stage.view.width/2;
   num posy = by.stage.view.height/2;
   num dist = sqrt(pow(posx-Mouse.x,2)+pow(posy - Mouse.y, 2));
@@ -36,3 +37,8 @@ Spell pelletSpell = new Spell((Being by) {
       by.vy + (Mouse.y - posy)*20/dist,
       by.stage));
 }, mana: 10, cooldown: 200);
+
+Spell spawnSpell = new Spell((Being by) {
+  // spawns an enemy at the caster's location
+  by.stage.actors.add(new RandEnemy(by.x,by.y,by.stage));
+}, mana: 30, cooldown: 1000);
