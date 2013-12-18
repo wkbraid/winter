@@ -5,17 +5,20 @@ class Hero extends Being {
   // Our very own genderless hero!
   
   // Spell keybindings for the hero
-  Map<int,Spell> spellkeys = {
-      KeyCode.Z : pelletSpell,
-      KeyCode.X : spawnSpell,
-      KeyCode.C : healSpell
-    };
+  Map<int,Spell> spellkeys;
   
-  Spell mousespell = pelletSpell;
+  Spell mousespell;
   
   
   // Call the default actor constructor
   Hero(x,y,stage) : super(x,y,stage) {
+    // Set up the hero's spells
+    spellkeys = {
+       KeyCode.Z : new PelletSpell(this),
+       KeyCode.X : new SpawnSpell(this),
+       KeyCode.C : new HealSpell(this)
+    };
+    mousespell = new PelletSpell(this);
     width = 30; // set the hero's dimension
     height = 30;
     color = "red"; // drawing colors

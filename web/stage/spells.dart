@@ -6,19 +6,21 @@ class Spell {
   num cooldown = 500; // cooldown in miliseconds
   DateTime lastcast; // last time when the spell was cast 
   num mana = 5; // mana cost
-  var effects, possible;
+  Being caster; // the caster of the spell
   
-  Spell(this.effects, {this.mana, this.cooldown, this.possible}) {
-    if (possible == null)
-      possible = (Being caster) => true; // there are no additional requirements
+  Spell(this.caster) {
     lastcast = new DateTime.now();
   }
   
+  // placeholder functions
+  void effects() { }
+  bool possible() => true; // no restrictions by default
+  
   num cast(Being caster) { // cast the spell
     if (-lastcast.difference(new DateTime.now()).inMilliseconds > cooldown
-        && caster.mp > mana && possible(caster)) {
+        && caster.mp > mana && possible()) {
       lastcast = new DateTime.now();
-      effects(caster); // cast the spell effects
+      effects(); // cast the spell effects
       return mana;
     }
     return 0; // otherwise the spell didn't cast
@@ -28,23 +30,45 @@ class Spell {
 //===========================================
 // Game Spells
 //===========================================
-Spell pelletSpell = new Spell((Being caster) {
-  // creates a simple projectile
-  num posx = caster.stage.view.width/2;
-  num posy = caster.stage.view.height/2;
-  num dist = sqrt(pow(posx-Mouse.x,2)+pow(posy - Mouse.y, 2));
-  caster.stage.actors.add(new Projectile(caster.x,caster.y,
-      caster.vx + (Mouse.x - posx)*20/dist,
-      caster.vy + (Mouse.y - posy)*20/dist,
-      caster.stage));
-}, mana: 10, cooldown: 200);
+class PelletSpell extends Spell {
+  // simple missile spell
+  PelletSpell(caster) : super(caster) {
+    mana = 10;
+    cooldown = 200;
+  }
+  
+  void effects() {
+    // creates a simple projectile
+    num posx = caster.stage.view.width/2;
+    num posy = caster.stage.view.height/2;
+    num dist = sqrt(pow(posx-Mouse.x,2)+pow(posy - Mouse.y, 2));
+    caster.stage.actors.add(new Projectile(caster.x,caster.y,
+        caster.vx + (Mouse.x - posx)*20/dist,
+        caster.vy + (Mouse.y - posy)*20/dist,
+        caster.stage));
+  }
+}
 
-Spell healSpell = new Spell((Being caster) {
-  caster.hp += 1;
-}, mana: 1, cooldown: 10,
-possible: (Being caster) => caster.hp < caster.hpmax);
+class HealSpell extends Spell {
+  // exchange mana for hp
+  HealSpell(caster) : super(caster) {
+    mana = 1;
+    cooldown = 10;
+  }
+  
+  void effects() {
+    caster.hp += 1;
+  }
+  
+  bool possible() => caster.hp < caster.hpmax; // only heal if we have less than full hp
+}
 
-Spell spawnSpell = new Spell((Being caster) {
+class SpawnSpell extends Spell {
   // spawns an enemy at the caster's location
-  caster.stage.actors.add(new RandEnemy(caster.x,caster.y,caster.stage));
-}, mana: 30, cooldown: 1000);
+  SpawnSpell(caster) : super(caster) {
+    mana = 30; cooldown = 1000;
+  }
+  void effects() {
+    caster.stage.actors.add(new RandEnemy(caster.x,caster.y,caster.stage));
+  }
+}
