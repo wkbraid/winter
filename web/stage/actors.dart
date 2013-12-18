@@ -1,6 +1,41 @@
 // file: actors.dart
 part of stage;
 
+class RandEnemy extends Actor {
+  // Basic enemy with randomized movement,
+  // if moving left, more likely to accel in that direction
+  RandEnemy(x,y,map,actors) : super(x,y,map,actors) {
+    width = 20;
+    height = 20;
+  }
+  
+  void update() {
+    // decide whether we should randomly jump
+    var rand = new Random();
+    if (rand.nextDouble() < 0.01 && down)
+      vy -= 18;
+    // now decide which way we should push
+    if (vx.abs() < 1)
+      vx += (rand.nextDouble() - 0.5);
+    else
+      vx += vx/14;
+    
+    // physics
+    vx *= 0.95; //horizontal fricton
+    vy += 0.7; // gravity
+    vy *= 0.95; //vertical friction
+    move(vx,vy);
+  }
+  void draw() {
+    // get the viewcontext from the map we are on
+    var context = map.view.viewcontext;
+    context.fillStyle = "lightgreen";
+    context.lineWidth = 1;
+    context.strokeStyle = "green";
+    context.fillRect(x-width/2, y-height/2, width, height);
+    context.strokeRect(x-width/2, y-height/2, width, height);
+  }
+}
 
 class Actor {
   // Base class for all map dwellers
