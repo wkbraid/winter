@@ -4,11 +4,15 @@ part of stage;
 class Hero extends Being {
   // Our very own genderless hero!
   
-  // Add mana to basic stats
-  num mp;
-  num mpmax = 100;
-  
   // Spell keybindings for the hero
+  Map<int,Spell> spellkeys = {
+      KeyCode.Z : pelletSpell,
+      KeyCode.X : spawnSpell,
+      KeyCode.C : healSpell
+    };
+  
+  Spell mousespell = pelletSpell;
+  
   
   // Call the default actor constructor
   Hero(x,y,stage) : super(x,y,stage) {
@@ -34,19 +38,14 @@ class Hero extends Being {
     if (Keyboard.isDown(KeyCode.E)) { height += 1; width += 1; y -= 1/2;}
     if (Keyboard.isDown(KeyCode.Q)) { if (height > 1){height -= 1; width -= 1; }}
     
-    // projectile commands
-    if (Mouse.down && mp > pelletSpell.mana) {
-      mp -= pelletSpell.cast(this);
+    // Check for keybindings
+    for (int key in spellkeys.keys) {
+      if (Keyboard.isDown(key))
+        mp -= spellkeys[key].cast(this);
     }
-    
-    // summon enemies!
-    if (Keyboard.isDown(KeyCode.SPACE) && mp > spawnSpell.mana) {
-      mp -= spawnSpell.cast(this);
-    }
-    // summon enemies!
-    if (Keyboard.isDown(KeyCode.Z)) {
-      stage.actors.add(new FlyingEnemy(x,y,stage));
-    }
+    // Check for mouse
+    if (Mouse.down)
+      mp -= mousespell.cast(this);
     
     vx *= 0.95; //horizontal fricton
     vy += 0.7; // gravity

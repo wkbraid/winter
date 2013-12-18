@@ -6,6 +6,8 @@ class Being extends Actor {
   // basic stats such as hp
   num hpmax = 100;
   num hp = 100;
+  num mp = 0;
+  num mpmax = 100;
   
   Being(x,y,stage) : super(x,y,stage);
 }
