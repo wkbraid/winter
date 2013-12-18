@@ -57,7 +57,10 @@ class FlyingEnemy extends Actor {
     var rand = new Random();
     if (rand.nextDouble() < 0.1)
       vy -= 3;
-   
+    if (vy.abs() < 1)
+      vy -= (rand.nextDouble() - 0.7);
+    else
+      vy -= vy/20;
     // now decide which way we should push
     if (vx.abs() < 1)
       vx += (rand.nextDouble() - 0.7);
