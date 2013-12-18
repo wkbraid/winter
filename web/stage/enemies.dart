@@ -6,6 +6,8 @@ class Enemy extends Being {
   
   Enemy(x,y,stage) : super(x,y,stage) {
     type = "enemy"; // set the type
+    color = "lightgreen"; // drawing colors
+    bordercolor = "green";
   }
   
   // placeholder functions
@@ -17,20 +19,27 @@ class Enemy extends Being {
     vx *= mu; // friction
     vy *= mu;
     move(vx,vy); // move the enemy
+    
+    dead = hp <= 0; // check if the enemy is dead
+  }
+  
+  void collide(Actor other) {
+    if (other.type == "projectile")
+      hp -= 1;
   }
 }
 
-class RandEnemy extends Being {
-  // Basic enemy with randomized movement,
-  // if moving left, more likely to accel in that direction
-  
+//=============================================
+// Game Enemies
+//=============================================
+
+class RandEnemy extends Enemy {
+  // Basic enemy with randomized movement
   RandEnemy(x,y,stage) : super(x,y,stage) {
-    type = "enemy";
     width = 20;
     height = 20;
   }
-  
-  void update() {
+  void decide() {
     // decide whether we should randomly jump
     var rand = new Random();
     if (rand.nextDouble() < 0.01 && down)
@@ -40,38 +49,16 @@ class RandEnemy extends Being {
       vx += (rand.nextDouble() - 0.5);
     else
       vx += vx/14;
-    
-    // physics
-    vx *= 0.95; //horizontal fricton
-    vy += 0.7; // gravity
-    vy *= 0.95; //vertical friction
-    move(vx,vy);
-  }
-  
-  void collide(Actor other) {
-    if (other.type == "projectile")
-      dead = true;
-  }
-  void draw() {
-    // get the viewcontext from the map we are on
-    var context = stage.view.viewcontext;
-    context.fillStyle = "lightgreen";
-    context.lineWidth = 1;
-    context.strokeStyle = "green";
-    context.fillRect(x-width/2, y-height/2, width, height);
-    context.strokeRect(x-width/2, y-height/2, width, height);
   }
 }
 
-class FlyingEnemy extends Actor {
-// Basic enemy with randomized movement,
-  // if moving left, more likely to accel in that direction
+class FlyingEnemy extends Enemy {
+  // Basic flying enemy
   FlyingEnemy(x,y,stage) : super(x,y,stage) {
     width = 40;
     height = 15;
   }
-  
-  void update() {
+  void decide() {
     // decide whether we should randomly jump
     var dir = vy.toDouble();
     var rand = new Random();
@@ -88,26 +75,5 @@ class FlyingEnemy extends Actor {
       vx += (rand.nextDouble() - 0.7);
     else
       vx += vx/14;
-    
-    // physics
-    vx *= 0.95; //horizontal fricton
-    vy += 0.7; // gravity
-  
-    if (dir > vy)
-      vy *= 1.05;
-    else if (dir == vy)
-      vy *= 1;
-    else
-      vy *= 0.95; //vertical friction
-    move(vx,vy);
-  }
-  void draw() {
-    // get the viewcontext from the map we are on
-    var context = stage.view.viewcontext;
-    context.fillStyle = "lightgreen";
-    context.lineWidth = 1;
-    context.strokeStyle = "blue";
-    context.fillRect(x-width/2, y-height/2, width, height);
-    context.strokeRect(x-width/2, y-height/2, width, height);
   }
 }

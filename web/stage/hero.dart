@@ -10,16 +10,17 @@ class Hero extends Being {
   
   // Call the default actor constructor
   Hero(x,y,stage) : super(x,y,stage) {
-    // set the hero's height
+    width = 30; // set the hero's dimension
     height = 30;
-    width = 30;
+    color = "red"; // drawing colors
+    bordercolor = "darkred";
     mp = mpmax;
   }
   
   void update() {
     // deal with health and mana
     if (hp < hpmax) hp+= 0.1;
-    if (mp < mpmax) mp+= 0.15;
+    if (mp < mpmax) mp+= 0.5;
     
     // work out acceleration of the hero
     if (Keyboard.isDown(KeyCode.A)) vx -= 0.2;
@@ -72,15 +73,5 @@ class Hero extends Being {
   void collide(Actor other) {
     if (other.type == "enemy")
       hp -= 1;
-  }
-  
-  void draw() {
-    // get the viewcontext from the map we are on
-    var context = stage.view.viewcontext;
-    context.fillStyle = "red";
-    context.lineWidth = 2;
-    context.strokeStyle = "darkred";
-    context.fillRect(x-width/2, y-height/2, width, height);
-    context.strokeRect(x-width/2, y-height/2, width, height);
   }
 }

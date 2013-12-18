@@ -9,6 +9,8 @@ class Projectile extends Actor {
     this.vy = vy;
     width = 5;
     height = 5;
+    color = "purple";
+    bordercolor = "purple";
   }
   
   void update() {
@@ -33,15 +35,5 @@ class Projectile extends Actor {
   void collide(Actor other) {
     if (other.type == "enemy")
       dead = true;
-  }
- 
-  void draw() {
-    // get the viewcontext from the map we are on
-    var context = stage.view.viewcontext;
-    context.fillStyle = "purple";
-    context.lineWidth = 1;
-    context.strokeStyle = "darkpurple";
-    context.fillRect(x-width/2, y-height/2, width, height);
-    context.strokeRect(x-width/2, y-height/2, width, height);
   }
 }

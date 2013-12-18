@@ -27,10 +27,17 @@ class Actor {
   
   // Placeholder functions
   void update() { } // update the actor
-  void draw() { } // draw the actor
   void collide(Actor other) { } // The actor collided with other
   
   // default draw function
+  void draw() {
+    var context = stage.view.viewcontext; // get the context from the stage we are on
+    context.fillStyle = color;
+    context.lineWidth = 2;
+    context.strokeStyle = bordercolor;
+    context.fillRect(x-width/2, y-height/2, width, height);
+    context.strokeRect(x-width/2, y-height/2, width, height);
+  }
   
   // default functions
   void move(num dx, num dy) { // move the actor by dx,dy
