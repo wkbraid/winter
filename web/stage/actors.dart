@@ -51,11 +51,6 @@ class FlyingEnemy extends Actor {
     width = 40;
     height = 15;
   }
-
-  void collide(Actor other) {
-    if (other.type == "projectile")
-      dead = true;
-  }
   
   void update() {
     // decide whether we should randomly jump
