@@ -9,17 +9,9 @@ class Enemy extends Being {
     bordercolor = "green";
   }
   
-  // placeholder functions
-  void decide() { } // Implement decision making for the enemy
-  
   void update() {
-    decide(); // implements the decision making step
-    vy += g; // gravity
-    vx *= mu; // friction
-    vy *= mu;
-    move(vx,vy); // move the enemy
-    
     dead = hp <= 0; // check if the enemy is dead
+    super.update();
   }
   
   void collide(Actor other) {
@@ -48,7 +40,7 @@ class RandEnemy extends Enemy {
     width = 20;
     height = 20;
   }
-  void decide() {
+  void update() {
     // decide whether we should randomly jump
     var rand = new Random();
     if (rand.nextDouble() < 0.01 && down)
@@ -58,6 +50,8 @@ class RandEnemy extends Enemy {
       vx += (rand.nextDouble() - 0.5);
     else
       vx += vx/14;
+    
+    super.update(); // physics and move the enemy
   }
 }
 
@@ -67,7 +61,7 @@ class FlyingEnemy extends Enemy {
     width = 40;
     height = 15;
   }
-  void decide() {
+  void update() {
     // decide whether we should randomly jump
     var dir = vy.toDouble();
     var rand = new Random();
@@ -84,5 +78,7 @@ class FlyingEnemy extends Enemy {
       vx += (rand.nextDouble() - 0.7);
     else
       vx += vx/14;
+    
+    super.update(); // physics and move
   }
 }

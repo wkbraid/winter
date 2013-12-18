@@ -9,6 +9,11 @@ class Gui {
   
   Gui(this.stage, this.view);
   
+  update() {
+    if (Keyboard.isDown(KeyCode.E))
+      print(stage.hero.inv);
+  }
+  
   draw() {
     // get the gui context
     var context = view.guicontext;

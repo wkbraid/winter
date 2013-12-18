@@ -27,10 +27,15 @@ class Actor {
   Actor(this.x,this.y, this.stage);
   
   // Placeholder functions
-  void update() { } // update the actor
   void collide(Actor other) { } // The actor collided with other
   
   // default draw function
+  void update() {
+    vy += g; // gravity
+    vx *= mu; // friction
+    vy *= mu;
+    move(vx,vy); // move the enemy
+  }
   void draw() {
     var context = stage.view.viewcontext; // get the context from the stage we are on
     context.fillStyle = color;

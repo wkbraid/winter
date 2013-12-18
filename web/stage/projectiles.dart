@@ -15,12 +15,8 @@ class Projectile extends Actor {
   }
   
   void update() {
-    vx *= 0.95; //horizontal fricton
-    vy += 0.7; // gravity
-    vy *= 0.95; //vertical friction
-    move(vx,vy);
-    
     dead = (vx.truncate() == 0) && (vy.truncate() == 0) && down;
+    super.update(); // physics and move
   }
   
   num collideX(num dx) {

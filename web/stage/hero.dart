@@ -8,6 +8,7 @@ class Hero extends Being {
   Map<int,Spell> spellkeys;
   
   Spell mousespell;
+  List<Item> inv = []; // The inventory of the hero
   
   
   // Call the default actor constructor
@@ -35,12 +36,7 @@ class Hero extends Being {
     if (Keyboard.isDown(KeyCode.A)) vx -= 0.2;
     if (Keyboard.isDown(KeyCode.D)) vx += 0.2;
     if (Keyboard.isDown(KeyCode.W) && down)  vy -= 20; //only jump if on a surface
-    if (Keyboard.isDown(KeyCode.S)) vy += 0.2;
-    
-    // growing commands
-    if (Keyboard.isDown(KeyCode.E)) { height += 1; width += 1; y -= 1/2;}
-    if (Keyboard.isDown(KeyCode.Q)) { if (height > 1){height -= 1; width -= 1; }}
-    
+
     // Check for keybindings
     for (int key in spellkeys.keys) {
       if (Keyboard.isDown(key))
@@ -70,5 +66,10 @@ class Hero extends Being {
   void collide(Actor other) {
     if (other is Enemy)
       hp -= 1;
+    else if (other is Pickupable && Keyboard.isDown(KeyCode.S)) {
+      // pick up the item
+      other.dead = true;
+      inv.add(other.item);
+    }
   }
 }

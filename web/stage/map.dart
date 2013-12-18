@@ -23,11 +23,13 @@ class GameMap {
     // TODO: only draw tiles in the viewport rectangle
     var context = view.viewcontext;
     // draw each tile in place
-    for (var y = 0; y < data.length; y++) {
-      for (var x = 0; x < data[0].length; x++) {
-        // simple differentiation of colors
-        context.fillStyle = (data[y][x] == 0) ? "white" : "black";
-        context.fillRect(x*ts,y*ts,ts,ts);
+    for (var y = view.y ~/ ts; y <= (view.y + view.height) ~/ ts; y++) {
+      for (var x = view.x ~/ ts; x <= (view.x + view.width) ~/ ts; x++) {
+        if (x >= 0 && x < data[0].length && y >= 0 && y < data.length) {
+          // simple differentiation of colors
+          context.fillStyle = (data[y][x] == 0) ? "white" : "black";
+          context.fillRect(x*ts,y*ts,ts,ts);
+        }
       }
     }
   }
