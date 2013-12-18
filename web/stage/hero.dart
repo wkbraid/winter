@@ -51,6 +51,10 @@ class Hero extends Actor {
     if (Keyboard.isDown(KeyCode.SPACE)) {
       stage.actors.add(new RandEnemy(x,y,stage));
     }
+// summon enemies!
+    if (Keyboard.isDown(KeyCode.Z)) {
+      stage.actors.add(new FlyingEnemy(x,y,stage));
+    }
     
     vx *= 0.95; //horizontal fricton
     vy += 0.7; // gravity
