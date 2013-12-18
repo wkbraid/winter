@@ -9,6 +9,7 @@ part 'actors.dart';
 part 'enemies.dart';
 part 'hero.dart';
 part 'projectiles.dart';
+part 'spells.dart';
 
 
 class Stage {

@@ -33,15 +33,8 @@ class Hero extends Being {
     if (Keyboard.isDown(KeyCode.Q)) { if (height > 1){height -= 1; width -= 1; }}
     
     // projectile commands
-    if (Mouse.down && mp > 5) {
-      mp -= 5;
-      num posx = stage.map.view.width/2;
-      num posy = stage.map.view.height/2;
-      num dist = sqrt(pow(posx-Mouse.x,2)+pow(posy - Mouse.y, 2));
-      stage.actors.add(new Projectile(x,y,
-          vx + (Mouse.x - posx)*20/dist,
-          vy + (Mouse.y - posy)*20/dist,
-        stage));
+    if (Mouse.down && mp > pelletSpell.mana) {
+      mp -= pelletSpell.cast(this);
     }
     
     // summon enemies!
