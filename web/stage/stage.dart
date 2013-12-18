@@ -5,6 +5,7 @@ import '../utils/utils.dart';
 import 'dart:math';
 part 'map.dart';
 part 'actors.dart';
+part 'enemies.dart';
 part 'hero.dart';
 part 'projectiles.dart';
 
