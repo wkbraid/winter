@@ -71,7 +71,7 @@ class FlyingEnemy extends Actor {
   }
   void draw() {
     // get the viewcontext from the map we are on
-    var context = map.view.viewcontext;
+    var context = stage.view.viewcontext;
     context.fillStyle = "lightgreen";
     context.lineWidth = 1;
     context.strokeStyle = "green";
