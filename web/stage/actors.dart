@@ -73,7 +73,7 @@ class FlyingEnemy extends Actor {
     // physics
     vx *= 0.95; //horizontal fricton
     vy += 0.7; // gravity
-    print(dir - vy);
+  
     if (dir > vy)
       vy *= 1.05;
     else if (dir == vy)
