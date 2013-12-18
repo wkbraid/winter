@@ -31,11 +31,19 @@ class Stage {
   void update() {
     // update the hero
     hero.update();
-    // update all other actors on the stage
+    // remove all the dead actors
     actors.removeWhere((act) => act.dead());
     
+    // update the other actors
     for (Actor act in actors) {
         act.update();
+    }
+    
+    // actor-actor collision
+    for (Actor act1 in actors) {
+      for (Actor act2 in actors) {
+        // check for collision
+      }
     }
   }
   
