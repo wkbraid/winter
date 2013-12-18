@@ -51,13 +51,22 @@ class FlyingEnemy extends Actor {
     width = 40;
     height = 15;
   }
+
+  void collide(Actor other) {
+    if (other.type == "projectile")
+      dead = true;
+  }
   
   void update() {
     // decide whether we should randomly jump
+    var dir = vy.toDouble();
     var rand = new Random();
     if (rand.nextDouble() < 0.1)
-      vy -= 3;
-   
+      vy -= 1.7;
+    else if (rand.nextDouble() > 0.9)
+      vy +=0.3;
+    else
+      vy-= 0.7;
     // now decide which way we should push
     if (vx.abs() < 1)
       vx += (rand.nextDouble() - 0.7);
@@ -67,7 +76,13 @@ class FlyingEnemy extends Actor {
     // physics
     vx *= 0.95; //horizontal fricton
     vy += 0.7; // gravity
-    vy *= 0.95; //vertical friction
+    print(dir - vy);
+    if (dir > vy)
+      vy *= 1.05;
+    else if (dir == vy)
+      vy *= 1;
+    else
+      vy *= 0.95; //vertical friction
     move(vx,vy);
   }
   void draw() {
