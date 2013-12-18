@@ -12,7 +12,7 @@ class Hero extends Actor {
   num mpmax = 100;
   
   // Call the default actor constructor
-  Hero(x,y,map,actors) : super(x,y,map,actors) {
+  Hero(x,y,stage) : super(x,y,stage) {
     // set the hero's height
     height = 30;
     width = 30;
@@ -38,13 +38,13 @@ class Hero extends Actor {
     // projectile commands
     if (Mouse.down && mp > 5) {
       mp -= 5;
-      num posx = map.view.width/2;
-      num posy = map.view.height/2;
+      num posx = stage.map.view.width/2;
+      num posy = stage.map.view.height/2;
       num dist = sqrt(pow(posx-Mouse.x,2)+pow(posy - Mouse.y, 2));
-      actors.add(new Projectile(x,y,
+      stage.actors.add(new Projectile(x,y,
           vx + (Mouse.x - posx)*20/dist,
           vy + (Mouse.y - posy)*20/dist,
-        map,actors));
+        stage));
     }
     
     vx *= 0.95; //horizontal fricton
@@ -66,7 +66,7 @@ class Hero extends Actor {
   
   void draw() {
     // get the viewcontext from the map we are on
-    var context = map.view.viewcontext;
+    var context = stage.view.viewcontext;
     context.fillStyle = "red";
     context.lineWidth = 2;
     context.strokeStyle = "darkred";
