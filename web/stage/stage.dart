@@ -3,6 +3,7 @@ library stage;
 import 'dart:html';
 import '../utils/utils.dart';
 import 'dart:math';
+import '../utils/constants.dart';
 part 'map.dart';
 part 'actors.dart';
 part 'enemies.dart';

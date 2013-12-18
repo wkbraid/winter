@@ -1,6 +1,25 @@
 // file: enemies.dart
 part of stage;
 
+class Enemy extends Being {
+  // Basic enemy class, abstracts most functionality other than AI decisions
+  
+  Enemy(x,y,stage) : super(x,y,stage) {
+    type = "enemy"; // set the type
+  }
+  
+  // placeholder functions
+  void decide() { } // Implement decision making for the enemy
+  
+  void update() {
+    decide(); // implements the decision making step
+    vy += g; // gravity
+    vx *= mu; // friction
+    vy *= mu;
+    move(vx,vy); // move the enemy
+  }
+}
+
 class RandEnemy extends Being {
   // Basic enemy with randomized movement,
   // if moving left, more likely to accel in that direction

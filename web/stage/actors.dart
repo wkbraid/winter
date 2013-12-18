@@ -18,6 +18,8 @@ class Actor {
   bool dead = false; // Is the actor dead?
   bool down = false; // Is there something below the actor, should be moved eventually
 
+  String color,bordercolor; // Simple description needed to draw the actor
+  
   num x,y,width,height; // The dimensions of the actor, (x,y) is at the center of the Actor
   num vx = 0,vy = 0; // The horizontal and vertical components of the actor's velocity
   
@@ -27,6 +29,8 @@ class Actor {
   void update() { } // update the actor
   void draw() { } // draw the actor
   void collide(Actor other) { } // The actor collided with other
+  
+  // default draw function
   
   // default functions
   void move(num dx, num dy) { // move the actor by dx,dy
