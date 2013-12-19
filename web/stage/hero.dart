@@ -42,15 +42,20 @@ class Hero extends Being {
       if (Keyboard.isDown(key))
         mp -= spellkeys[key].cast(this);
     }
+    
+    // drop the top item in the inventory
+    if (Keyboard.isDown(KeyCode.Q) && inv.isNotEmpty) drop(inv.first);
+    
     // Check for mouse
     if (Mouse.down)
       mp -= mousespell.cast(this);
     
-    vx *= 0.95; //horizontal fricton
-    vy += 0.7; // gravity
-    vy *= 0.95; //vertical friction
-    
-    move(vx,vy);
+    super.update();
+  }
+  
+  void drop(Item item) {
+    inv.remove(item);
+    stage.actors.add(new Pickupable(x,y,item,stage));
   }
   
   num collideY(num dy) {

@@ -11,7 +11,7 @@ class Game {
   Gui gui;
   
   Game(mdata,canvas) {
-    view = new Viewport(canvas, height: 400);
+    view = new Viewport(canvas, width: 600);
     stage = new Stage(mdata, view);
     gui = new Gui(stage,view);
     
