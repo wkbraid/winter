@@ -114,8 +114,7 @@ class FollowerEnemy1 extends Enemy {
 
 class FollowerEnemy2 extends Enemy{
   Actor target;
-  num movePattern;
-  num memory;
+  num movePattern,oldX,oldY;
   //default constructor
   FollowerEnemy2(x,y,stage,Actor) : super(x,y,stage) {
     width = 25;
@@ -124,7 +123,8 @@ class FollowerEnemy2 extends Enemy{
     super.color = 'orange';
     super.bordercolor = 'blue';
     movePattern = 1;
-    memory = x;
+    oldX = x;
+    oldY = y;
   }
   
   void update(){
@@ -133,7 +133,7 @@ class FollowerEnemy2 extends Enemy{
     // 2 is a decision making period after a jump from pattern 1
     // leads to pattern 3 or 5
     // 3 means it's backing up in an attemp to gain altitude
-    // 4 is a quick jump towards the playing once it thinks it can.
+    // 4 was incorporated into 3, might add again later.
     // 5 is an attempt to lower its y position.
     
     switch(movePattern){
@@ -146,24 +146,27 @@ class FollowerEnemy2 extends Enemy{
           if(down){
             vy -= 18;
             movePattern = 2;
-            memory = x;
+            oldX = x;
           }
         }
         break;
         
       case 2:
-        print(2);
         if (target.x > this.x)
           vx += 0.1;
         else
           vx -= 0.1;
         if(down)
-          if(memory - x < 5){
-            if(target.y > y)
+          if((oldX - x).abs() < 5){
+            if(target.y < y){
               movePattern = 3;
+              oldX = x;
+              oldY = y;
+            }
             else{
               movePattern = 5;
-              memory = target.y;
+              oldX = x;
+              oldY = target.y;
             }
           }
           else
@@ -171,40 +174,35 @@ class FollowerEnemy2 extends Enemy{
         break;
         
       case 3:
-        print(3);
         if (target.x > this.x)
-          vx -= 0.1;
+          vx -= 0.2;
         else
-          vx += 0.1;
+          vx += 0.2;
         if(down){
-          if(memory != y)
-            movePattern = 4;
-          else
+          if((oldX - x).abs() > 200 || (oldY - y).abs() > 20 || vx == 0){
+            if(target.x > this.x){
+              vx += 12;
+              vy -= 18;
+            }
+            else{
+              vx -= 12;
+              vy -= 18;
+            }
+          movePattern = 1;
+        }
+          else{
             vy -= 18;
+          }
         }
         break;
-        
-      case 4:
-        print(4);
-        if(target.x > this.x){
-          vx += 3;
-          vy -= 18;
-        }
-        else{
-          vx -= 3;
-          vy -= 18;
-        }
-       movePattern = 1;
-       break;
        
       case 5:
-        print(5);
         if (target.x > this.x)
           vx -= 0.1;
         else
           vx += 0.1;
         if(down){
-          if(memory <= y || vx.abs() < 0.2)
+          if(oldY <= y || vx.abs() < 0.2)
             movePattern = 1;
         } 
         break;
