@@ -114,24 +114,101 @@ class FollowerEnemy1 extends Enemy {
 
 class FollowerEnemy2 extends Enemy{
   Actor target;
-  num patience;
+  num movePattern;
+  num memory;
   //default constructor
   FollowerEnemy2(x,y,stage,Actor) : super(x,y,stage) {
     width = 25;
     height = 30;
+    target = Actor;
     super.color = 'orange';
     super.bordercolor = 'blue';
-    patience = 1;
+    movePattern = 1;
+    memory = x;
   }
   
   void update(){
-    switch(patience){
-      case 1: 
-        x += 10;
+    //This switch statement determines what action it takes
+    // 1 is the default follow
+    // 2 is a decision making period after a jump from pattern 1
+    // leads to pattern 3 or 5
+    // 3 means it's backing up in an attemp to gain altitude
+    // 4 is a quick jump towards the playing once it thinks it can.
+    // 5 is an attempt to lower its y position.
+    
+    switch(movePattern){
+      case 1: //basic following
+        if (target.x > x)
+          vx += 0.1;
+        else
+          vx -= 0.1;
+        if (vx.abs() < 0.5){
+          if(down){
+            vy -= 18;
+            movePattern = 2;
+            memory = x;
+          }
+        }
         break;
+        
       case 2:
-        y += 18;
+        print(2);
+        if (target.x > this.x)
+          vx += 0.1;
+        else
+          vx -= 0.1;
+        if(down)
+          if(memory - x < 5){
+            if(target.y > y)
+              movePattern = 3;
+            else{
+              movePattern = 5;
+              memory = target.y;
+            }
+          }
+          else
+            movePattern = 1;
         break;
+        
+      case 3:
+        print(3);
+        if (target.x > this.x)
+          vx -= 0.1;
+        else
+          vx += 0.1;
+        if(down){
+          if(memory != y)
+            movePattern = 4;
+          else
+            vy -= 18;
+        }
+        break;
+        
+      case 4:
+        print(4);
+        if(target.x > this.x){
+          vx += 3;
+          vy -= 18;
+        }
+        else{
+          vx -= 3;
+          vy -= 18;
+        }
+       movePattern = 1;
+       break;
+       
+      case 5:
+        print(5);
+        if (target.x > this.x)
+          vx -= 0.1;
+        else
+          vx += 0.1;
+        if(down){
+          if(memory <= y || vx.abs() < 0.2)
+            movePattern = 1;
+        } 
+        break;
+        
       default:
         break;
       }
