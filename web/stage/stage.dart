@@ -29,7 +29,7 @@ class Stage {
     actors.add(enemy);
 
 
-    actors.add(new FollowerEnemy1(100,450,this,enemy));
+    actors.add(new FollowerEnemy2(100,450,this,hero));
     actors.add(new RandEnemy(100,450,this));
     actors.add(new FlyingEnemy(100,300,this));
     actors.add(new Pickupable(120,400,new HealthPotion(),this));
