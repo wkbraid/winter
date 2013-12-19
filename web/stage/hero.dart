@@ -5,9 +5,9 @@ class Hero extends Being {
   // Our very own genderless hero!
   
   // Spell keybindings for the hero
+  Spell mousespell;
   Map<int,Spell> spellkeys;
   
-  Spell mousespell;
   List<Item> inv = []; // The inventory of the hero
   
   

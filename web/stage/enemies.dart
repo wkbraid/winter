@@ -10,7 +10,7 @@ class Enemy extends Being {
   }
   
   void update() {
-    dead = hp <= 0; // check if the enemy is dead
+    if (hp <= 0) dead = true; // check if the enemy is dead
     super.update();
   }
   
@@ -99,15 +99,14 @@ class FollowerEnemy1 extends Enemy {
     var rand = new Random();
     // if target's alive, follow it, otherwise die.
     if(target.dead)
-      hp = 0;
-    else{
-      if (target.x > this.x)
-        vx += 0.1;
-      else
-        vx -= 0.1;
-      if (vx.abs() < 0.5 && down) // jump if moving slowly (bad collision detection)
-        vy -= 18;
-    }
+      dead = true;
+    
+    if (target.x > this.x)
+      vx += 0.1;
+    else
+      vx -= 0.1;
+    if (vx.abs() < 0.5 && down) // jump if moving slowly (bad collision detection)
+      vy -= 18;
     
     super.update();
   }
