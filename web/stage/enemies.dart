@@ -101,13 +101,15 @@ class FollowerEnemy extends Enemy {
   void update() {
     var rand = new Random();
     // decide which direction to move in
-    if (target.x > this.x)
-      vx += 0.1;
+    if(target.dead)
+      dead = true;
     else
-      vx -= 0.1;
-    
-    if (vx.abs() < 0.5 && down)
-      vy -= 18;
+      if (target.x > this.x)
+        vx += 0.1;
+      else
+        vx -= 0.1;
+      if (vx.abs() < 0.5 && down)
+        vy -= 18;
     
     super.update();
   }
