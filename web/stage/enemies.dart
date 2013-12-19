@@ -83,34 +83,59 @@ class FlyingEnemy extends Enemy {
   }
 }
 
-class FollowerEnemy extends Enemy {
+class FollowerEnemy1 extends Enemy {
   // This is a following testing AI creature
-  // Default FollowerEnemy Constructors
-  
   // The actor the enemy is trying to follow
   Actor target;
-  // A number that determines what actions it will try navigate.
-  num patience;
-  
-  FollowerEnemy(x,y,stage,Actor) : super(x,y,stage) {
+  //default constructor
+  FollowerEnemy1(x,y,stage,Actor) : super(x,y,stage) {
+    super.color = "blue";
+    super.bordercolor = 'blue';
     width = 30;
     height = 30;
-    target = Actor;
-    patience = 10;
-  }
+    target = Actor; // sets inputted actor as target
+  } 
   void update() {
     var rand = new Random();
-    // decide which direction to move in
+    // if target's alive, follow it, otherwise die.
     if(target.dead)
-      dead = true;
-    else
+      hp = 0;
+    else{
       if (target.x > this.x)
         vx += 0.1;
       else
         vx -= 0.1;
-      if (vx.abs() < 0.5 && down)
+      if (vx.abs() < 0.5 && down) // jump if moving slowly (bad collision detection)
         vy -= 18;
+    }
     
+    super.update();
+  }
+}
+
+class FollowerEnemy2 extends Enemy{
+  Actor target;
+  num patience;
+  //default constructor
+  FollowerEnemy2(x,y,stage,Actor) : super(x,y,stage) {
+    width = 25;
+    height = 30;
+    super.color = 'orange';
+    super.bordercolor = 'blue';
+    patience = 1;
+  }
+  
+  void update(){
+    switch(patience){
+      case 1: 
+        x += 10;
+        break;
+      case 2:
+        y += 18;
+        break;
+      default:
+        break;
+      }
     super.update();
   }
   
