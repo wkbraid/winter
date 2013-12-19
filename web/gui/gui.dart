@@ -16,26 +16,37 @@ class Gui {
   
   draw() {
     // get the gui context
-    var context = view.guicontext;
+    var ctx = view.guicontext;
     // pretty box
-    context..fillStyle = "lightgreen"
-           ..strokeStyle = "darkgreen"
-           ..lineWidth = 2
-           ..fillRect(10, 10, 60, 60)
-           ..strokeRect(10, 10, 60, 60);
+    ctx..fillStyle = "lightgreen"
+       ..strokeStyle = "darkgreen"
+       ..lineWidth = 2
+       ..fillRect(10, 10, 60, 60)
+       ..strokeRect(10, 10, 60, 60);
     // health bar
-    context..fillStyle = "red"
-           ..strokeStyle = "darkred"
-           ..fillRect(75,13, 160*(stage.hero.hp/stage.hero.hpmax), 15)
-           ..strokeRect(75, 13, 160, 15);
+    ctx..fillStyle = "red"
+       ..strokeStyle = "darkred"
+       ..fillRect(75,13, 160*(stage.hero.hp/stage.hero.hpmax), 15)
+       ..strokeRect(75, 13, 160, 15);
     
     // mana bar
-    context..fillStyle = "blue"
-           ..strokeStyle = "darkblue"
-           ..fillRect(75, 35, 160*(stage.hero.mp/stage.hero.mpmax), 15)
-           ..strokeRect(75, 35, 160, 16);
+    ctx..fillStyle = "blue"
+       ..strokeStyle = "darkblue"
+       ..fillRect(75, 35, 160*(stage.hero.mp/stage.hero.mpmax), 15)
+       ..strokeRect(75, 35, 160, 16);
            
+    // the bottom of the screen belongs to the gui
+    ctx..fillStyle = "thistle"
+       ..strokeStyle = "violet"
+       ..fillRect(600,0,50,400)
+       ..strokeRect(600,0,50,400);
     
-           
+    // draw the hero's items in the gui
+    ctx..fillStyle = "violet"
+        ..strokeStyle = "purple";
+    for (int i = 0; i < stage.hero.inv.length; i++) {
+      ctx..fillRect(610,10+40*i,30,30)
+         ..strokeRect(610,10+40*i,30,30);
+    }
   }
 }

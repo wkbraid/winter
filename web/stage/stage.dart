@@ -28,8 +28,14 @@ class Stage {
     Actor enemy = new RandEnemy(100,450,this);
     actors.add(enemy);
 
+<<<<<<< HEAD
     actors.add(new FollowerEnemy(100,450,this,enemy));
+=======
+    actors.add(new RandEnemy(100,450,this));
+    actors.add(new FlyingEnemy(100,300,this));
+>>>>>>> 44456551088871b0519cfe4b20e6742a8d78cd31
     actors.add(new Pickupable(120,400,new Item("coin"),this));
+    actors.add(new Pickupable(200,400,new Item("coin"),this));
 
     this.view.follow(hero);
   }

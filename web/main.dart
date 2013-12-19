@@ -11,7 +11,7 @@ class Game {
   Gui gui;
   
   Game(mdata,canvas) {
-    view = new Viewport(canvas);
+    view = new Viewport(canvas, width: 600);
     stage = new Stage(mdata, view);
     gui = new Gui(stage,view);
     
@@ -31,7 +31,7 @@ class Game {
     view.update(); // update the viewport
     gui.update(); // update the gui
     // clear the viewport
-    view.guicontext.clearRect(0, 0, view.width, view.height);
+    view.guicontext.clearRect(0, 0, view.fullwidth, view.fullheight);
     // draw the stage
     stage.draw();
     gui.draw();
