@@ -12,6 +12,7 @@ part 'projectiles.dart';
 part 'spells.dart';
 part 'inanimates.dart';
 part 'items.dart';
+part 'awareness_testing_hero.dart';
 
 
 class Stage {
@@ -24,7 +25,7 @@ class Stage {
   Stage(mdata,view) {
     this.view = view;
     map = new GameMap(mdata,this.view);
-    hero = new Hero(50,450,this);
+    hero = new ATHero(50,450,this);
     Actor enemy = new RandEnemy(100,450,this);
     actors.add(enemy);
 
