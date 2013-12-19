@@ -14,6 +14,9 @@ class Viewport {
   // The current visible rectangle
   num x,y,width,height;
   
+  // the hole screen size
+  num fullwidth, fullheight;
+  
   // Is the context currently located at the origin (ie where the gui will be drawn)
   bool origin = true;
   
@@ -21,6 +24,8 @@ class Viewport {
     // if no dimensions are provided, take the entire canvas by default
     if (width == null) width = canvas.width;
     if (height == null) height = canvas.height;
+    fullwidth = canvas.width;
+    fullheight = canvas.height;
   }
   
   // follow an actor

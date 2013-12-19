@@ -35,7 +35,6 @@ class Gui {
            ..fillRect(75, 35, 160*(stage.hero.mp/stage.hero.mpmax), 15)
            ..strokeRect(75, 35, 160, 16);
            
-    
-           
+    // the bottom of the screen belongs to the gui
   }
 }

@@ -69,18 +69,26 @@ void growdown(MouseEvent e) {
 
 // map shrinking
 void shrinkleft(MouseEvent e) {
-  for (var row in map.data)
-    row.removeAt(0);
+  if (map.data[0].length > 1) {
+    for (var row in map.data)
+      row.removeAt(0);
+  }
 }
 void shrinkright(MouseEvent e) {
-  for (var row in map.data)
-    row.removeLast();
+  if (map.data[0].length > 1) {
+    for (var row in map.data)
+      row.removeLast();
+  }
 }
 void shrinkup(MouseEvent e) {
-  map.data.removeAt(0);
+  if (map.data.length > 1) {
+    map.data.removeAt(0);
+  }
 }
 void shrinkdown(MouseEvent e) {
-  map.data.removeLast();
+  if (map.data.length > 1) {
+    map.data.removeLast();
+  }
 }
 
 void loop(num time) {
