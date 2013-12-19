@@ -31,6 +31,8 @@ class Viewport {
   // follow an actor
   void follow(tofollow) {
     following = tofollow;
+    x = following.x - width/2;
+    y = following.y - height/2;
   }
   
   // get the context for drawing the game map
@@ -66,7 +68,7 @@ class Viewport {
     origin = true;
     // center the viewport on following
     // could add smooth movement towards following probably
-    x = following.x - width/2;
-    y = following.y - height/2;
+    x += (following.x - width/2 - x)/1.5;
+    y += (following.y - height/2 - y)/1.5;
   }
 }

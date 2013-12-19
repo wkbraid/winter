@@ -80,6 +80,6 @@ class PortalSpell extends Spell {
     mana = 70; cooldown = 5000;
   }
   void effects() {
-    caster.stage.actors.add(new Portal(caster.x + 200, caster.y, caster.x,caster.y,caster.stage));
+    caster.stage.actors.add(new Portal(Mouse.x + caster.stage.view.x, Mouse.y + caster.stage.view.y, caster.x,caster.y,caster.stage));
   }
 }
