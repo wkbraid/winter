@@ -13,6 +13,7 @@ part 'spells.dart';
 part 'inanimates.dart';
 part 'items.dart';
 part 'awareness_testing_hero.dart';
+part 'follower_enemy_types.dart';
 
 
 class Stage {
