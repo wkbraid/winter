@@ -17,7 +17,8 @@ class Hero extends Being {
     spellkeys = {
        KeyCode.Z : new PelletSpell(this),
        KeyCode.X : new SpawnSpell(this),
-       KeyCode.C : new HealSpell(this)
+       KeyCode.C : new HealSpell(this),
+       KeyCode.V : new PortalSpell(this)
     };
     mousespell = new PelletSpell(this);
     width = 30; // set the hero's dimension

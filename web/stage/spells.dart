@@ -73,3 +73,13 @@ class SpawnSpell extends Spell {
     caster.stage.actors.add(new RandEnemy(caster.x,caster.y,caster.stage));
   }
 }
+
+class PortalSpell extends Spell {
+  // creates a portal in front of the caster, leading back to the caster's position
+  PortalSpell(caster) : super(caster) {
+    mana = 70; cooldown = 5000;
+  }
+  void effects() {
+    caster.stage.actors.add(new Portal(caster.x + 200, caster.y, caster.x,caster.y,caster.stage));
+  }
+}

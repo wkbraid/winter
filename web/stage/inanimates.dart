@@ -11,6 +11,26 @@ class Inanimate extends Actor {
   }
 }
 
+//==========================================
+// Common Inanimates
+//==========================================
+class Portal extends Inanimate {
+  num targx, targy; // the end position of going through the portal
+  
+  Portal(x,y,targx,targy,stage) : super(x,y,stage) {
+    height = 30;
+    width = 30;
+    this.targx = targx;
+    this.targy = targy;
+  }
+  void collide(Actor other) {
+    // teleport anything which touches the portal
+    other.x = targx;
+    other.y = targy;
+  }
+}
+
+
 class Pickupable extends Inanimate {
   Item item;
   
