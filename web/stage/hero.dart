@@ -46,6 +46,9 @@ class Hero extends Being {
     // drop the top item in the inventory
     if (Keyboard.isDown(KeyCode.Q) && inv.isNotEmpty) drop(inv.first);
     
+    // use the top item in the inventory
+    if (Keyboard.isDown(KeyCode.U) && inv.isNotEmpty) inv.first.use(this);
+    
     // Check for mouse
     if (Mouse.down)
       mp -= mousespell.cast(this);

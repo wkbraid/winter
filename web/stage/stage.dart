@@ -28,8 +28,8 @@ class Stage {
 
     actors.add(new RandEnemy(100,450,this));
     actors.add(new FlyingEnemy(100,300,this));
-    actors.add(new Pickupable(120,400,new Item("coin"),this));
-    actors.add(new Pickupable(200,400,new Item("coin"),this));
+    actors.add(new Pickupable(120,400,new HealthPotion(),this));
+    actors.add(new Pickupable(200,400,new HealthPotion(),this));
 
     this.view.follow(hero);
   }
