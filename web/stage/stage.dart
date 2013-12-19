@@ -26,7 +26,7 @@ class Stage {
     map = new GameMap(mdata,this.view);
     hero = new Hero(50,450,this);
 
-    actors.add(new RandEnemy(100,450,this));
+    actors.add(new FollowerEnemy(100,450,this,hero));
     actors.add(new Pickupable(120,400,new Item("coin"),this));
 
     this.view.follow(hero);

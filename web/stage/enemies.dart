@@ -82,3 +82,34 @@ class FlyingEnemy extends Enemy {
     super.update(); // physics and move
   }
 }
+
+class FollowerEnemy extends Enemy {
+  // This is a following testing AI creature
+  // Default FollowerEnemy Constructors
+  
+  // The actor the enemy is trying to follow
+  Actor target;
+  // A number that determines what actions it will try navigate.
+  num patience;
+  
+  FollowerEnemy(x,y,stage,Actor) : super(x,y,stage) {
+    width = 30;
+    height = 30;
+    target = Actor;
+    patience = 10;
+  }
+  void update() {
+    var rand = new Random();
+    // decide which direction to move in
+    if (target.x > this.x)
+      vx += 0.1;
+    else
+      vx -= 0.1;
+    
+    if (vx.abs() < 0.5 && down)
+      vy -= 18;
+    
+    super.update();
+  }
+  
+}
