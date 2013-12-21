@@ -83,3 +83,23 @@ class PortalSpell extends Spell {
     caster.stage.actors.add(new Portal(Mouse.x + caster.stage.view.x, Mouse.y + caster.stage.view.y, caster.x,caster.y,caster.stage));
   }
 }
+
+class MapSpell extends Spell {
+  // for testing purposes only, changes the map on which the hero is currently on
+  MapSpell(caster) : super(caster) {
+    mana = 90; cooldown = 4000;
+  }
+  void effects() {
+    var mdata = [[1,1,1,1,1,1,1,1],
+                 [1,0,0,0,0,0,0,1],
+                 [1,0,0,0,0,0,0,1],
+                 [1,0,0,0,0,0,0,1],
+                 [1,0,0,0,0,0,0,1],
+                 [1,0,0,0,0,0,0,1],
+                 [1,1,1,1,1,1,1,1]];
+    
+    caster.stage.loadMap(mdata);
+    caster.x = 50;
+    caster.y = 50;
+  }
+}

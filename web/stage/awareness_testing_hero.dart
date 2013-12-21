@@ -3,20 +3,14 @@
 part of stage;
 
 class ATHero extends Hero{
-  // rounded x and y positions scaled to tile sizes.
-  num rx,ry;
   
   
   //default constructor
   ATHero(x,y,stage) : super(x,y,stage){
-    rx = (x ~/ 32).abs();
-    ry = (y ~/ 32).abs();
     color = 'purple';
   }
   
   void update(){
-    rx = (x ~/ 32).abs();
-    ry = (y ~/ 32).abs();
     if(atEdge())
       color = "yellow";
     else
@@ -30,13 +24,13 @@ class ATHero extends Hero{
   
   bool atEdge(){
     if(down){
-      if(stage.map.data[ry+1][rx] == 0 || stage.map.data[ry+1][rx-1] == 0  || stage.map.data[ry+1][rx+1] == 0 )
+      if(stage.map.get(x,y+32) == 0 || stage.map.get(x,y+32) == 0  || stage.map.data[ry+1][rx+1] == 0 )
         return true;
     }
     return false;
   }
   bool againstWall(){
-    if(stage.map.data[ry][rx-1] == 1 || stage.map.data[ry][rx+1] == 1)
+    if(stage.map.get(y,x-32) == 1 || stage.map.get(x+32, y) == 1)
       return true;
     return false;
   }

@@ -40,6 +40,11 @@ class Stage {
     this.view.follow(hero);
   }
   
+  void loadMap(List<List> mdata) {
+    // load a new map from the given mapdata, later should probably load by name/id
+    map = new GameMap(mdata, this.view);
+    actors.clear();
+  }
   
   void update() {
     // update the hero
