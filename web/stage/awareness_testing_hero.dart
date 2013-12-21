@@ -24,7 +24,7 @@ class ATHero extends Hero{
   
   bool atEdge(){
     if(down){
-      if(stage.map.get(x,y+32) == 0 || stage.map.get(x,y+32) == 0  || stage.map.data[ry+1][rx+1] == 0 )
+      if(stage.map.get(x-32,y+32) == 0 || stage.map.get(x,y+32) == 0  || stage.map.get(x+32,y+32) == 0 )
         return true;
     }
     return false;
