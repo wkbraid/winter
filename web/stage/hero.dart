@@ -10,6 +10,8 @@ class Hero extends Being {
   
   List<Item> inv = []; // The inventory of the hero
   
+  num speed = 0.2; // The speed of the hero
+  num jump = 20; //The jump height of the hero
   
   // Call the default actor constructor
   Hero(x,y,stage) : super(x,y,stage) {
@@ -27,6 +29,7 @@ class Hero extends Being {
     color = "red"; // drawing colors
     bordercolor = "darkred";
     mp = mpmax;
+    
   }
   
   void update() {
@@ -35,9 +38,9 @@ class Hero extends Being {
     if (mp < mpmax) mp+= 0.5;
     
     // work out acceleration of the hero
-    if (Keyboard.isDown(KeyCode.A)) vx -= 0.2;
-    if (Keyboard.isDown(KeyCode.D)) vx += 0.2;
-    if (Keyboard.isDown(KeyCode.W) && down)  vy -= 20; //only jump if on a surface
+    if (Keyboard.isDown(KeyCode.A)) vx -= speed;
+    if (Keyboard.isDown(KeyCode.D)) vx += speed;
+    if (Keyboard.isDown(KeyCode.W) && down)  vy -= jump; //only jump if on a surface
 
     // Check for keybindings
     for (int key in spellkeys.keys) {

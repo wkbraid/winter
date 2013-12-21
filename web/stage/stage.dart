@@ -36,6 +36,7 @@ class Stage {
     actors.add(new FlyingEnemy(100,300,this));
     actors.add(new Pickupable(120,400,new HealthPotion(),this));
     actors.add(new Pickupable(200,400,new HealthPotion(),this));
+    actors.add(new Pickupable(500,400,new ManaPotion(),this));
 
 
     this.view.follow(hero);
