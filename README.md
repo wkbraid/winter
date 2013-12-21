@@ -8,3 +8,4 @@ Progress and to-do lists can be found at: https://github.com/knarr/winter/issues
 * knarr (wayfaringknarr@gmail.com)
 * Doopliss (mario_giannazzo@brown.edu)
 * ekatkrzzz (kath.kryuchkova@gmail.com)
+* ariellebryn (arielle.bryn@gmail.com)
