@@ -3,6 +3,8 @@ part of stage;
 
 class Hero extends Being {
   // Our very own genderless hero!
+
+  String mapid = "miles1"; // the map we are currently on
   
   // Spell keybindings for the hero
   Spell mousespell;

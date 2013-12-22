@@ -5,8 +5,6 @@ class Being extends Actor {
   // High level Actor subclass of beings containing
   // basic stats such as hp
   
-  String mapid = "miles1"; // the map we are currently on
-  
   num hpmax = 100;
   num hp = 100;
   num mp = 0;
