@@ -92,9 +92,9 @@ class MapSpell extends Spell {
     mana = 90; cooldown = 4000;
   }
   void effects() {
-    caster.mapid = "test";
-    caster.stage.loadMap(caster.mapid);
-    caster.x = 50;
-    caster.y = 50;
+      caster.mapid = "test";
+      caster.stage.loadMap(caster.mapid);
+      caster.x = 50;
+      caster.y = 50;
   }
 }
