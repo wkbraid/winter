@@ -5,7 +5,7 @@ class Hero extends Being {
   // Our very own genderless hero!
 
   // Spell keybindings for the hero
-  Map<int,String> Keybindings = {};
+  Map<int,String> Keybindings = {}; // keybindings should eventually be taken care of by the gui
   String mousespell;
   
   List<Item> inv = []; // The inventory of the hero
