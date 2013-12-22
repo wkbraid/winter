@@ -32,6 +32,7 @@ class Spell {
 //===========================================
 class PelletSpell extends Spell {
   // simple missile spell
+
   PelletSpell(caster) : super(caster) {
     mana = 10;
     cooldown = 200;
@@ -58,7 +59,7 @@ class HealSpell extends Spell {
   }
   
   void effects() {
-    caster.hp += 1;
+    caster.hp += 0.5;
   }
   
   bool possible() => caster.hp < caster.hpmax; // only heal if we have less than full hp
@@ -92,9 +93,9 @@ class MapSpell extends Spell {
     mana = 90; cooldown = 4000;
   }
   void effects() {
-      caster.mapid = "test";
+      caster.mapid = "miles1";
       caster.stage.loadMap(caster.mapid);
-      caster.x = 50;
-      caster.y = 50;
+      caster.x = 550;
+      caster.y = 200;
   }
 }

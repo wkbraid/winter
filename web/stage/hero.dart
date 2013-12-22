@@ -5,8 +5,8 @@ class Hero extends Being {
   // Our very own genderless hero!
 
   // Spell keybindings for the hero
-  Spell mousespell;
-  Map<int,Spell> spellkeys;
+  Map<int,String> Keybindings = {};
+  String mousespell;
   
   List<Item> inv = []; // The inventory of the hero
   
@@ -16,14 +16,21 @@ class Hero extends Being {
   // Call the default actor constructor
   Hero(x,y,stage) : super(x,y,stage) {
     // Set up the hero's spells
-    spellkeys = {
-       KeyCode.Z : new PelletSpell(this),
-       KeyCode.X : new SpawnSpell(this),
-       KeyCode.C : new HealSpell(this),
-       KeyCode.V : new PortalSpell(this),
-       KeyCode.T : new MapSpell(this),
+    spells = {
+       "pellet" : new PelletSpell(this),
+       "spawn"  : new SpawnSpell(this),
+       "heal"   : new HealSpell(this),
+       "portal" : new PortalSpell(this),
+       "map"    : new MapSpell(this)
     };
-    mousespell = new PelletSpell(this);
+    Keybindings = {
+      KeyCode.Z : "pellet",
+      KeyCode.X : "spawn",
+      KeyCode.C : "heal",
+      KeyCode.V : "portal",
+      KeyCode.T : "map"
+    };
+    mousespell = "pellet";
     width = 30; // set the hero's dimension
     height = 30;
     color = "red"; // drawing colors
@@ -43,9 +50,9 @@ class Hero extends Being {
     if (Keyboard.isDown(KeyCode.W) && down)  vy -= jump; //only jump if on a surface
 
     // Check for keybindings
-    for (int key in spellkeys.keys) {
+    for (int key in Keybindings.keys) {
       if (Keyboard.isDown(key))
-        mp -= spellkeys[key].cast(this);
+        mp -= spells[Keybindings[key]].cast(this);
     }
     
     // drop the top item in the inventory
@@ -56,7 +63,7 @@ class Hero extends Being {
     
     // Check for mouse
     if (Mouse.down)
-      mp -= mousespell.cast(this);
+      mp -= spells[mousespell].cast(this);
     
     super.update();
   }

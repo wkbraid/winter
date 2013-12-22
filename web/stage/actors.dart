@@ -7,6 +7,8 @@ class Being extends Actor {
   
   String mapid = "miles1"; // the map we are currently on
   
+  Map<String,Spell> spells = {};
+  
   num hpmax = 100;
   num hp = 100;
   num mp = 0;
@@ -15,7 +17,7 @@ class Being extends Actor {
   Being(x,y,stage) : super(x,y,stage);
 }
 
-class Actor {
+class Actor extends Point {
   // Base class for all map dwellers
 
   Stage stage; // The stage the actor is on
