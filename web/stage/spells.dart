@@ -9,21 +9,20 @@ class Spell {
   Being caster; // the caster of the spell
   
   Spell(this.caster) {
-    lastcast = new DateTime.utc(2013);
+    lastcast = new DateTime.utc(2013); // a long time ago
   }
   
   // placeholder functions
   void effects() { }
   bool possible() => true; // no restrictions by default
   
-  num cast(Being caster) { // cast the spell
+  void cast() { // cast the spell
     if (-lastcast.difference(new DateTime.now()).inMilliseconds > cooldown
         && caster.mp > mana && possible()) {
       lastcast = new DateTime.now();
       effects(); // cast the spell effects
-      return mana;
+      caster.mp -= mana;
     }
-    return 0; // otherwise the spell didn't cast
   }
 }
 
@@ -46,7 +45,7 @@ class PelletSpell extends Spell {
     caster.stage.addActor(new Projectile(caster.x,caster.y,
         caster.vx + (Mouse.x - posx)*20/dist,
         caster.vy + (Mouse.y - posy)*20/dist,
-        10,
+        10, caster,
         caster.stage));
   }
 }

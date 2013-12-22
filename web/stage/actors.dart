@@ -15,6 +15,11 @@ class Being extends Actor {
   num mpmax = 100;
   
   Being(x,y,stage) : super(x,y,stage);
+  
+  void collide(Actor other) {
+    if (other is Projectile && other.caster != this)
+      hp -= other.damage; // get hit by projectiles
+  }
 }
 
 class Actor extends Point {

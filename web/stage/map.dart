@@ -33,8 +33,8 @@ class GameMap {
     actors.removeWhere((act) => act.dead);
     
     // update the other actors
-    for (Actor act in actors) {
-        act.update();
+    for (int i = 0; i < actors.length; i++) {
+        actors[i].update();
     }
     
     // actor-actor collision

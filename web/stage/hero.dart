@@ -52,7 +52,7 @@ class Hero extends Being {
     // Check for keybindings
     for (int key in Keybindings.keys) {
       if (Keyboard.isDown(key))
-        mp -= spells[Keybindings[key]].cast(this);
+        spells[Keybindings[key]].cast();
     }
     
     // drop the top item in the inventory
@@ -63,7 +63,7 @@ class Hero extends Being {
     
     // Check for mouse
     if (Mouse.down)
-      mp -= spells[mousespell].cast(this);
+      spells[mousespell].cast();
     
     super.update();
   }
@@ -84,6 +84,7 @@ class Hero extends Being {
   }
   
   void collide(Actor other) {
+    super.collide(other);
     if (other is Enemy)
       hp -= 1;
     else if (other is Pickupable && Keyboard.isDown(KeyCode.S)) {

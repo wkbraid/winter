@@ -13,11 +13,7 @@ class Enemy extends Being {
     if (hp <= 0) dead = true; // check if the enemy is dead
     super.update();
   }
-  
-  void collide(Actor other) {
-    if (other is Projectile)
-      hp -= other.damage;
-  }
+
   void draw() {
     var ctx = stage.view.viewcontext;
     ctx.fillStyle = "red";
@@ -52,6 +48,23 @@ class RandEnemy extends Enemy {
       vx += vx/14;
     
     super.update(); // physics and move the enemy
+  }
+}
+
+class ShootyEnemy extends RandEnemy {
+  // Like randomenemy, but shoots at the mouse position
+  ShootyEnemy(x,y,stage) : super(x,y,stage) {
+    spells = {
+      "pellet" : new PelletSpell(this)
+    };
+    mp = mpmax;
+  }
+  void update() {
+    super.update();
+    spells["pellet"].cast(); // just blindly cast the pellet
+    if (mp < mpmax) {
+      mp++;
+    }
   }
 }
 

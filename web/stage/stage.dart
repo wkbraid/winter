@@ -104,7 +104,7 @@ class Stage {
                [1,1,1,1,1,1,1,1,1,1,1,1]];
       map = new GameMap(mdata, this.view);
       map.actors.add(new Pickupable(110,100,new ManaPotion(),this));
-      map.actors.add(new RandEnemy(200,200,this));
+      map.actors.add(new ShootyEnemy(200,200,this));
     }
   }
   
