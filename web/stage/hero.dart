@@ -21,14 +21,16 @@ class Hero extends Being {
        "spawn"  : new SpawnSpell(this),
        "heal"   : new HealSpell(this),
        "portal" : new PortalSpell(this),
-       "map"    : new MapSpell(this)
+       "map"    : new MapSpell(this),
+       "poison" : new SelfPoisonSpell(this)
     };
     Keybindings = {
       KeyCode.Z : "pellet",
       KeyCode.X : "spawn",
       KeyCode.C : "heal",
       KeyCode.V : "portal",
-      KeyCode.T : "map"
+      KeyCode.T : "map",
+      KeyCode.P : "poison"
     };
     mousespell = "pellet";
     width = 30; // set the hero's dimension

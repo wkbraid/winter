@@ -16,13 +16,39 @@ class Spell {
   void effects() { }
   bool possible() => true; // no restrictions by default
   
-  void cast() { // cast the spell
+  bool cast() { // cast the spell
     if (-lastcast.difference(new DateTime.now()).inMilliseconds > cooldown
         && caster.mp > mana && possible()) {
       lastcast = new DateTime.now();
       effects(); // cast the spell effects
       caster.mp -= mana;
+      return true; // the cast succedded 
     }
+    return false; // nothing happened
+  }
+}
+
+class Buff {
+  // Base buff class, long term spell effect on a single being
+  
+  Being target; // the Being the buff has been cast on
+  int duration; // How much longer will the effect be in play
+  
+  Buff(this.target);
+  
+  void update() { // update the effects of the buff
+    duration--;
+  }
+}
+
+class PoisonBuff extends Buff {
+  // Simple poison buff, reduces hp steadily while active
+  PoisonBuff(target) : super(target) {
+    duration = 60; // 60 frames duration
+  }
+  void update() {
+    super.update();
+    target.hp -= 1;
   }
 }
 
@@ -96,5 +122,14 @@ class MapSpell extends Spell {
       caster.stage.loadMap(caster.mapid);
       caster.x = 550;
       caster.y = 200;
+  }
+}
+
+class SelfPoisonSpell extends Spell {
+  SelfPoisonSpell(caster) : super(caster);
+  
+  void effects() {
+    // poison the caster
+    caster.buffs.add(new PoisonBuff(caster));
   }
 }

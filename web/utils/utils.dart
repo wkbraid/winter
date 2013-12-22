@@ -3,7 +3,6 @@ library utils;
 import 'dart:html';
 import '../stage/stage.dart';
 part 'viewport.dart';
-part 'imgloader.dart';
 
 //============================================================
 // Keyboard

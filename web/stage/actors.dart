@@ -7,7 +7,9 @@ class Being extends Actor {
   
   String mapid = "miles1"; // the map we are currently on
   
-  Map<String,Spell> spells = {};
+  List<Buff> buffs = []; // Buffs currently affecting this player
+  
+  Map<String,Spell> spells = {}; // the spells which can be cast by this being
   
   num hpmax = 100;
   num hp = 100;
@@ -15,6 +17,14 @@ class Being extends Actor {
   num mpmax = 100;
   
   Being(x,y,stage) : super(x,y,stage);
+  
+  void update() {
+    super.update();
+    buffs.removeWhere((buff) => buff.duration <= 0); // clear finished buffs
+    for (Buff buff in buffs) { // update buffs
+      buff.update();
+    }
+  }
   
   void collide(Actor other) {
     if (other is Projectile && other.caster != this)
