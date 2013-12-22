@@ -17,6 +17,7 @@ class Being extends Actor {
   num mp = 0;
   num mpmax = 100;
   
+  
   Being(x,y,stage) : super(x,y,stage);
   
   void update() {
@@ -27,13 +28,9 @@ class Being extends Actor {
     }
   }
   
-  void collide(Actor other) {
-    if (other is Projectile && other.caster != this)
-      hp -= other.damage; // get hit by projectiles
-  }
 }
 
-class Actor extends Point {
+class Actor {
   // Base class for all map dwellers
 
   Stage stage; // The stage the actor is on

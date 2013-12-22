@@ -24,6 +24,10 @@ class Enemy extends Being {
     
     super.draw(); // draw the enemy body
   }
+  void collide(Actor other) {
+    if (other is Hero) // attack the hero
+      other.hp -= 1;
+  }
 }
 
 //=============================================

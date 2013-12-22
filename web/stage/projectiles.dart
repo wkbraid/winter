@@ -32,7 +32,9 @@ class Projectile extends Actor {
   }
   
   void collide(Actor other) {
-    if (other is Being && other != caster)
+    if (other is Being && other != caster) {
       dead = true;
+      other.hp -= damage; // damage the actor
+    }
   }
 }

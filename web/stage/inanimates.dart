@@ -25,15 +25,12 @@ class Portal extends Inanimate {
     this.targy = targy;
     this.targmap = targmap;
   }
-  void collide(Actor other) {
-    // teleport anything which touches the portal
-    if (other is Hero && Keyboard.isDown(KeyCode.S)) {
-      // ugg ugg keyboard checking should not really be here...
-      other.mapid = "test";
-      stage.loadMap(other.mapid);
-      other.x = targx;
-      other.y = targy;
-    }
+  void open(Being opener) {
+    // open the portal and go through it
+    opener.mapid = "test";
+    stage.loadMap(opener.mapid);
+    opener.x = targx;
+    opener.y = targy;
   }
 }
 

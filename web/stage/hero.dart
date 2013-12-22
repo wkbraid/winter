@@ -38,7 +38,6 @@ class Hero extends Being {
     color = "red"; // drawing colors
     bordercolor = "darkred";
     mp = mpmax;
-    
   }
   
   void update() {
@@ -86,13 +85,12 @@ class Hero extends Being {
   }
   
   void collide(Actor other) {
-    super.collide(other);
-    if (other is Enemy)
-      hp -= 1;
-    else if (other is Pickupable && Keyboard.isDown(KeyCode.S)) {
+    if (other is Pickupable && Keyboard.isDown(KeyCode.S)) {
       // pick up the item
       other.dead = true;
       inv.add(other.item);
+    } else if (other is Portal && Keyboard.isDown(KeyCode.S)) {
+      other.open(this);
     }
   }
 }
