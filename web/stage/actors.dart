@@ -8,6 +8,7 @@ class Being extends Actor {
   String mapid = "miles1"; // the map we are currently on
   
   List<Buff> buffs = []; // Buffs currently affecting this player
+    // should be made into a heap eventually
   
   Map<String,Spell> spells = {}; // the spells which can be cast by this being
   

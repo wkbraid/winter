@@ -34,8 +34,17 @@ class Gui {
        ..strokeStyle = "darkblue"
        ..fillRect(75, 35, 160*(stage.hero.mp/stage.hero.mpmax), 15)
        ..strokeRect(75, 35, 160, 16);
+    
+    // buff bar
+    ctx.strokeStyle = "black";
+    ctx.textAlign = "center";
+    for (int i = 0; i < stage.hero.buffs.length; i++) {
+      ctx.fillStyle = stage.hero.buffs[i].color;
+      ctx.fillRect(575 - i*25, 5, 20, 20);
+      ctx.strokeText(stage.hero.buffs[i].duration.toString(), 587 - i*25, 17);
+    }
            
-    // the bottom of the screen belongs to the gui
+    // the right side of the screen belongs to the gui
     ctx..fillStyle = "thistle"
        ..strokeStyle = "violet"
        ..fillRect(600,0,50,400)

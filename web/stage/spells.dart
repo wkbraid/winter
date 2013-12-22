@@ -33,6 +33,7 @@ class Buff {
   
   Being target; // the Being the buff has been cast on
   int duration; // How much longer will the effect be in play
+  String color; // what color should the buff icon be drawn
   
   Buff(this.target);
   
@@ -45,6 +46,7 @@ class PoisonBuff extends Buff {
   // Simple poison buff, reduces hp steadily while active
   PoisonBuff(target) : super(target) {
     duration = 60; // 60 frames duration
+    color = "green";
   }
   void update() {
     super.update();
