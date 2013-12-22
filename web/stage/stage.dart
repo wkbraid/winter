@@ -4,6 +4,7 @@ import 'dart:html';
 import '../utils/utils.dart';
 import 'dart:math';
 import '../utils/constants.dart';
+import '../user/account.dart';
 part 'map.dart';
 part 'actors.dart';
 part 'enemies.dart';
@@ -23,75 +24,98 @@ class Stage {
   Hero hero;
   List<Actor> actors = [];
   
-  Stage(mdata,view) {
+  Stage(account,view) {
     this.view = view;
-    map = new GameMap(mdata,this.view);
-    hero = new ATHero(50,450,this);
-    Actor enemy = new RandEnemy(100,450,this);
-    actors.add(enemy);
+    loadHero(account); // load the hero from the account info
+    loadMap(hero.mapid); // load the map the hero is on
 
-
-    actors.add(new FollowerEnemy2(100,450,this,hero));
-    actors.add(new RandEnemy(100,450,this));
-    actors.add(new FlyingEnemy(100,300,this));
-    actors.add(new Pickupable(120,400,new HealthPotion(),this));
-    actors.add(new Pickupable(200,400,new HealthPotion(),this));
-    actors.add(new Pickupable(500,400,new ManaPotion(),this));
-
-
-    this.view.follow(hero);
+    this.view.follow(hero); // set the viewport to follow the hero
   }
   
-  void loadMap(List<List> mdata) {
-    // load a new map from the given mapdata, later should probably load by name/id
-    map = new GameMap(mdata, this.view);
-    actors.clear();
+  // Load a hero from an account
+  void loadHero(Account acc) {
+    // dummy interface, should later load from files and/or server
+    if (acc.username == "knarr")
+      hero = new ATHero(50,450,this);
+    else
+      hero = new Hero(100,450,this);
+  }
+  // add an actor to the stage
+  void addActor(Actor act) {
+    map.actors.add(act);
+  }
+  
+  // Load the map from a given mapid
+  void loadMap(String mapid) {
+    // dummy interface, should later load from files and/or server
+    List<List> mdata;
+    if (mapid == "miles1") {
+      mdata =
+          [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+           [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1],
+           [1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+           [1,0,0,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+           [1,0,0,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+           [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+           [1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1],
+           [1,0,0,1,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+           [1,0,0,1,0,0,0,0,0,0,1,0,0,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1],
+           [1,0,0,1,0,0,0,0,0,1,1,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+           [1,0,0,1,1,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+           [1,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,1],
+           [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,1],
+           [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,1],
+           [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+           [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+           [1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+           [1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1],
+           [1,1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1],
+           [1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,1],
+           [1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,1],
+           [1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+           [1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+           [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+           [1,1,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1],
+           [1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+           [1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1],
+           [1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1],
+           [1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1],
+           [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]];
+      map = new GameMap(mdata, this.view);
+      map.actors.add(new FollowerEnemy2(100,450,this,hero));
+      map.actors.add(new RandEnemy(100,450,this));
+      map.actors.add(new FlyingEnemy(100,300,this));
+      map.actors.add(new Pickupable(120,400,new HealthPotion(),this));
+      map.actors.add(new Pickupable(200,400,new HealthPotion(),this));
+      map.actors.add(new Pickupable(500,400,new ManaPotion(),this));
+
+    } else {
+      mdata = [[1,1,1,1,1,1,1,1,1,1,1,1],
+               [1,0,0,0,0,0,0,0,0,0,0,1],
+               [1,0,0,0,0,0,0,0,0,0,0,1],
+               [1,0,0,0,0,0,0,0,0,1,0,1],
+               [1,0,0,0,0,0,0,0,0,1,0,1],
+               [1,0,0,1,0,0,1,0,0,1,0,1],
+               [1,0,0,0,0,0,0,1,0,0,0,1],
+               [1,1,0,0,0,0,0,0,0,0,0,1],
+               [1,1,0,0,0,0,0,0,0,0,1,1],
+               [1,1,0,0,0,0,0,0,0,0,0,1],
+               [1,1,1,1,1,1,0,0,0,0,0,1],
+               [1,1,1,1,1,1,1,1,1,1,1,1]];
+      map = new GameMap(mdata, this.view);
+      map.actors.add(new Pickupable(110,100,new ManaPotion(),this));
+    }
   }
   
   void update() {
-    // update the hero
-    hero.update();
-    // remove all the dead actors
-    actors.removeWhere((act) => act.dead);
-    
-    // update the other actors
-    for (Actor act in actors) {
-        act.update();
-    }
-    
-    // actor-actor collision
-    for (var i = 0; i < actors.length; i++) {
-      Actor act1 = actors[i];
-      // independently check for hero collisions? this seems terrible
-      if (hero.x - hero.width/2 < act1.x + act1.width/2
-          && hero.x + hero.width/2 > act1.x - act1.width/2
-          && hero.y - hero.height/2 < act1.y + act1.height/2
-          && hero.y + hero.height/2 > act1.y - act1.height/2) {
-          
-          hero.collide(act1);
-          act1.collide(hero);
-        }
-      for (var j = i+1; j < actors.length; j++) {
-        Actor act2 = actors[j];
-        // check for collision
-        if (act1.x - act1.width/2 < act2.x + act2.width/2
-          && act1.x + act1.width/2 > act2.x - act2.width/2
-          && act1.y - act1.height/2 < act2.y + act2.height/2
-          && act1.y + act1.height/2 > act2.y - act2.height/2) {
-          act1.collide(act2);
-          act2.collide(act1);
-        }
-      }
-    }
+    hero.update(); // update the hero
+    map.update(); // update the map
+    map.checkCollisions(hero); // check for collisions with the hero
   }
   
   void draw() {
     // draw the map and hero
     map.draw();
-    hero.draw();
-    // draw all other actors
-    for (Actor act in actors) {
-      act.draw();
-    }
+    hero.draw(); // might want some things to be drawn after hero...
   }
 }

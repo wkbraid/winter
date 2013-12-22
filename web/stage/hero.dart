@@ -63,7 +63,7 @@ class Hero extends Being {
   
   void drop(Item item) {
     inv.remove(item);
-    stage.actors.add(new Pickupable(x,y,item,stage));
+    stage.addActor(new Pickupable(x,y,item,stage));
   }
   
   num collideY(num dy) {

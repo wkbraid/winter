@@ -9,7 +9,7 @@ class Spell {
   Being caster; // the caster of the spell
   
   Spell(this.caster) {
-    lastcast = new DateTime.now();
+    lastcast = new DateTime.utc(2013);
   }
   
   // placeholder functions
@@ -42,7 +42,7 @@ class PelletSpell extends Spell {
     num posx = caster.stage.view.width/2;
     num posy = caster.stage.view.height/2;
     num dist = sqrt(pow(posx-Mouse.x,2)+pow(posy - Mouse.y, 2));
-    caster.stage.actors.add(new Projectile(caster.x,caster.y,
+    caster.stage.addActor(new Projectile(caster.x,caster.y,
         caster.vx + (Mouse.x - posx)*20/dist,
         caster.vy + (Mouse.y - posy)*20/dist,
         10,
@@ -70,7 +70,7 @@ class SpawnSpell extends Spell {
     mana = 30; cooldown = 1000;
   }
   void effects() {
-    caster.stage.actors.add(new RandEnemy(caster.x,caster.y,caster.stage));
+    caster.stage.addActor(new RandEnemy(caster.x,caster.y,caster.stage));
   }
 }
 
@@ -80,7 +80,9 @@ class PortalSpell extends Spell {
     mana = 70; cooldown = 5000;
   }
   void effects() {
-    caster.stage.actors.add(new Portal(Mouse.x + caster.stage.view.x, Mouse.y + caster.stage.view.y, caster.x,caster.y,caster.stage));
+    caster.stage.addActor(new Portal(Mouse.x + caster.stage.view.x,
+                                     Mouse.y + caster.stage.view.y,
+                                     50,50,"test",caster.stage));
   }
 }
 
@@ -90,15 +92,8 @@ class MapSpell extends Spell {
     mana = 90; cooldown = 4000;
   }
   void effects() {
-    var mdata = [[1,1,1,1,1,1,1,1],
-                 [1,0,0,0,0,0,0,1],
-                 [1,0,0,0,0,0,0,1],
-                 [1,0,0,0,0,0,0,1],
-                 [1,0,0,0,0,0,0,1],
-                 [1,0,0,0,0,0,0,1],
-                 [1,1,1,1,1,1,1,1]];
-    
-    caster.stage.loadMap(mdata);
+    caster.mapid = "test";
+    caster.stage.loadMap(caster.mapid);
     caster.x = 50;
     caster.y = 50;
   }
