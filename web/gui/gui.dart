@@ -1,5 +1,4 @@
 library gui;
-import 'dart:html';
 import '../stage/stage.dart';
 import '../utils/utils.dart';
 
@@ -9,10 +8,7 @@ class Gui {
   
   Gui(this.stage, this.view);
   
-  update() {
-    if (Keyboard.isDown(KeyCode.E))
-      print(stage.hero.inv);
-  }
+  update() { }
   
   draw() {
     // get the gui context
@@ -51,11 +47,16 @@ class Gui {
        ..strokeRect(600,0,50,400);
     
     // draw the hero's items in the gui
-    ctx..fillStyle = "violet"
-        ..strokeStyle = "purple";
-    for (int i = 0; i < stage.hero.inv.length; i++) {
-      ctx..fillRect(610,10+40*i,30,30)
-         ..strokeRect(610,10+40*i,30,30);
+    ctx..strokeStyle = "purple"
+       ..textAlign = "center";
+    int i = 0;
+    for (Item key in stage.hero.inv.backpack.keys) {
+      int count = stage.hero.inv.backpack[key];
+      ctx..fillStyle = key.color
+         ..fillRect(610,10+40*i,30,30)
+         ..strokeRect(610,10+40*i,30,30)
+         ..strokeText(count.toString(), 625, 25+40*i);
+      i++;
     }
   }
 }

@@ -22,9 +22,9 @@ class GameMap {
           && act2.y - act2.height/2 < act1.y + act1.height/2
           && act2.y + act2.height/2 > act1.y - act1.height/2) {
           
-          act2.collide(act1);
-          act1.collide(act2);
-        }
+        act2.collide(act1);
+        act1.collide(act2);
+      }
     }
   }
   

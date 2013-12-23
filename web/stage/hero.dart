@@ -1,6 +1,54 @@
 // file: hero.dart
 part of stage;
 
+class Inventory {
+  // the hero's inventory
+  // HOW IT WORKS:
+  // The inventory is divided into two parts: equipment and backpack
+  // Equipment holds one item for each item slot defined by Equipable.TYPE
+  // Backpack will hold all unequiped items
+  // The backpack will endlessly stack any items defined to be identical by their hashCode function
+  
+  List<Equipable> equipment = new List(6); // equiped items
+  Map<Item,int> backpack = {}; // unequiped items
+  
+  bool equip(Equipable item) {
+    if (take(item)) { // the item was in the backpack
+      if (equipment[item.type] != null) {
+        put(equipment[item.type]); // add the item back to the backpack
+      }
+      equipment[item.type] = item; // equip the item
+      return true;
+    }
+    return false; // might also fail later if some items are non-equipable
+  }
+  
+  bool unequip(Equipable item) {
+    if (put(item)) {
+      equipment[item.type] = null; // unequip the item
+      return true;
+    }
+    return false;
+  }
+  
+  bool take(Item item, {num count : 1}) { // take an item from the backpack
+    if (backpack[item] > count)
+      backpack[item] -= count;
+    else if (backpack[item] == count)
+      backpack.remove(item);
+    else
+      return false; // not enough items to take
+    return true; // otherwise we succedded
+  }
+  bool put(Item item, {num count : 1}) { // put an item into the backpack
+    if (backpack.containsKey(item))
+      backpack[item] += count;
+    else
+      backpack[item] = count;
+    return true; // for now always succeeds, might later fail if backpack is full
+  }
+}
+
 class Hero extends Being {
   // Our very own genderless hero!
 
@@ -8,7 +56,7 @@ class Hero extends Being {
   Map<int,String> Keybindings = {}; // keybindings should eventually be taken care of by the gui
   String mousespell;
   
-  List<Item> inv = []; // The inventory of the hero
+  Inventory inv; // The inventory of the hero
   
   num speed = 0.2; // The speed of the hero
   num jump = 20; //The jump height of the hero
@@ -33,6 +81,8 @@ class Hero extends Being {
       KeyCode.P : "poison"
     };
     mousespell = "pellet";
+    inv = new Inventory();
+    
     width = 30; // set the hero's dimension
     height = 30;
     color = "red"; // drawing colors
@@ -56,12 +106,6 @@ class Hero extends Being {
         spells[Keybindings[key]].cast();
     }
     
-    // drop the top item in the inventory
-    if (Keyboard.isDown(KeyCode.Q) && inv.isNotEmpty) drop(inv.first);
-    
-    // use the top item in the inventory
-    if (Keyboard.isDown(KeyCode.U) && inv.isNotEmpty) inv.first.use(this);
-    
     // Check for mouse
     if (Mouse.down)
       spells[mousespell].cast();
@@ -69,8 +113,8 @@ class Hero extends Being {
     super.update();
   }
   
-  void drop(Item item) {
-    inv.remove(item);
+  void drop(Item item, {num count : 1}) {
+    inv.take(item, count: count);
     stage.addActor(new Pickupable(x,y,item,stage));
   }
   
@@ -86,9 +130,7 @@ class Hero extends Being {
   
   void collide(Actor other) {
     if (other is Pickupable && Keyboard.isDown(KeyCode.S)) {
-      // pick up the item
-      other.dead = true;
-      inv.add(other.item);
+      other.dead = inv.put(other.item); // pick up the item
     } else if (other is Portal && Keyboard.isDown(KeyCode.S)) {
       other.open(this);
     }
