@@ -1,6 +1,29 @@
 // file: hero.dart
 part of stage;
 
+class Stats {
+  // Class for holding statistics, used by hero/items/buffs
+  num hp,hpmax,mp,mpmax,jump,speed; // all of the stats
+  Stats({this.hp:0,this.hpmax:0,this.mp:0,this.mpmax:0,this.jump:0,this.speed:0}); // everything is zero by default
+  Stats operator+(Stats other) { // add the stats together and return a new Stats object
+    Stats result = new Stats();
+    result.hp = hp + other.hp; // it would be nice to find a more compact way of doing this
+    result.hpmax = hpmax + other.hpmax;
+    result.mp = mp + other.mp;
+    result.mpmax = mpmax + other.mpmax;
+    result.jump = jump + other.jump;
+    result.speed = speed + other.speed;
+    return result;
+  }
+  
+  // stats are equal if all of their internal components are equal
+  int get hashCode => hp.hashCode+2*hpmax.hashCode+3*mp.hashCode+5*mpmax.hashCode+7*jump.hashCode+11*speed.hashCode;
+  bool operator==(other) =>
+      hp == other.hp && hpmax == other.hpmax
+      && mp == other.mp && mpmax == other.mpmax
+      && jump == other.jump && speed == other.speed;
+}
+
 class Inventory {
   // the hero's inventory
   // HOW IT WORKS:
@@ -12,13 +35,20 @@ class Inventory {
   List<Equipable> equipment = new List(6); // equiped items
   Map<Item,int> backpack = {}; // unequiped items
   
+  Stats get stats => // get the stat bonus from the inventory
+    equipment.fold(new Stats(), (acc,item) {
+        if (item != null)
+          return acc + item.stats;
+        else
+          return acc;
+    });
+  
   bool equip(Equipable item) {
-    if (take(item)) { // the item was in the backpack
-      if (equipment[item.type] != null) {
-        put(equipment[item.type]); // add the item back to the backpack
+    if (equipment[item.type] == null || unequip(equipment[item.type])) { // is the equipment slot free?
+      if (take(item)) { // take the item from the backpack
+        equipment[item.type] = item; // equip the item
+        return true;
       }
-      equipment[item.type] = item; // equip the item
-      return true;
     }
     return false; // might also fail later if some items are non-equipable
   }
@@ -56,9 +86,7 @@ class Hero extends Being {
   Map<int,String> Keybindings = {}; // keybindings should eventually be taken care of by the gui
   String mousespell;
   
-  // some more stats
-  num speed;
-  num jump;
+  Stats base = new Stats(); // base statistics for the hero
   
   Inventory inv; // The inventory of the hero
   
@@ -89,8 +117,8 @@ class Hero extends Being {
     hpmax = 100;
     mp = 50;
     mpmax = 100;
-    jump = 20;
-    speed = 0.2;
+    base.jump = 20;
+    base.speed = 0.2;
     
     width = 30; // set the hero's dimension
     height = 30;
@@ -98,15 +126,17 @@ class Hero extends Being {
     bordercolor = "darkred";
   }
   
+  Stats get stats => base + inv.stats; // get the hero's stats
+  
   void update() {
     // deal with health and mana
     if (hp < hpmax) hp+= 0.1;
     if (mp < mpmax) mp+= 0.5;
     
     // work out acceleration of the hero
-    if (Keyboard.isDown(KeyCode.A)) vx -= speed;
-    if (Keyboard.isDown(KeyCode.D)) vx += speed;
-    if (Keyboard.isDown(KeyCode.W) && down)  vy -= jump; //only jump if on a surface
+    if (Keyboard.isDown(KeyCode.A)) vx -= stats.speed;
+    if (Keyboard.isDown(KeyCode.D)) vx += stats.speed;
+    if (Keyboard.isDown(KeyCode.W) && down)  vy -= stats.jump; //only jump if on a surface
 
     // Check for keybindings
     for (int key in Keybindings.keys) {
@@ -139,6 +169,8 @@ class Hero extends Being {
   void collide(Actor other) {
     if (other is Pickupable && Keyboard.isDown(KeyCode.S)) {
       other.dead = inv.put(other.item); // pick up the item
+      if (other.item is Equipable)
+        inv.equip(other.item); // equip it right away
     } else if (other is Portal && Keyboard.isDown(KeyCode.S)) {
       other.open(this);
     }

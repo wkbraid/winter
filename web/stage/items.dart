@@ -30,14 +30,15 @@ class Equipable extends Item {
   // (yes there is no chest, belt is kind of subsituting for that, and look they all have the same line length
   
   int type; // What type of item is it (from above)
+  Stats stats = new Stats();
   
   Equipable(id,type) : super(id) {
     this.type = type;
   }
   
-  // Equipables are the same if they have the same type and name
-  int get hashCode => super.hashCode * 37 + 17 * type.hashCode;
-  bool operator==(other) => other is Equipable && hashCode == other.hashCode;
+  // Equipables are the same if they have the same type, stats and name
+  int get hashCode => super.hashCode * 37 + 17 * type.hashCode + 37*stats.hashCode;
+  bool operator==(other) => other is Equipable && type == other.type && stats == other.stats;
 }
 //=============================================
 // Game Equipables
@@ -45,6 +46,13 @@ class Equipable extends Item {
 class SkiGoggles extends Equipable {
   SkiGoggles() : super("Ski Goggles",Equipable.HEAD) {
     color = "brown";
+    stats.speed = 0.2; // increases speed by 0.2
+  }
+}
+class PropellorHat extends Equipable {
+  PropellorHat() : super("Propellor Hat",Equipable.HEAD) {
+    color = "yellow";
+    stats.jump = 5; // increases jump by 5
   }
 }
 

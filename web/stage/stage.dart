@@ -89,6 +89,7 @@ class Stage {
       map.actors.add(new Pickupable(200,400,new HealthPotion(),this));
       map.actors.add(new Pickupable(500,400,new ManaPotion(),this));
       map.actors.add(new Pickupable(550,220,new SkiGoggles(),this));
+      map.actors.add(new Pickupable(600,220,new PropellorHat(),this));
     } else {
       mdata = [[1,1,1,1,1,1,1,1,1,1,1,1],
                [1,0,0,0,0,0,0,0,0,0,0,1],
