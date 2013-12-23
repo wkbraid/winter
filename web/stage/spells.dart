@@ -34,6 +34,7 @@ class Buff {
   Being target; // the Being the buff has been cast on
   int duration; // How much longer will the effect be in play
   String color; // what color should the buff icon be drawn
+  Stats stats = new Stats();
   
   Buff(this.target);
   
@@ -51,6 +52,14 @@ class PoisonBuff extends Buff {
   void update() {
     super.update();
     target.hp -= 1;
+  }
+}
+
+class SpeedBuff extends Buff {
+  SpeedBuff(target) : super(target) {
+    stats.speed = 0.2;
+    duration = 200;
+    color = "lightblue";
   }
 }
 
@@ -133,5 +142,12 @@ class SelfPoisonSpell extends Spell {
   void effects() {
     // poison the caster
     caster.buffs.add(new PoisonBuff(caster));
+  }
+}
+
+class SpeedSpell extends Spell {
+  SpeedSpell(caster) : super(caster);
+  void effects() {
+    caster.buffs.add(new SpeedBuff(caster));
   }
 }

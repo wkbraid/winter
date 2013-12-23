@@ -99,7 +99,8 @@ class Hero extends Being {
        "heal"   : new HealSpell(this),
        "portal" : new PortalSpell(this),
        "map"    : new MapSpell(this),
-       "poison" : new SelfPoisonSpell(this)
+       "poison" : new SelfPoisonSpell(this),
+       "speed"  : new SpeedSpell(this)
     };
     Keybindings = {
       KeyCode.Z : "pellet",
@@ -107,7 +108,8 @@ class Hero extends Being {
       KeyCode.C : "heal",
       KeyCode.V : "portal",
       KeyCode.T : "map",
-      KeyCode.P : "poison"
+      KeyCode.P : "poison",
+      KeyCode.O : "speed"
     };
     mousespell = "pellet";
     inv = new Inventory();
@@ -126,7 +128,7 @@ class Hero extends Being {
     bordercolor = "darkred";
   }
   
-  Stats get stats => base + inv.stats; // get the hero's stats
+  Stats get stats => base + inv.stats + buffs.fold(new Stats(), (acc,buff) => acc + buff.stats); // get the hero's stats
   
   void update() {
     // deal with health and mana

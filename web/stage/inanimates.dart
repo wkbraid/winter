@@ -40,5 +40,6 @@ class Pickupable extends Inanimate {
   
   Pickupable(x,y,item,stage) : super(x,y,stage) {
     this.item = item;
+    color = item.color;
   }
 }
