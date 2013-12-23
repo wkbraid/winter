@@ -12,16 +12,30 @@ h1, p {
   color: #333;
 }
 
-#sample_container_id {
+#container {
   width: 100%;
   height: 400px;
-  position: relative;
+  position: absolute;
   border: 1px solid #ccc;
   background-color: #fff;
+}
+
+#area {
+  position:relative;
+  float:left;
 }
 
 #sample_text_id {
   font-size: 24pt;
   text-align: center;
   margin-top: 140px;
+}
+
+#instructions {
+  position: relative;
+  height: 400px;
+  width: 500px;
+  border: none;
+  float: left;
+  padding-left: 10px;
 }

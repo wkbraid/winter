@@ -29,11 +29,11 @@ class Inventory {
   // HOW IT WORKS:
   // The inventory is divided into two parts: equipment and backpack
   // Equipment holds one item for each item slot defined by Equipable.TYPE
-  // Backpack will hold all unequiped items
+  // Backpack will hold all unequipped items
   // The backpack will endlessly stack any items defined to be identical by their hashCode function
   
-  List<Equipable> equipment = new List(6); // equiped items
-  Map<Item,int> backpack = {}; // unequiped items
+  List<Equipable> equipment = new List(6); // equipped items
+  Map<Item,int> backpack = {}; // unequipped items
   
   Stats get stats => // get the stat bonus from the inventory
     equipment.fold(new Stats(), (acc,item) {
@@ -68,7 +68,7 @@ class Inventory {
       backpack.remove(item);
     else
       return false; // not enough items to take
-    return true; // otherwise we succedded
+    return true; // otherwise we succeeded
   }
   bool put(Item item, {num count : 1}) { // put an item into the backpack
     if (backpack.containsKey(item))

@@ -22,7 +22,7 @@ class Equipable extends Item {
   
   // Equipable types
   static const HAND = 0; // weapon
-  static const HEAD = 1; // armpr headgear
+  static const HEAD = 1; // armor headgear
   static const RING = 2; // armor ring
   static const FEET = 3; // armor legs
   static const BELT = 4; // armor middle
