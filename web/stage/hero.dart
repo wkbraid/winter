@@ -56,10 +56,11 @@ class Hero extends Being {
   Map<int,String> Keybindings = {}; // keybindings should eventually be taken care of by the gui
   String mousespell;
   
-  Inventory inv; // The inventory of the hero
+  // some more stats
+  num speed;
+  num jump;
   
-  num speed = 0.2; // The speed of the hero
-  num jump = 20; //The jump height of the hero
+  Inventory inv; // The inventory of the hero
   
   // Call the default actor constructor
   Hero(x,y,stage) : super(x,y,stage) {
@@ -83,11 +84,18 @@ class Hero extends Being {
     mousespell = "pellet";
     inv = new Inventory();
     
+    // statistics
+    hp = 100;
+    hpmax = 100;
+    mp = 50;
+    mpmax = 100;
+    jump = 20;
+    speed = 0.2;
+    
     width = 30; // set the hero's dimension
     height = 30;
     color = "red"; // drawing colors
     bordercolor = "darkred";
-    mp = mpmax;
   }
   
   void update() {

@@ -12,11 +12,11 @@ class Being extends Actor {
   
   Map<String,Spell> spells = {}; // the spells which can be cast by this being
   
-  num hpmax = 100;
+  // stats
   num hp = 100;
+  num hpmax = 100;
   num mp = 0;
-  num mpmax = 100;
-  
+  num mpmax = 0;
   
   Being(x,y,stage) : super(x,y,stage);
   

@@ -13,7 +13,7 @@ class Item {
     return user.inv.take(this); // try to take the item from the hero's inventory
   }
   
-  int get hashCode => id.hashCode; // by default, items are defined to be the same if their ids
+  int get hashCode => id.hashCode; // by default, items are defined to be the same if their ids are the same
   bool operator==(other) => (other is Item) && hashCode == other.hashCode;
 }
 
@@ -31,11 +31,26 @@ class Equipable extends Item {
   
   int type; // What type of item is it (from above)
   
-  Equipable(name,type) : super(name) {
+  Equipable(id,type) : super(id) {
     this.type = type;
   }
   
+  // Equipables are the same if they have the same type and name
+  int get hashCode => super.hashCode * 37 + 17 * type.hashCode;
+  bool operator==(other) => other is Equipable && hashCode == other.hashCode;
 }
+//=============================================
+// Game Equipables
+//=============================================
+class SkiGoggles extends Equipable {
+  SkiGoggles() : super("Ski Goggles",Equipable.HEAD) {
+    color = "brown";
+  }
+}
+
+//=============================================
+// Game Items
+//=============================================
 
 class HealthPotion extends Item {
   // A simple health potion
