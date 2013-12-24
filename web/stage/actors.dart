@@ -64,12 +64,34 @@ class Actor {
     move(vx,vy); // move the enemy
   }
   void draw() {
-    var context = stage.view.viewcontext; // get the context from the stage we are on
-    context.fillStyle = color;
-    context.lineWidth = 2;
-    context.strokeStyle = bordercolor;
-    context.fillRect(x-width/2, y-height/2, width, height);
-    context.strokeRect(x-width/2, y-height/2, width, height);
+    var ctx = stage.view.viewcontext; // get the context from the stage we are on
+    ctx.fillStyle = color;
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = bordercolor;
+    ctx.fillRect(x-width/2, y-height/2, width, height);
+    ctx.strokeRect(x-width/2, y-height/2, width, height);
+    
+    
+    // Santa Hats!
+    ctx..strokeStyle = "black" // red bit
+        ..fillStyle = "red"
+        ..beginPath()
+          ..moveTo(x-width/2,y-height/2)
+            ..lineTo(x,y-height)
+              ..lineTo(x+width/2,y-height/2)
+                ..fill()
+                  ..stroke()
+                    ..closePath();
+    ctx..fillStyle = "white" // pompom
+        ..beginPath()
+          ..arc(x,y-height, width/8, 0, 2*PI)
+            ..fill()
+              ..stroke();
+    
+    ctx..beginPath() // bottom edge
+      ..ellipse(x, y-height/2, width/1.9, height/9, 0, 0, 2*PI, true)
+        ..fill()
+          ..stroke();
   }
   
   // default functions

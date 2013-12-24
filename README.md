@@ -14,3 +14,4 @@ Code Overview can be found at: https://github.com/knarr/winter/wiki/Code-Overvie
 * Doopliss (mario_giannazzo@brown.edu)
 * ekatkrzzz (kath.kryuchkova@gmail.com)
 * ariellebryn (arielle.bryn@gmail.com)
+* zzagorsk (zach.zagorskiz@gmail.com)
