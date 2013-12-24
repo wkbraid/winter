@@ -22,7 +22,6 @@ class Stage {
   Viewport view;
   GameMap map;
   Hero hero;
-  List<Actor> actors = [];
   
   Stage(account,view) {
     this.view = view;

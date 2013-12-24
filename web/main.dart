@@ -12,7 +12,7 @@ class Game {
   Gui gui;
   
   Game(account,canvas) {
-    view = new Viewport(canvas, width: 900);
+    view = new Viewport(canvas, width: 600);
     stage = new Stage(account, view);
     gui = new Gui(stage,view);
     

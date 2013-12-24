@@ -61,6 +61,7 @@ class ShootyEnemy extends RandEnemy {
     spells = {
       "pellet" : new PelletSpell(this)
     };
+    mpmax = 30;
     mp = mpmax;
   }
   void update() {
