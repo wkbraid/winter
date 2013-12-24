@@ -11,9 +11,9 @@ class Game {
   Stage stage;
   Gui gui;
   
-  Game(mdata,canvas) {
-    view = new Viewport(canvas, width: 600);
-    stage = new Stage(mdata, view);
+  Game(account,canvas) {
+    view = new Viewport(canvas, width: 900);
+    stage = new Stage(account, view);
     gui = new Gui(stage,view);
     
     // Initialize mouse and keyboard interaction
