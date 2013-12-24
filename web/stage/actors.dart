@@ -18,6 +18,15 @@ class Being extends Actor {
   num mp = 0;
   num mpmax = 0;
   
+  // targeting
+  num posx;
+  num posy;
+  num aimx;
+  num aimy;
+  Being target;
+  
+  
+  
   Being(x,y,stage) : super(x,y,stage);
   
   void update() {

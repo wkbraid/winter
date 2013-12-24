@@ -126,6 +126,8 @@ class Hero extends Being {
     height = 30;
     color = "red"; // drawing colors
     bordercolor = "darkred";
+    
+    target = this; // default target self
   }
   
   Stats get stats => base + inv.stats + buffs.fold(new Stats(), (acc,buff) => acc + buff.stats); // get the hero's stats
@@ -149,6 +151,12 @@ class Hero extends Being {
     // Check for mouse
     if (Mouse.down)
       spells[mousespell].cast();
+    
+    // targeting
+    posx = stage.view.width/2;
+    posy = stage.view.height/2;
+    aimx = Mouse.x; // default aim towards the mouse
+    aimy = Mouse.y;
     
     super.update();
   }

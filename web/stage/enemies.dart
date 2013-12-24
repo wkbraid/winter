@@ -7,10 +7,19 @@ class Enemy extends Being {
   Enemy(x,y,stage) : super(x,y,stage) {
     color = "lightgreen"; // drawing colors
     bordercolor = "green";
+    
+    target = this; // default target self
   }
   
   void update() {
     if (hp <= 0) dead = true; // check if the enemy is dead
+    
+    // targeting
+    posx = this.x;
+    posy = this.y;
+    aimx = stage.hero.x; // default target at hero -- add possibility to target at allies/different heroes later
+    aimy = stage.hero.y;
+    
     super.update();
   }
 
@@ -28,6 +37,7 @@ class Enemy extends Being {
     if (other is Hero) // attack the hero
       other.hp -= 1;
   }
+ 
 }
 
 //=============================================
