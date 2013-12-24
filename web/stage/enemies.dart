@@ -15,12 +15,14 @@ class Enemy extends Being {
   }
 
   void draw() {
+    /* Health bar above enemy
     var ctx = stage.view.viewcontext;
     ctx.fillStyle = "red";
     ctx.strokeStyle = "darkred";
     ctx.fillRect(x-hp/10, y-8-height/2, hp/5, 5);
     ctx.lineWidth = 1;
     ctx.strokeRect(x-hp/10,y-8-height/2,hp/5,5);
+    */
     
     super.draw(); // draw the enemy body
   }
