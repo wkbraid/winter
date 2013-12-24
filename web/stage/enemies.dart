@@ -66,9 +66,9 @@ class ShootyEnemy extends RandEnemy {
   }
   void update() {
     super.update();
-    spells["pellet"].cast(); // just blindly cast the pellet
+    spells["pellet"].cast(); // casts a pellet in the general direction of the hero
     if (mp < mpmax) {
-      mp++;
+      mp+=.1; // allows the enemy to only cast a pellet every few seconds as opposed to a constant stream
     }
   }
 }

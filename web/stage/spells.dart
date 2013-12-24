@@ -76,12 +76,27 @@ class PelletSpell extends Spell {
   
   void effects() {
     // creates a simple projectile
-    num posx = caster.stage.view.width/2;
-    num posy = caster.stage.view.height/2;
-    num dist = sqrt(pow(posx-Mouse.x,2)+pow(posy - Mouse.y, 2));
+    num posx;
+    num posy;
+    num aimx;
+    num aimy;
+    if (caster is Hero){ // aims towards the mouse from the center if the hero is shooting
+      posx = caster.stage.view.width/2;
+      posy = caster.stage.view.height/2;
+      aimx = Mouse.x;
+      aimy = Mouse.y;
+    }
+    else{ // aims towards the hero from the caster if an enemy (other) is shooting
+      posx = caster.x;
+      posy = caster.y;
+      aimx = caster.stage.hero.x;
+      aimy = caster.stage.hero.y;
+    }
+    num dist = sqrt(pow(posx-aimx,2)+pow(posy-aimy,2));
+    
     caster.stage.addActor(new Projectile(caster.x,caster.y,
-        caster.vx + (Mouse.x - posx)*20/dist,
-        caster.vy + (Mouse.y - posy)*20/dist,
+        caster.vx + (aimx - posx)*20/dist,
+        caster.vy + (aimy - posy)*20/dist,
         10, caster,
         caster.stage));
   }
@@ -113,14 +128,21 @@ class SpawnSpell extends Spell {
 
 class PortalSpell extends Spell {
   // creates a portal in front of the caster, leading back to the caster's position
+  
   PortalSpell(caster) : super(caster) {
     mana = 70; cooldown = 5000;
   }
+  
   void effects() {
-    caster.stage.addActor(new Portal(Mouse.x + caster.stage.view.x,
-                                     Mouse.y + caster.stage.view.y,
-                                     50,50,"test",caster.stage));
+      caster.stage.addActor(new Portal(Mouse.x + caster.stage.view.x,
+                                       Mouse.y + caster.stage.view.y,
+                                       50,50,"test",caster.stage));
   }
+  
+  
+  bool possible() => Mouse.x + caster.stage.view.x >= 0 && Mouse.x + caster.stage.view.x < caster.stage.map.data[0].length*caster.stage.map.ts 
+                     && Mouse.y + caster.stage.view.y >= 0 && Mouse.y + caster.stage.view.y < caster.stage.map.data.length*caster.stage.map.ts;
+
 }
 
 class MapSpell extends Spell {
