@@ -76,27 +76,11 @@ class PelletSpell extends Spell {
   
   void effects() {
     // creates a simple projectile
-    num posx;
-    num posy;
-    num aimx;
-    num aimy;
-    if (caster is Hero){ // aims towards the mouse from the center if the hero is shooting
-      posx = caster.stage.view.width/2;
-      posy = caster.stage.view.height/2;
-      aimx = Mouse.x;
-      aimy = Mouse.y;
-    }
-    else{ // aims towards the hero from the caster if an enemy (other) is shooting
-      posx = caster.x;
-      posy = caster.y;
-      aimx = caster.stage.hero.x;
-      aimy = caster.stage.hero.y;
-    }
-    num dist = sqrt(pow(posx-aimx,2)+pow(posy-aimy,2));
+    num dist = sqrt(pow(caster.posx-caster.aimx,2)+pow(caster.posy-caster.aimy,2));
     
     caster.stage.addActor(new Projectile(caster.x,caster.y,
-        caster.vx + (aimx - posx)*20/dist,
-        caster.vy + (aimy - posy)*20/dist,
+        caster.vx + (caster.aimx - caster.posx)*20/dist,
+        caster.vy + (caster.aimy - caster.posy)*20/dist,
         10, caster,
         caster.stage));
   }
@@ -110,10 +94,10 @@ class HealSpell extends Spell {
   }
   
   void effects() {
-    caster.hp += 0.5;
+    caster.target.hp += 0.5;
   }
   
-  bool possible() => caster.hp < caster.hpmax; // only heal if we have less than full hp
+  bool possible() => caster.target.hp < caster.target.hpmax; // only heal if we have less than full hp
 }
 
 class SpawnSpell extends Spell {
@@ -134,14 +118,14 @@ class PortalSpell extends Spell {
   }
   
   void effects() {
-      caster.stage.addActor(new Portal(Mouse.x + caster.stage.view.x,
-                                       Mouse.y + caster.stage.view.y,
+      caster.stage.addActor(new Portal(caster.aimx + caster.stage.view.x,
+                                       caster.aimy + caster.stage.view.y,
                                        50,50,"test",caster.stage));
   }
   
   
-  bool possible() => Mouse.x + caster.stage.view.x >= 0 && Mouse.x + caster.stage.view.x < caster.stage.map.data[0].length*caster.stage.map.ts 
-                     && Mouse.y + caster.stage.view.y >= 0 && Mouse.y + caster.stage.view.y < caster.stage.map.data.length*caster.stage.map.ts;
+  bool possible() => caster.aimx + caster.stage.view.x >= 0 && caster.aimx + caster.stage.view.x < caster.stage.map.data[0].length*caster.stage.map.ts 
+                     && caster.aimy + caster.stage.view.y >= 0 && caster.aimy + caster.stage.view.y < caster.stage.map.data.length*caster.stage.map.ts;
 
 }
 
