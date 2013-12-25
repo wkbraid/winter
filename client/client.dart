@@ -3,7 +3,7 @@ import 'dart:html';
 import 'dart:convert';
 import 'dart:async';
 
-import '../common/common.dart'; // common libs
+import '../common.dart'; // common libs
 import 'util/utils.dart';
 import 'stage.dart';
 
@@ -19,17 +19,20 @@ class Game {
   int interval = 10; // the loop interval in milliseconds
   
   Account acc; // the currently logged in account
-  Viewport view;
-  Stage stage;
+  Viewport view; // The main game viewport
+  Stage stage; // The game stage, handles most of the game logic
   
   void begin() { // We have successfully logged in, begin the game
+    Keyboard.init(); // init inputs
+    Mouse.init();
     view = new Viewport(querySelector("#area")); // setup the game viewport
-    stage = new Stage(view);
+    stage = new Stage(acc.char,view,this.send);
     new Timer(new Duration(milliseconds:interval),loop); // start the main game loop
   }
   
   void loop() { // the main game loop
-    // for now do nothing, later predict server decisions
+    stage.update(interval); // update the stage
+    stage.draw();
     new Timer(new Duration(milliseconds:interval),loop); // start the loop again
   }
   
@@ -49,7 +52,6 @@ class Game {
   }
   void receive(e) { // data received from the server
     var data = JSON.decode(e.data);
-    //print("Receieved: $data");
     if (data["cmd"] == "login") {
       if (data["success"]) { // we successfully logged in
         print("Successfully logged in");
@@ -57,6 +59,9 @@ class Game {
         begin(); // begin the game
       } else // treat all errors like invalid usernames for now
         print("Invalid username");
+    } else if (data["cmd"] == "update") {
+      if (stage != null) // TODO: better checking for logged in
+        stage.receive(data); // forward things to the stage
     }
   }
   
@@ -64,7 +69,7 @@ class Game {
     if (connected) disconnect(); // reconnect with the new ip/port
     print("Connecting to server");
     ws = new WebSocket('ws://$ip:$port');
-    ws.onOpen.listen(start, onError:(e) {
+    ws.onOpen.listen(start, onError:(e) { // if no server is present it doesn't throw an error for some reason
       print("Failed to connect to server");
     });
     ws.onClose.listen(stop);

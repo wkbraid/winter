@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
 
-import '../common/common.dart';
+import '../common.dart';
 import 'db.dart' as db;
 
 void main() {
@@ -50,9 +50,13 @@ class GameServer {
   
   int interval = 20; // Loop interval in milliseconds
   
+  GameMap map; // Currently only one map in play at a time
+  
   void start() {
     if (up) return; // The server is already running
     print("Starting game server.");
+    print("Initializing map");
+    map = new GameMap();
     new Timer(new Duration(milliseconds:interval), loop); // start the main loop
     up = true;
   }
@@ -78,7 +82,12 @@ class GameServer {
   
   void loop() { // the main game loop
     // Start the loop again, to get real time keep a record of lastLoop
-    send({"cmd":"update"});
+    
+    // get the list of players from the clients and add them to the map
+    var tmp = clients.values.toList(); // avoid concurrency issues with a copy
+    tmp.removeWhere((client) => client.player == null); // only take players which are logged in
+    map.players = tmp.map((client) => client.player).toList();
+    send({"cmd":"update","map":map.pack()}); // send map to all players
     new Timer(new Duration(milliseconds:interval), loop);
   }
 }
@@ -87,6 +96,9 @@ class Client {
   // Manages a single client's connection
   GameServer gsrv; // The game server the client is connected to
   WebSocket ws; // the websocket connection with the server
+  
+  Account acc; // The logged in account
+  Player player; // The physical embodiment of the character currently playing
   
   Client(this.ws,this.gsrv) {
     print('Client [${ws.hashCode}] connected');
@@ -100,12 +112,16 @@ class Client {
   void receive(msg) { // recieve a message from the client
     var data = JSON.decode(msg);
     if (data["cmd"] == "login") {
-      Account acc = db.accs[data["user"]];
+      acc = db.accs[data["user"]];
       if (acc != null) { // we have an account
         send({"cmd":"login","success":true, "acc": acc.pack()});
+        player = new Player.fromChar(acc.char); // maybe this should be done as an unpack from the hero instead
       } else { // invalid login
         send({"cmd":"login","success":false});
       }
+    } else if (data["cmd"] == "update") {
+      acc.char.unpack(data["hero"]["char"]); // update the character
+      player.unpack(data["hero"]["player"]); // update the player
     }
   }
   
