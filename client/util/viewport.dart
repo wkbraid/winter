@@ -1,73 +1,21 @@
 // file: viewport.dart
+part of util;
 
 class Viewport {
-  // Holds information about the current game viewpoint
-  // Handles scale and scrolling
+  // Holds information about the current game window
+  // Handles scaling and scrolling of the stage
+  CanvasElement canvas; // The game canvas
   
-  // The canvas which the viewport is linked to
-  CanvasElement canvas;
+  num get width => canvas.width; // the viewport dimensions
+  num get height => canvas.height;
   
-  // The actor we are currently following
-  Actor following;
+  num x,y; // the top left corner of the viewport in map coordinates
   
-  // The current visible rectangle
-  num x,y,width,height;
+  Viewport(this.canvas);
   
-  // the hole screen size
-  num fullwidth, fullheight;
-  
-  // Is the context currently located at the origin (ie where the gui will be drawn)
-  bool origin = true;
-  
-  Viewport(this.canvas, {this.width, this.height}) {
-    // if no dimensions are provided, take the entire canvas by default
-    if (width == null) width = canvas.width;
-    if (height == null) height = canvas.height;
-    fullwidth = canvas.width;
-    fullheight = canvas.height;
-  }
-  
-  // follow an actor
-  void follow(tofollow) {
-    following = tofollow;
-    x = following.x - width/2;
-    y = following.y - height/2;
-  }
-  
-  // get the context for drawing the game map
-  CanvasRenderingContext2D get viewcontext {
-     if (origin) {
-       // move the canvas to the view position
-       canvas.context2D.translate(-x, -y);
-     }
-     origin = false;
-     return canvas.context2D;
-  }
-  
-  // get the context for drawing the game gui
-  CanvasRenderingContext2D get guicontext {
-    if (!origin) {
-      // move the canvas back to its original position
-      canvas.context2D.translate(x, y);
-    }
-    origin = true;
-    return canvas.context2D;
-  }
-  
-  // return the current viewable rectangle
-  Rectangle get rect {
-    new Rectangle(x,y,width,height);
-  }
-  
-  void update() {
-    // move the canvas context back to the origin
-    if (!origin) {
-      canvas.context2D.translate(x, y);
-    }
-    origin = true;
-    // center the viewport on following
-    // could add smooth movement towards following probably
-    x += (following.x - width/2 - x)/1.5;
-    y += (following.y - height/2 - y)/1.5;
+  void update() { // update the viewport
+    //canvas.context2D.translate(x, y); // move back to the origin
+
+    //canvas.context2D.translate(-x, -y);
   }
 }

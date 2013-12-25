@@ -3,8 +3,9 @@ import 'dart:html';
 import 'dart:convert';
 import 'dart:async';
 
-import '../common/common.dart';
-import 'util/viewport.dart';
+import '../common/common.dart'; // common libs
+import 'util/utils.dart';
+import 'stage.dart';
 
 void main() {
   var g = new Game()..connect('127.0.0.1',8080);
@@ -20,10 +21,10 @@ class Game {
   Account acc; // the currently logged in account
   Viewport view;
   Stage stage;
-  Gui gui;
   
   void begin() { // We have successfully logged in, begin the game
-    view = new Viewport(querySelector("#area"));
+    view = new Viewport(querySelector("#area")); // setup the game viewport
+    stage = new Stage(view);
     new Timer(new Duration(milliseconds:interval),loop); // start the main game loop
   }
   
