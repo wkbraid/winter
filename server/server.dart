@@ -1,6 +1,10 @@
+// file: server.dart
 import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
+
+import '../common/common.dart';
+import 'db.dart' as db;
 
 void main() {
   new Server('127.0.0.1',8080).start(); // start the main server
@@ -49,7 +53,7 @@ class GameServer {
   void start() {
     if (up) return; // The server is already running
     print("Starting game server.");
-    new Timer(new Duration(milliseconds:interval), loop);
+    new Timer(new Duration(milliseconds:interval), loop); // start the main loop
     up = true;
   }
   void stop() {
@@ -59,7 +63,8 @@ class GameServer {
   }
   
   void send(data) { // Send msg to all clients
-    for (Client client in clients.values) { // some modifcation while looping issues here
+    var tmp = clients.values.toList(); // prevent concurrency issues by making a copy
+    for (Client client in tmp) { // some modifcation while looping issues here
       client.send(data);
     }
   }
@@ -71,8 +76,9 @@ class GameServer {
     clients.remove(client.ws.hashCode); // Remove the client from the connected clients
   }
   
-  void loop() {
+  void loop() { // the main game loop
     // Start the loop again, to get real time keep a record of lastLoop
+    send({"cmd":"update"});
     new Timer(new Duration(milliseconds:interval), loop);
   }
 }
@@ -83,6 +89,7 @@ class Client {
   WebSocket ws; // the websocket connection with the server
   
   Client(this.ws,this.gsrv) {
+    print('Client [${ws.hashCode}] connected');
     ws.listen(receive, onDone: close);
   }
   
@@ -91,7 +98,15 @@ class Client {
   }
   
   void receive(msg) { // recieve a message from the client
-    
+    var data = JSON.decode(msg);
+    if (data["cmd"] == "login") {
+      Account acc = db.accs[data["user"]];
+      if (acc != null) { // we have an account
+        send({"cmd":"login","success":true, "acc": acc.pack()});
+      } else { // invalid login
+        send({"cmd":"login","success":false});
+      }
+    }
   }
   
   void close() { // close this client's connection

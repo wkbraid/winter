@@ -1,5 +1,4 @@
 // file: viewport.dart
-part of utils;
 
 class Viewport {
   // Holds information about the current game viewpoint
