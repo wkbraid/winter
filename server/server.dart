@@ -7,7 +7,7 @@ import '../common.dart';
 import 'db.dart' as db;
 
 void main() {
-  new Server('127.0.0.1',8080).start(); // start the main server
+  new Server('127.0.0.1',23193).start(); // start the main server
 }
 
 class Server {

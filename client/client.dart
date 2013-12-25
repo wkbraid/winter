@@ -8,7 +8,7 @@ import 'util/utils.dart';
 import 'stage.dart';
 
 void main() {
-  var g = new Game()..connect('127.0.0.1',8080);
+  var g = new Game()..connect('72.77.33.33',23193);
 }
 
 class Game {
