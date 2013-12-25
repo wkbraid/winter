@@ -1,6 +1,6 @@
 import 'dart:html';
-import '../client/stage/stage.dart';
-import '../client/utils/utils.dart';
+import '../old/stage/stage.dart';
+import '../old/utils/utils.dart';
 import 'dart:convert';
 
 GameMap map;
