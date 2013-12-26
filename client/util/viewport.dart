@@ -26,7 +26,7 @@ class Viewport {
     ctx.clearRect(x, y, width, height);
   }
   void drawGameMap(GameMap m) {
-    var tmp = m.players.toList(); // take a copy for concurrency
+    var tmp = m.players.values.toList(); // take a copy for concurrency
     for (Player p in tmp) {
       drawPlayer(p);
     }

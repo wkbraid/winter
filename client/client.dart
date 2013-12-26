@@ -8,7 +8,7 @@ import 'util/utils.dart';
 import 'stage.dart';
 
 void main() {
-  var g = new Game()..connect('72.77.33.33',23193);
+  var g = new Game()..connect('127.0.0.1',23193);
 }
 
 class Game {
@@ -54,8 +54,8 @@ class Game {
     var data = JSON.decode(e.data);
     if (data["cmd"] == "login") {
       if (data["success"]) { // we successfully logged in
-        print("Successfully logged in");
         acc = new Account.fromPack(data["acc"]);
+        print("Successfully logged in as ${acc.user}");
         begin(); // begin the game
       } else // treat all errors like invalid usernames for now
         print("Invalid username");

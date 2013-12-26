@@ -30,6 +30,7 @@ class Hero extends Player {
   
   // packing - to the server the hero is just a character associated with a player
   pack() {
+    // TODO: Only send information that the client should be authoritative for
     return {
       "char" : char.pack(),
       "player" : super.pack()

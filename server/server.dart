@@ -50,13 +50,11 @@ class GameServer {
   
   int interval = 20; // Loop interval in milliseconds
   
-  GameMap map; // Currently only one map in play at a time
+  Map<String, GameMap> maps = {}; // The game maps
   
   void start() {
     if (up) return; // The server is already running
     print("Starting game server.");
-    print("Initializing map");
-    map = new GameMap();
     new Timer(new Duration(milliseconds:interval), loop); // start the main loop
     up = true;
   }
@@ -81,13 +79,20 @@ class GameServer {
   }
   
   void loop() { // the main game loop
-    // Start the loop again, to get real time keep a record of lastLoop
+    var tmpmapkeys = maps.keys.toList();
+    for (String id in tmpmapkeys)
+      maps[id].players = {}; // Clear the map of players
     
-    // get the list of players from the clients and add them to the map
-    var tmp = clients.values.toList(); // avoid concurrency issues with a copy
-    tmp.removeWhere((client) => client.player == null); // only take players which are logged in
-    map.players = tmp.map((client) => client.player).toList();
-    send({"cmd":"update","map":map.pack()}); // send map to all players
+    var tmp = clients.values.toList(); // copy to avoid concurrency issues
+    tmp.removeWhere((client) => client.player == null); // only take logged in players
+    for (Client client in tmp) { // Add each player to the correct map
+      maps[client.acc.char.mapid].players[client.acc.user] = client.player;
+    }
+    for (Client client in tmp) { // Ask each client to update
+      client.update();
+    }
+
+    // Start the loop again, to get real time keep a record of lastLoop
     new Timer(new Duration(milliseconds:interval), loop);
   }
 }
@@ -105,6 +110,10 @@ class Client {
     ws.listen(receive, onDone: close);
   }
   
+  void update() { // Send updates to the client
+    send({"cmd": "update", "map": gsrv.maps[acc.char.mapid].pack()});
+  }
+  
   void send(data) { // Send message only to this client
     ws.add(JSON.encode(data));
   }
@@ -114,6 +123,8 @@ class Client {
     if (data["cmd"] == "login") {
       acc = db.accs[data["user"]];
       if (acc != null) { // we have an account
+        if (!gsrv.maps.containsKey(acc.char.mapid)) // check that the map is loaded
+          gsrv.maps[acc.char.mapid] = db.maps[acc.char.mapid];
         send({"cmd":"login","success":true, "acc": acc.pack()});
         player = new Player.fromChar(acc.char); // maybe this should be done as an unpack from the hero instead
       } else { // invalid login
