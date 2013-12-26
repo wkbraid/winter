@@ -43,18 +43,32 @@ class Player extends Actor {
   // Represents a player character on either the server or the client,
   // Clients extend player with the class Hero to differentiate their own hero
   
+  String name; // The name of the character the hero represents
+  
   Player(); // Create an empty player
   
   // Create a player representing a character, should only be used by the server
   Player.fromChar(Character char) {
+    name = char.name;
     x = char.x;
     y = char.y;
     width = 20;
     height = 20;
     color = "lightgreen";
   }
+  
+  // packing
   Player.fromPack(data) {
     unpack(data);
+  }
+  pack() {
+    var data = super.pack();
+    data["name"] = name;
+    return data;
+  }
+  unpack(data) {
+    name = data["name"];
+    super.unpack(data);
   }
 }
 

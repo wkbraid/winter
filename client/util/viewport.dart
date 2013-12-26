@@ -26,7 +26,20 @@ class Viewport {
     ctx.clearRect(x, y, width, height);
   }
   void drawGameMap(GameMap m) {
-    var tmp = m.players.values.toList(); // take a copy for concurrency
+    // Draw the tiles
+    var tmp = m.tdata.toList(); // take a copy for concurrency
+    for (var j = y ~/ m.ts; j <= (y + height) ~/ m.ts; j++) {
+      for (var i = x ~/ m.ts; i <= (x + width) ~/ m.ts; i++) {
+        if (i >= 0 && i < m.tdata[0].length && j >= 0 && j < m.tdata.length) {
+          // simple differentiation of colors
+          ctx.fillStyle = (m.tdata[j][i] == 0) ? "white" : "black";
+          ctx.fillRect(i*m.ts,j*m.ts,m.ts,m.ts);
+        }
+      }
+    }
+    
+    // Draw the map
+    tmp = m.players.values.toList(); // take a copy for concurrency
     for (Player p in tmp) {
       drawPlayer(p);
     }

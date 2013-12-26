@@ -79,19 +79,16 @@ class GameServer {
   }
   
   void loop() { // the main game loop
-    var tmpmapkeys = maps.keys.toList();
-    for (String id in tmpmapkeys)
-      maps[id].players = {}; // Clear the map of players
-    
-    var tmp = clients.values.toList(); // copy to avoid concurrency issues
-    tmp.removeWhere((client) => client.player == null); // only take logged in players
-    for (Client client in tmp) { // Add each player to the correct map
-      maps[client.acc.char.mapid].players[client.acc.user] = client.player;
+    // update the maps
+    var tmp = maps.keys.toList();
+    for (String mapid in tmp) {
+      maps[mapid].update(interval);
     }
-    for (Client client in tmp) { // Ask each client to update
+    
+    tmp = clients.values.toList(); // take a copy for concurrency
+    for (Client client in tmp) { // update all the clients
       client.update();
     }
-
     // Start the loop again, to get real time keep a record of lastLoop
     new Timer(new Duration(milliseconds:interval), loop);
   }
@@ -99,44 +96,67 @@ class GameServer {
 
 class Client {
   // Manages a single client's connection
+  bool loggedin = false; // is the client logged in
+  
   GameServer gsrv; // The game server the client is connected to
   WebSocket ws; // the websocket connection with the server
   
   Account acc; // The logged in account
-  Player player; // The physical embodiment of the character currently playing
   
   Client(this.ws,this.gsrv) {
     print('Client [${ws.hashCode}] connected');
-    ws.listen(receive, onDone: close);
+    ws.listen(receive, onDone: close); // start listening
+  }
+  
+  void login(data) {
+    if (loggedin) return; // need to be logged out to login
+    acc = db.accs[data["user"]]; // try to fetch the account from the db
+    if (acc != null) { // we have an account
+      if (!gsrv.maps.containsKey(acc.char.mapid)) // chech that the map is loaded
+        gsrv.maps[acc.char.mapid] = db.maps[acc.char.mapid]; // if not load the map
+      
+      // add the player to the map
+      gsrv.maps[acc.char.mapid].addPlayer(new Player.fromChar(acc.char));
+      send({"cmd":"login","success":true,"char":acc.char.pack()});
+      loggedin = true; // start sending updates to the client
+    } else {
+      send({"cmd":"login","success":false});
+    }
+  }
+  void logout() {
+    loggedin = false;
+    acc = null; // Remove account data
+  }
+  
+  void input(data) { // handle user input from the client
+    gsrv.maps[acc.char.mapid].updatePlayer(acc.char.name,data); // update the player
   }
   
   void update() { // Send updates to the client
-    send({"cmd": "update", "map": gsrv.maps[acc.char.mapid].pack()});
+    if (!loggedin) return;
+    send({"cmd":"update",
+      "map": gsrv.maps[acc.char.mapid].pack(),
+      "char" : acc.char.pack()
+    });
+  }
+  
+  void receive(msg) { // recieve a message from the client
+    var data = JSON.decode(msg);
+    if (data["cmd"] == "login")
+      login(data); // attempt to login the client
+    else if (data["cmd"] == "logout")
+      logout();
+    else if (data["cmd"] == "input") {
+      input(data);
+    }
   }
   
   void send(data) { // Send message only to this client
     ws.add(JSON.encode(data));
   }
   
-  void receive(msg) { // recieve a message from the client
-    var data = JSON.decode(msg);
-    if (data["cmd"] == "login") {
-      acc = db.accs[data["user"]];
-      if (acc != null) { // we have an account
-        if (!gsrv.maps.containsKey(acc.char.mapid)) // check that the map is loaded
-          gsrv.maps[acc.char.mapid] = db.maps[acc.char.mapid];
-        send({"cmd":"login","success":true, "acc": acc.pack()});
-        player = new Player.fromChar(acc.char); // maybe this should be done as an unpack from the hero instead
-      } else { // invalid login
-        send({"cmd":"login","success":false});
-      }
-    } else if (data["cmd"] == "update") {
-      acc.char.unpack(data["hero"]["char"]); // update the character
-      player.unpack(data["hero"]["player"]); // update the player
-    }
-  }
-  
   void close() { // close this client's connection
+    gsrv.maps[acc.char.mapid].removePlayer(acc.char.name); // remove the character from the map
     print('Client [${ws.hashCode}] disconnected');
     gsrv.removeClient(this); // remove the client from the 
   }

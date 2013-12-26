@@ -8,6 +8,7 @@ class Hero extends Player {
   Character char; // The character which the hero embodies
   
   // The Hero is closely linked to a character
+  String get name => char.name; void set name(String name) { char.name = name; }
   num get x => char.x; void set x(num x) { char.x = x; }
   num get y => char.y; void set y(num y) { char.y = y; }
   Stats get stats => char.stats; void set stats(Stats s) { char.stats = s; }
