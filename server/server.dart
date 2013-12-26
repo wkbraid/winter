@@ -134,6 +134,7 @@ class Client {
   
   void update() { // Send updates to the client
     if (!loggedin) return;
+    // TODO: update character to account for changes to player
     send({"cmd":"update",
       "map": gsrv.maps[acc.char.mapid].pack(),
       "char" : acc.char.pack()

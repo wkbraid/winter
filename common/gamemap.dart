@@ -28,8 +28,9 @@ class GameMap extends Sync {
     players.remove(name);
   }
   void updatePlayer(String name, data) { // update a player by name
-    players[name].vx += (data["right"] - data["left"])*50/1000;
-    players[name].vy += (data["down"] - data["up"])*50/1000;
+    players[name].vx += (data["right"] - data["left"])*players[name].stats.speed;
+    if (players[name].down && data["up"] > 0) players[name].vy -= players[name].stats.jump;
+    players[name].down = false;
   }
   
   // get the tile at position x,y

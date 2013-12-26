@@ -10,11 +10,12 @@ class Actor extends Sync {
   num x,y; // Actor position in map coordinates
   num width,height; // Actor dimensions
   String color; // Simple description needed to draw the actor
+  bool down = false; // Is there something below the map
   
   num vx = 0; num vy = 0; // Actor velocity
   
   void update(dt) {
-    //vy += g*dt; // gravity
+    vy += g*dt; // gravity
     vx *= pow(mu,dt); // friction
     vy *= pow(mu,dt);
     move(vx,vy); // move the enemy
@@ -22,7 +23,7 @@ class Actor extends Sync {
   
   // default functions
   void move(num dx, num dy) { // move the actor by dx,dy
-    //down = false; // reset the ground status
+    down = false; // reset the ground status
     
     if (dx > 0 && sumHorz(x+dx+width/2) != 0)
       dx = collideX(dx); // collide right
@@ -46,7 +47,7 @@ class Actor extends Sync {
     return 0;
   }
   num collideY(num dy) { // collide with a wall in the y direction
-    //if (dy > 0) down = true;
+    if (dy > 0) down = true; // there is something below us
     if (dy < 0)
       y = ((y+dy-height/2) ~/ map.ts)*map.ts + map.ts + height/2;
     else
@@ -95,6 +96,7 @@ class Player extends Actor {
   // Clients extend player with the class Hero to differentiate their own hero
   
   String name; // The name of the character the hero represents
+  Stats stats; // The player's statistics
   
   Player(); // Create an empty player
   
@@ -104,6 +106,7 @@ class Player extends Actor {
     name = char.name;
     x = char.x;
     y = char.y;
+    stats = char.stats;
     width = 20;
     height = 20;
     color = "lightgreen";
@@ -114,6 +117,7 @@ class Player extends Actor {
     unpack(data);
   }
   pack() {
+    // TODO: hmmm to sync the map or not? we don't want to, but player wants access to it
     var data = super.pack();
     data["name"] = name;
     return data;

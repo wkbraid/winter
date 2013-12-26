@@ -10,11 +10,11 @@ import '../common.dart';
 // Accounts indexed by username
 Map<String,Account> accs = {
   "knarr" : new Account("knarr", 
-      new Character("knarrc","test1",50,50,
-      new Stats(speed: 20/1000))),
+      new Character("knarrc","test1",300,50,
+      new Stats(speed: 50/1000,jump:30))),
   "fred" : new Account("fred",
       new Character("fredc","test1",200,200,
-      new Stats(speed: 20/1000)))
+      new Stats(speed: 20/1000,jump:20)))
 };
 
 // Maps indexed by mapid
