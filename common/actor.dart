@@ -4,6 +4,9 @@ part of common;
 
 class Actor extends Sync {
   // Base class for all map dwellers
+  
+  GameMap map; // The map the actor is on
+  
   num x,y; // Actor position in map coordinates
   num width,height; // Actor dimensions
   String color; // Simple description needed to draw the actor
@@ -17,9 +20,57 @@ class Actor extends Sync {
     move(vx,vy); // move the enemy
   }
   
-  void move(num dx,num dy) {
-    x += vx;
-    y += vy;
+  // default functions
+  void move(num dx, num dy) { // move the actor by dx,dy
+    //down = false; // reset the ground status
+    
+    if (dx > 0 && sumHorz(x+dx+width/2) != 0)
+      dx = collideX(dx); // collide right
+    if (dx < 0 && sumHorz(x+dx-width/2) != 0)
+      dx = collideX(dx); // collide left
+    
+    if (dy > 0 && sumVert(y+dy+height/2) != 0)
+      dy = collideY(dy);
+    if (dy < 0 && sumVert(y+dy-height/2) != 0)
+      dy = collideY(dy);
+    
+    x += dx; // move the hero
+    y += dy;
+  }
+  num collideX(num dx) { // collide with a wall in the x direction
+    if (dx < 0)
+      x = ((x+dx-width/2) ~/ map.ts)*map.ts + map.ts + width/2;
+    else
+      x = ((x+dx+width/2) ~/ map.ts)*map.ts - width/2 - 0.001;
+    vx = 0;
+    return 0;
+  }
+  num collideY(num dy) { // collide with a wall in the y direction
+    //if (dy > 0) down = true;
+    if (dy < 0)
+      y = ((y+dy-height/2) ~/ map.ts)*map.ts + map.ts + height/2;
+    else
+      y = ((y+dy+height/2) ~/ map.ts)*map.ts - height/2 - 0.001; 
+    vy = 0;
+    return 0;
+  }
+  
+  // sum over the map coordinates along the ypos along the edge along the width of the actor
+  num sumVert(ypos) {
+    num sum = 0;
+    for (num xpos = x - width/2; xpos < x + width/2; xpos += map.ts/2) {
+      sum += map.get(xpos, ypos);
+    }
+    return sum + map.get(x + width/2, ypos);
+  }
+  
+  // sum over the map coordinates along the xpos along the edge along the height of the actor
+  num sumHorz(xpos) {
+    num sum = 0;
+    for (num ypos = y - height/2; ypos < y + height/2; ypos += map.ts/2) {
+      sum += map.get(xpos, ypos);
+    }
+    return sum + map.get(xpos,y+height/2);
   }
   
   // packing
@@ -48,7 +99,8 @@ class Player extends Actor {
   Player(); // Create an empty player
   
   // Create a player representing a character, should only be used by the server
-  Player.fromChar(Character char) {
+  Player.fromChar(Character char, GameMap map) {
+    this.map = map;
     name = char.name;
     x = char.x;
     y = char.y;

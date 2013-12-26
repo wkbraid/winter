@@ -28,11 +28,20 @@ class GameMap extends Sync {
     players.remove(name);
   }
   void updatePlayer(String name, data) { // update a player by name
-    players[name].vx += (data["right"] - data["left"])*20/1000;
-    players[name].vy += (data["down"] - data["up"])*20/1000;
+    players[name].vx += (data["right"] - data["left"])*50/1000;
+    players[name].vy += (data["down"] - data["up"])*50/1000;
   }
   
-  // packing
+  // get the tile at position x,y
+  num get(x,y) {
+    if (x >= 0 && x < tdata[0].length*ts && y >= 0 && y < tdata.length*ts)
+      return tdata[y ~/ ts][x ~/ ts];
+    else
+      return 1; // everything outside the map is unwalkable by default
+  }
+  
+  
+  // ==== PACKING ====
   GameMap.fromPack(data) {
     for (var pd in data["players"]) // unpack each player
       players[pd["user"]] = new Player.fromPack(pd["player"]);

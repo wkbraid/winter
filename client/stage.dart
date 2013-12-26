@@ -6,8 +6,6 @@ import 'dart:html';
 import '../common.dart';
 import 'util/utils.dart';
 
-part 'stage/hero.dart';
-
 class Stage {
   // Handles the client interpretation of the map, including the hero
   Viewport view; // The main game viewport

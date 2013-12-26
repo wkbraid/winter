@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Editor</title>
+    <link rel="stylesheet" href="editor.css">
+  </head>
+ 
+  <body>
+    <h1>Editor</h1>
+    <p>A simple editor interface to facillitate the creation of some game objects.</p>
+    <p>WSAD to move view, hold m+WSAD to grow map, n+WSAD to shrink (careful!), 0 and 1 change current color</p>
+    <div id="container">
+      <canvas id="area" width="600px" height="400px"></canvas>
+      <div id="gui">
+        <h2>Shrink</h2>
+        <button id="shrinkleft">--></button>
+        <button id="shrinkright"><--</button>
+        <button id="shrinkup">&nbsp;v&nbsp;</button>
+        <button id="shrinkdown"> &nbsp;^&nbsp;</button>
+        <h2>Grow</h2>
+        <button id="growleft"><--</button>
+        <button id="growright">--></button>
+        <button id="growup">&nbsp;^&nbsp;</button>
+        <button id="growdown"> &nbsp;v&nbsp;</button>
+        <h2>Current</h2>
+        <button id="current0">0</button>
+        <button id="current1">1</button>
+      </div>
+    </div>
+    <div id="outputcontainer">
+      <button id="save">Save</button>
+      <button id="load">Load</button><br>
+      <textarea id="output" rows="15" cols="101"></textarea>
+    </div>
+    
+    <script type="application/dart" src="editor.dart"></script>
+    <script src="packages/browser/dart.js"></script>
+  </body>
+</html>

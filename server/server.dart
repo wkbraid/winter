@@ -116,7 +116,7 @@ class Client {
         gsrv.maps[acc.char.mapid] = db.maps[acc.char.mapid]; // if not load the map
       
       // add the player to the map
-      gsrv.maps[acc.char.mapid].addPlayer(new Player.fromChar(acc.char));
+      gsrv.maps[acc.char.mapid].addPlayer(new Player.fromChar(acc.char,gsrv.maps[acc.char.mapid]));
       send({"cmd":"login","success":true,"char":acc.char.pack()});
       loggedin = true; // start sending updates to the client
     } else {
@@ -156,6 +156,8 @@ class Client {
   }
   
   void close() { // close this client's connection
+    // TODO: Save character information to the fake database...
+    // TODO: Get a real database...
     gsrv.maps[acc.char.mapid].removePlayer(acc.char.name); // remove the character from the map
     print('Client [${ws.hashCode}] disconnected');
     gsrv.removeClient(this); // remove the client from the 
