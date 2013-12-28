@@ -35,7 +35,7 @@ class Character extends Sync {
   
   Character(this.name,this.mapid,this.x,this.y,this.stats);
   
-  // packing
+  // ==== PACKING ====
   Character.fromPack(dynamic data) {
     name = data["name"];
     mapid = data["mapid"];
@@ -43,6 +43,7 @@ class Character extends Sync {
     stats = new Stats.fromPack(data["stats"]);
   }
   dynamic pack() => {
+    // NB: Should be careful what character information you give to the clients
     "mapid" : mapid,
     "x" : x,
     "y" : y,

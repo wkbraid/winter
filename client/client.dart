@@ -9,6 +9,7 @@ import 'stage.dart';
 
 void main() {
   var g = new Game()..connect('127.0.0.1',23193);
+  querySelector("#area").requestFullscreen(); // TODO: figure out why this doesn't work
 }
 
 class Game {
@@ -41,7 +42,7 @@ class Game {
   void start(e) { // We are connected, start the game (should not be called directly)
     if (!connected) return; // game must be connected to the server to start
     print("Connected. Logging in");
-    send({"cmd":"login","user":"knarr"}); // ask the server to log in
+    send({"cmd":"login","user":"fred"}); // ask the server to log in
   }
   void stop(e) { // The connection is closed, stop the game
     if (connected) return; // stop should not be called directly, use disconnect instead

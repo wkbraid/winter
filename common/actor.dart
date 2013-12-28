@@ -94,19 +94,17 @@ class Actor extends Sync {
 class Player extends Actor {
   // Represents a player character on either the server or the client,
   // Clients extend player with the class Hero to differentiate their own hero
-  
-  String name; // The name of the character the hero represents
-  Stats stats; // The player's statistics
+
+  String name; // The name of the character this player represents
   
   Player(); // Create an empty player
   
   // Create a player representing a character, should only be used by the server
   Player.fromChar(Character char, GameMap map) {
-    this.map = map;
-    name = char.name;
     x = char.x;
     y = char.y;
-    stats = char.stats;
+    name = char.name;
+    this.map = map;
     width = 20;
     height = 20;
     color = "lightgreen";
@@ -114,7 +112,8 @@ class Player extends Actor {
   
   // packing
   Player.fromPack(data) {
-    unpack(data);
+    name = data["name"];
+    super.unpack(data);
   }
   pack() {
     // TODO: hmmm to sync the map or not? we don't want to, but player wants access to it
