@@ -147,12 +147,18 @@ class Hero extends Being {
   Stats get stats => base; // + inv.stats + buffs.fold(new Stats(), (acc,buff) => acc + buff.stats);
   
   // most recent input information from the client
-  dynamic input = {"up":0,"down":0,"left":0,"right":0,"mousex":0,"mousey":0}; 
+  dynamic input = {"up":0,"down":0,"left":0,"right":0,
+                   "mousex":0,"mousey":0,
+                   "mousedown":false}; 
   
   Hero(this.name,x,y,this.mapid,base) : super(x,y,base) {
     width = 20;
     height = 20;
     color = "lightgreen";
+    
+    spells = {
+      "pellet" : new PelletSpell(this)
+    }; 
   }
   
   void update(num dt) {
@@ -161,8 +167,14 @@ class Hero extends Being {
     vx += (input["right"] - input["left"])*stats.speed*dt;
     if (down && input["up"] > 0) vy -= stats.jump;
     down = false;
-    if (input["down"] != 0) // change map yay!
-      mapid = "test2";
+    
+    if (input["mousedown"]) {
+      spells["pellet"].cast();
+    }
+    
+    mp += dt/100;
+    mp.clamp(0, stats.mpmax); // restrict mp from being greater than mpmax
+    
     super.update(dt);
   }
   
