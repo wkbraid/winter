@@ -68,3 +68,19 @@ h1, p {
   float: left;
   padding-left: 10px;
 }
+
+#form {
+  position: relative;
+
+  width : 200px;
+  height : 30px;
+  float: left;
+
+}
+
+#button {
+  
+   position: relative;
+   float: left;
+  
+}
