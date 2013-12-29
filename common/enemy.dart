@@ -25,7 +25,6 @@ class Enemy extends Being {
   void collide(Actor other) {
     if (other is Hero) {// attack the hero
       other.hp -= 1;
-      print("We hit a hero");
     }
   }
   //==== PACKING ====
