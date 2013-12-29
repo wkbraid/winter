@@ -112,16 +112,17 @@ class Client {
     if (loggedin) return; // need to be logged out to login
     acc = db.accs[data["user"]]; // try to fetch the account from the db
     if (acc != null) { // we have an account
-      if (!gsrv.maps.containsKey(acc.char.mapid)) // chech that the map is loaded
-        gsrv.maps[acc.char.mapid] = db.maps[acc.char.mapid]; // if not load the map
+      if (!gsrv.maps.containsKey(acc.hero.mapid)) // chech that the map is loaded
+        gsrv.maps[acc.hero.mapid] = db.maps[acc.hero.mapid]; // if not load the map
       
-      // add the player to the map
-      var player = db.players[acc.char.name];
-      player.map = gsrv.maps[acc.char.mapid];
-      gsrv.maps[acc.char.mapid].addPlayer(player);
-      send({"cmd":"login","success":true,"char":acc.char.pack()});
+      // add the hero to the map
+      acc.hero.map = gsrv.maps[acc.hero.mapid];
+      gsrv.maps[acc.hero.mapid].addHero(acc.hero);
+      
+      // TODO should send more detailed information than hero.pack() provides to client
+      send({"cmd":"login","success":true,"hero":acc.hero.pack()});
       loggedin = true; // start sending updates to the client
-    } else {
+    } else { // The login failed
       send({"cmd":"login","success":false});
     }
   }
@@ -131,16 +132,14 @@ class Client {
   }
   
   void input(data) { // handle user input from the client
-    gsrv.maps[acc.char.mapid].updatePlayer(acc.char.name,data); // update the player
+    acc.hero.input = data; // Update the hero's latest input information
   }
   
   void update() { // Send updates to the client
     if (!loggedin) return;
-    // TODO: update character to account for changes to player
-    Player player = gsrv.maps[acc.char.mapid].players[acc.char.name];
     send({"cmd":"update",
-      "map": gsrv.maps[acc.char.mapid].pack(),
-      "char" : acc.char.pack()
+      "map": gsrv.maps[acc.hero.mapid].pack(),
+      "hero" : acc.hero.pack()
     });
   }
   
@@ -162,8 +161,8 @@ class Client {
   void close() { // close this client's connection
     // TODO: Save character information to the fake database...
     // TODO: Get a real database...
-    gsrv.maps[acc.char.mapid].removePlayer(acc.char.name); // remove the character from the map
+    gsrv.maps[acc.hero.mapid].removeHero(acc.hero); // Remove the hero from the map
     print('Client [${ws.hashCode}] disconnected');
-    gsrv.removeClient(this); // remove the client from the 
+    gsrv.removeClient(this); // remove the client from the connected clients
   }
 }

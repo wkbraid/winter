@@ -10,18 +10,13 @@ import '../common.dart';
 // Accounts indexed by username
 Map<String,Account> accs = {
   "knarr" : new Account("knarr", 
-      new Character("knarrc","test1",
-      new Stats(speed: 50/1000,jump:30))),
+      new Hero("knarrc",300,50,"test1",
+        new Stats(speed: 50/1000,jump:30))),
   "fred" : new Account("fred",
-      new Character("fredc","test1",
-      new Stats(speed: 20/1000,jump:20)))
+      new Hero("fredc",200,50,"test1",
+        new Stats(speed: 20/1000,jump:20)))
 };
 
-// Players indexed by name
-Map<String,Player> players = {
-  "knarrc" : new Player(300,50,"knarrc"),
-  "fredc"  : new Player(200,50,"fredc")
-};
 
 // Maps indexed by mapid
 Map<String, GameMap> maps = {

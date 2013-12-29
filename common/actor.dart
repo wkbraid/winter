@@ -10,11 +10,15 @@ class Actor extends Sync {
   num x,y; // Actor position in map coordinates
   num width,height; // Actor dimensions
   String color; // Simple description needed to draw the actor
+  
+  bool dead = false; // Is the actor dead?
   bool down = false; // Is there something below the map
   
   num vx = 0; num vy = 0; // Actor velocity
   
   Actor(this.x,this.y); // Create a default actor at the given position 
+ 
+  void collide(Actor other) { } // Called when the actor collides with other
   
   void update(dt) {
     vy += g*dt; // gravity
@@ -76,11 +80,10 @@ class Actor extends Sync {
     return sum + map.get(xpos,y+height/2);
   }
   
+  // ==== PACKING ====
   Actor.fromPack(data) {
     unpack(data);
   }
-  
-  // packing
   pack() {
     return {
       "x": x, "y": y,
@@ -96,33 +99,68 @@ class Actor extends Sync {
     vx = data["vx"]; vy = data["vy"];
   }
 }
+/*
+class Being extends Actor {
+  
+  List<Buff> buffs = []; // Buffs currently affecting this being
+      // should be made into a heap eventually probably
+  
+  Map<String,Spell> spells = {}; // The spells which can be cast by this being
+  
+  Stats stats; // The being's stats
+  
+  // targetting
+  num aimx, aimy;
+  Being target;
+  
+  Being(x,y) : super(x,y);
+  
+  // ==== PACKING ====
+  
+}
+*/
 
-class Player extends Actor {
-  // Represents a player character on either the server or the client,
-  // Stores all publically available information about the hero
+class Hero extends Actor {
+  // Represents a player character on the server
+  // Only some of the information stored is made publically available
 
-  String name; // The name of the character this player represents
-
-  // Create a default player with a given name
-  Player(x,y,this.name) : super(x,y) {
+  String name; // The name of the character this hero represents
+  String mapid; // The map the hero is currently on
+  
+  Stats stats; // The hero's stats
+  
+  // most recent input information from the client
+  dynamic input = {"up":0,"down":0,"left":0,"right":0}; 
+  
+  Hero(this.name,x,y,this.mapid,this.stats) : super(x,y) {
     width = 20;
     height = 20;
     color = "lightgreen";
   }
   
-  // packing
-  Player.fromPack(data) : super.fromPack(data) {
-    name = data["name"];
+  void update(num dt) {
+    vx += (input["right"] - input["left"])*50/1000;
+    if (down && input["up"] > 0) vy -= 30;
+    down = false;
+    super.update(dt);
+  }
+  
+  // ==== PACKING ====
+  Hero.fromPack(data) : super.fromPack(data) {
+    unpack(data);
   }
   pack() {
-    // TODO: hmmm to sync the map or not? we don't want to, but player wants access to it
-    var data = super.pack();
+    // Should only send data visible to all clients
+    // Client specific data needed for spell casting etc will be separately.
+    var data = super.pack(); // Pack the basics
     data["name"] = name;
+    data["mapid"] = mapid;
     return data;
   }
   unpack(data) {
     name = data["name"];
-    super.unpack(data);
+    mapid = data["mapid"];
+    super.unpack(data); // Unpack basics
   }
 }
 

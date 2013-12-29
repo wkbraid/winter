@@ -10,12 +10,12 @@ class Stage {
   // Handles the client interpretation of the map, including the hero
   Viewport view; // The main game viewport
   
-  Character char;
+  Hero hero;
   GameMap map = new GameMap([[]]); // The map we are currently on
   
   var send; // Send function passed in from the main game object
   
-  Stage(this.char,this.view,this.send) {
+  Stage(this.hero,this.view,this.send) {
     Keyboard.init(); // init inputs
     Mouse.init();
   }
@@ -23,7 +23,7 @@ class Stage {
   void receive(data) { // receive data from the server, passed from the game
     if (data["cmd"] == "update") { // update from server
       map.unpack(data["map"]);
-      char.unpack(data["char"]);
+      hero.unpack(data["hero"]);
     }
   }
   void update(num dt) { // update the stage's contents

@@ -20,14 +20,14 @@ class Game {
   
   int interval = 10; // the loop interval in milliseconds
   
-  Character char; // the currently logged in account
+  Hero hero; // the currently logged in hero
   Viewport view; // The main game viewport
   Stage stage; // The game stage, handles most of the game logic
   
   void begin() { // We have successfully logged in, begin the game
     if (!loggedin) return;
     view = new Viewport(querySelector("#area")); // setup the game viewport
-    stage = new Stage(char,view,this.send);
+    stage = new Stage(hero,view,this.send);
     new Timer(new Duration(milliseconds:interval),loop); // start the main game loop
   }
   
@@ -56,8 +56,8 @@ class Game {
     var data = JSON.decode(e.data);
     if (data["cmd"] == "login") {
       if (data["success"]) { // we successfully logged in
-        char = new Character.fromPack(data["char"]);
-        print("Successfully logged in as ${char.name}");
+        hero = new Hero.fromPack(data["hero"]);
+        print("Successfully logged in as ${hero.name}");
         loggedin = true;
         begin(); // begin the game
       } else // treat all errors like invalid usernames for now

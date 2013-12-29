@@ -8,30 +8,24 @@ class GameMap extends Sync {
   num ts = 32; // Tile size in map coordinates
   List<List<int>> tdata; // Row major representation of the tile data
   
-  Map<String,Player> players = {}; // Players on the map, accessed by username
+  Map<String,Hero> heros = {}; // Players on the map, accessed by username
   
   GameMap(this.tdata);
   
   void update(num dt) {
-    var tmp = players.values.toList(); // copy to stop concurrency issues
-    for (Player p in tmp)
-      p.update(dt); // update each player on the map
+    var tmp = heros.values.toList(); // copy to stop concurrency issues
+    for (Hero hero in tmp)
+      hero.update(dt); // update each player on the map
   }
   
   // Handle Players
-  void addPlayer(Player p) { // Add a player to the map
-    if (players.containsKey(p.name))
-      print("Warning! Player already on map");
-    players[p.name] = p; // add the player to the map
+  void addHero(Hero hero) { // Add a player to the map
+    if (heros.containsKey(hero.name))
+      print("Warning! Hero already on map");
+    heros[hero.name] = hero; // add the player to the map
   }
-  void removePlayer(String name) { // Remove a character from the map by name
-    players.remove(name);
-  }
-  void updatePlayer(String name, data) { // update a player by name
-    // Move the player
-    players[name].vx += (data["right"] - data["left"])*50/1000;
-    if (players[name].down && data["up"] > 0) players[name].vy -= 30;
-    players[name].down = false;
+  void removeHero(Hero hero) { // Remove a character from the map by name
+    heros.remove(hero.name);
   }
   
   // get the tile at position x,y
@@ -45,26 +39,23 @@ class GameMap extends Sync {
   
   // ==== PACKING ====
   GameMap.fromPack(data) {
-    for (var pd in data["players"]) // unpack each player
-      players[pd["user"]] = new Player.fromPack(pd["player"]);
+    for (var hd in data["heros"]) // unpack each player
+      heros[hd["user"]] = new Hero.fromPack(hd["hero"]);
         
     tdata = data["tdata"]; // load the map tiles
   }
   pack() {
-    List tmp = [];
-    players.forEach((user,p) { // pack each player
-      tmp.add({"user":user,"player":p.pack()});
-    });
+    List tmp = heros.values.toList(); // Copy to avoid concurrency issues
     return {
-      "players": tmp,
+      "heros": tmp.map((hero) => {"name": hero.name, "hero":hero.pack()}).toList(), // pack each hero
       "tdata"   : tdata
     };
   }
   unpack(data) {
-    // expensively overwrites player list each time, should really update them
-    players = {}; // clear so that disconnected players don't show
-    for (var pd in data["players"]) // unpack each player
-      players[pd["user"]] = new Player.fromPack(pd["player"]);
+    // expensively overwrites hero list each time, should really update them
+    heros = {}; // clear so that disconnected players don't show
+    for (var hd in data["heros"]) // unpack each hero
+      heros[hd["name"]] = new Hero.fromPack(hd["hero"]);
     
     tdata = data["tdata"]; // load the map tiles
   }
