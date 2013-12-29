@@ -11,16 +11,17 @@ import '../common.dart';
 Map<String,Account> accs = {
   "knarr" : new Account("knarr", 
       new Hero("knarrc",300,50,"test1",
-        new Stats(speed: 50/1000,jump:30))),
+        new Stats(speed: 3/1000,jump:30))),
   "fred" : new Account("fred",
       new Hero("fredc",200,50,"test1",
-        new Stats(speed: 20/1000,jump:20)))
+        new Stats(speed: 2/1000,jump:20)))
 };
 
 
 // Maps indexed by mapid
 Map<String, GameMap> maps = {
   "test1" : new GameMap(
+      [new Actor(140,100)],
       [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
        [1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
        [1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
@@ -32,6 +33,7 @@ Map<String, GameMap> maps = {
        [1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]]),
   "test2" : new GameMap(
+      [],
       [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],

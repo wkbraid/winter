@@ -41,11 +41,15 @@ class Viewport {
     // Draw the map
     tmp = m.heros.values.toList(); // take a copy for concurrency
     for (Hero hero in tmp) {
-      drawHero(hero);
+      drawActor(hero);
+    }
+    tmp = m.actors.toList();
+    for (Actor act in tmp) {
+      drawActor(act);
     }
   }
-  void drawHero(Hero hero) {
-    ctx.fillStyle = hero.color;
-    ctx.fillRect(hero.x-hero.width/2, hero.y-hero.height/2, hero.width, hero.height);
+  void drawActor(Actor act) {
+    ctx.fillStyle = act.color;
+    ctx.fillRect(act.x-act.width/2, act.y-act.height/2, act.width, act.height);
   }
 }

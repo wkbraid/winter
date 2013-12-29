@@ -11,7 +11,7 @@ class Stage {
   Viewport view; // The main game viewport
   
   Hero hero;
-  GameMap map = new GameMap([[]]); // The map we are currently on
+  GameMap map = new GameMap([],[[]]); // The map we are currently on
   
   var send; // Send function passed in from the main game object
   

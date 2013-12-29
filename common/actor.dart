@@ -8,8 +8,8 @@ class Actor extends Sync {
   GameMap map; // The map the actor is on
   
   num x,y; // Actor position in map coordinates
-  num width,height; // Actor dimensions
-  String color; // Simple description needed to draw the actor
+  num width = 10, height = 10; // Actor dimensions
+  String color = "red"; // Simple description needed to draw the actor
   
   bool dead = false; // Is the actor dead?
   bool down = false; // Is there something below the map
@@ -99,7 +99,7 @@ class Actor extends Sync {
     vx = data["vx"]; vy = data["vy"];
   }
 }
-/*
+
 class Being extends Actor {
   
   List<Buff> buffs = []; // Buffs currently affecting this being
@@ -107,40 +107,54 @@ class Being extends Actor {
   
   Map<String,Spell> spells = {}; // The spells which can be cast by this being
   
-  Stats stats; // The being's stats
+  Stats base; // The being's base stats
+  Stats get stats => base; // get the being's stats
+  
+  num mp,hp; // mana and health points
   
   // targetting
   num aimx, aimy;
   Being target;
   
-  Being(x,y) : super(x,y);
+  Being(x,y,this.base) : super(x,y);
+  
+  void update(dt) {
+    super.update(dt);
+    buffs.removeWhere((buff) => buff.duration <= 0); // clear finished buffs
+    for (Buff buff in buffs) { // update buffs
+      buff.update();
+    }
+  }
   
   // ==== PACKING ====
-  
+  // The client's shouldn't need to know anything more about beings
+  Being.fromPack(data) : super.fromPack(data);
 }
-*/
 
-class Hero extends Actor {
+
+class Hero extends Being {
   // Represents a player character on the server
   // Only some of the information stored is made publically available
 
   String name; // The name of the character this hero represents
   String mapid; // The map the hero is currently on
   
-  Stats stats; // The hero's stats
+  // Inventory inv; // The hero's inventory
+
+  Stats get stats => base; // + inv.stats + buffs.fold(new Stats(), (acc,buff) => acc + buff.stats);
   
   // most recent input information from the client
   dynamic input = {"up":0,"down":0,"left":0,"right":0}; 
   
-  Hero(this.name,x,y,this.mapid,this.stats) : super(x,y) {
+  Hero(this.name,x,y,this.mapid,base) : super(x,y,base) {
     width = 20;
     height = 20;
     color = "lightgreen";
   }
   
   void update(num dt) {
-    vx += (input["right"] - input["left"])*50/1000;
-    if (down && input["up"] > 0) vy -= 30;
+    vx += (input["right"] - input["left"])*stats.speed*dt;
+    if (down && input["up"] > 0) vy -= stats.jump;
     down = false;
     super.update(dt);
   }
@@ -151,7 +165,7 @@ class Hero extends Actor {
   }
   pack() {
     // Should only send data visible to all clients
-    // Client specific data needed for spell casting etc will be separately.
+    // Client specific data needed for spell casting etc will be sent separately.
     var data = super.pack(); // Pack the basics
     data["name"] = name;
     data["mapid"] = mapid;
@@ -165,14 +179,12 @@ class Hero extends Actor {
 }
 
 class Stats extends Sync {
-  // Class for holding statistics, used by hero/items/buffs
+  // Class for holding static statistics, used by hero/items/buffs
   num hp,hpmax,mp,mpmax,jump,speed; // all of the stats
-  Stats({this.hp:0,this.hpmax:0,this.mp:0,this.mpmax:0,this.jump:0,this.speed:0}); // everything is zero by default
+  Stats({this.hpmax:0,this.mpmax:0,this.jump:0,this.speed:0}); // everything is zero by default
   Stats operator+(Stats other) { // add the stats together and return a new Stats object
     Stats result = new Stats();
-    result.hp = hp + other.hp; // it would be nice to find a more compact way of doing this
-    result.hpmax = hpmax + other.hpmax;
-    result.mp = mp + other.mp;
+    result.hpmax = hpmax + other.hpmax; // it would be nice to find a more compact way of doing this
     result.mpmax = mpmax + other.mpmax;
     result.jump = jump + other.jump;
     result.speed = speed + other.speed;
@@ -180,28 +192,24 @@ class Stats extends Sync {
   }
   
   // stats are equal if all of their internal components are equal
-  int get hashCode => hp.hashCode+2*hpmax.hashCode+3*mp.hashCode+5*mpmax.hashCode+7*jump.hashCode+11*speed.hashCode;
+  int get hashCode => hpmax.hashCode+5*mpmax.hashCode+7*jump.hashCode+11*speed.hashCode;
   bool operator==(other) =>
-      hp == other.hp && hpmax == other.hpmax
-      && mp == other.mp && mpmax == other.mpmax
+      hpmax == other.hpmax && mpmax == other.mpmax
       && jump == other.jump && speed == other.speed;
   
   // packing
   Stats.fromPack(data) {
-    hp = data["hp"]; hpmax = data["hpmax"];
-    mp = data["mp"]; mpmax = data["mpmax"];
+    hpmax = data["hpmax"]; mpmax = data["mpmax"];
     jump = data["jump"]; speed = data["speed"];
   }
   pack() {
     return {
-      "hp" : hp, "hpmax" : hpmax,
-      "mp" : mp, "mpmax" : mpmax,
+      "hpmax" : hpmax, "mpmax" : mpmax,
       "speed" : speed, "jump" : jump
     };
   }
   unpack(data) {
-    hp = data["hp"]; hpmax = data["hpmax"];
-    mp = data["mp"]; mpmax = data["mpmax"];
+    hpmax = data["hpmax"]; mpmax = data["mpmax"];
     jump = data["jump"]; speed = data["speed"];
   }
 }
