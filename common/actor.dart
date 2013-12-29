@@ -14,6 +14,8 @@ class Actor extends Sync {
   
   num vx = 0; num vy = 0; // Actor velocity
   
+  Actor(this.x,this.y); // Create a default actor at the given position 
+  
   void update(dt) {
     vy += g*dt; // gravity
     vx *= pow(mu,dt); // friction
@@ -74,6 +76,10 @@ class Actor extends Sync {
     return sum + map.get(xpos,y+height/2);
   }
   
+  Actor.fromPack(data) {
+    unpack(data);
+  }
+  
   // packing
   pack() {
     return {
@@ -93,27 +99,20 @@ class Actor extends Sync {
 
 class Player extends Actor {
   // Represents a player character on either the server or the client,
-  // Clients extend player with the class Hero to differentiate their own hero
+  // Stores all publically available information about the hero
 
   String name; // The name of the character this player represents
-  
-  Player(); // Create an empty player
-  
-  // Create a player representing a character, should only be used by the server
-  Player.fromChar(Character char, GameMap map) {
-    x = char.x;
-    y = char.y;
-    name = char.name;
-    this.map = map;
+
+  // Create a default player with a given name
+  Player(x,y,this.name) : super(x,y) {
     width = 20;
     height = 20;
     color = "lightgreen";
   }
   
   // packing
-  Player.fromPack(data) {
+  Player.fromPack(data) : super.fromPack(data) {
     name = data["name"];
-    super.unpack(data);
   }
   pack() {
     // TODO: hmmm to sync the map or not? we don't want to, but player wants access to it

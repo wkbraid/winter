@@ -7,7 +7,7 @@ import '../common.dart';
 import 'db.dart' as db;
 
 void main() {
-  new Server('127.0.0.1',23193).start(); // start the main server
+  new Server('0.0.0.0',23193).start(); // start the main server
 }
 
 class Server {
@@ -116,7 +116,9 @@ class Client {
         gsrv.maps[acc.char.mapid] = db.maps[acc.char.mapid]; // if not load the map
       
       // add the player to the map
-      gsrv.maps[acc.char.mapid].addPlayer(new Player.fromChar(acc.char,gsrv.maps[acc.char.mapid]));
+      var player = db.players[acc.char.name];
+      player.map = gsrv.maps[acc.char.mapid];
+      gsrv.maps[acc.char.mapid].addPlayer(player);
       send({"cmd":"login","success":true,"char":acc.char.pack()});
       loggedin = true; // start sending updates to the client
     } else {

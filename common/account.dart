@@ -25,34 +25,29 @@ class Account extends Sync {
 }
 
 class Character extends Sync {
-  // Stores information about the hero persistent upon logoff
+  // Stores information about the hero not visible to everyone
   
   String name; // The character's name (should be unique)
-  
+
   String mapid; // The mapid of the map the character is on
-  num x,y; // Character position in map coordinates
   Stats stats; // The character's stats
   
-  Character(this.name,this.mapid,this.x,this.y,this.stats);
+  Character(this.name,this.mapid,this.stats);
   
   // ==== PACKING ====
   Character.fromPack(dynamic data) {
     name = data["name"];
     mapid = data["mapid"];
-    x = data["x"]; y = data["y"];
     stats = new Stats.fromPack(data["stats"]);
   }
   dynamic pack() => {
     // NB: Should be careful what character information you give to the clients
     "mapid" : mapid,
-    "x" : x,
-    "y" : y,
     "stats" : stats.pack(),
     "name" : name
   };
   void unpack(dynamic data) {
     mapid = data["mapid"];
-    x = data["x"]; y = data["y"];
     stats.unpack(data["stats"]);
     name = data["name"];
   }
