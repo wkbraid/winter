@@ -1,7 +1,7 @@
 // file: constants.dart
-library constants;
+part of common;
 //==============================================
 // Game Constants
 //==============================================
-const num g = 0.7; // gravitational acceleration
-const num mu = 0.95; // frictional coefficient
+const num g = 50/1000; // gravitational acceleration
+const num mu = 0.995; // frictional coefficient

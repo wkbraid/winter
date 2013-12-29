@@ -1,5 +1,5 @@
-// file: items.dart
-part of stage;
+// file: item.dart
+part of common;
 
 class Item {
   // Basic item class
@@ -67,10 +67,10 @@ class HealthPotion extends Item {
   }
   
   bool use(Hero user) {
-    if(super.use(user) && user.hp < user.hpmax){
-      if(user.hp <= (user.hpmax - 30))
+    if(super.use(user) && user.hp < user.stats.hpmax){
+      if(user.hp <= (user.stats.hpmax - 30))
         user.hp += 30;
-      else user.hp = user.hpmax;
+      else user.hp = user.stats.hpmax;
       return true;
     }
     return false; // item was not used
@@ -84,10 +84,10 @@ class ManaPotion extends Item {
   }
   
   bool use(Hero user) {
-    if(super.use(user) && user.mp < user.mpmax){
-      if(user.mp <= user.mpmax - 30)
+    if(super.use(user) && user.mp < user.stats.mpmax){
+      if(user.mp <= user.stats.mpmax - 30)
         user.mp += 30;
-      else user.mp = user.mpmax;
+      else user.mp = user.stats.mpmax;
       return true;
     }
     return false;

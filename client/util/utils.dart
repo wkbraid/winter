@@ -1,7 +1,8 @@
-// file: utils.dart
-library utils;
+library util;
+
 import 'dart:html';
-import '../stage/stage.dart';
+import '../../common.dart';
+
 part 'viewport.dart';
 
 //============================================================

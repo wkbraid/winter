@@ -1,11 +1,12 @@
-// projectiles.dart
-part of stage;
+// file: projectile.dart
+part of common;
+
 
 class Projectile extends Actor {
   num damage; // how much damage it does
   Actor caster; // who cast the projectile
   
-  Projectile(x,y,vx,vy,damage,caster,stage) : super(x,y,stage) {
+  Projectile(x,y,vx,vy,damage,caster) : super(x,y) {
     this.vx = vx;
     this.vy = vy;
     this.damage = damage;
@@ -13,12 +14,11 @@ class Projectile extends Actor {
     width = 5;
     height = 5;
     color = "purple";
-    bordercolor = "purple";
   }
   
-  void update() {
+  void update(dt) {
     dead = (vx.truncate() == 0) && (vy.truncate() == 0) && down;
-    super.update(); // physics and move
+    super.update(dt); // physics and move
   }
   
   num collideX(num dx) {
