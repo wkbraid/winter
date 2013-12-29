@@ -5,13 +5,15 @@ class GameMap extends Sync {
   // Represents a game map instance
   // Handles the map scenery, as well as all the actors on the map
   
+  String id; // The id of the map, used by players
+  
   num ts = 32; // Tile size in map coordinates
   List<List<int>> tdata; // Row major representation of the tile data
   
   Map<String,Hero> heros = {}; // Players on the map, accessed by username
   List<Actor> actors = []; // All other actors on the map
   
-  GameMap(this.actors,this.tdata) {
+  GameMap(this.id,this.actors,this.tdata) {
     for (Actor act in actors) { // Set the map for each actor
       act.map = this;
     }
@@ -74,6 +76,7 @@ class GameMap extends Sync {
     if (heros.containsKey(hero.name))
       print("Warning! Hero already on map");
     heros[hero.name] = hero; // add the player to the map
+    hero.map = this;
   }
   void removeHero(Hero hero) { // Remove a character from the map by name
     heros.remove(hero.name);
@@ -96,21 +99,21 @@ class GameMap extends Sync {
   
   // ==== PACKING ====
   GameMap.fromPack(data) {
-    for (var hd in data["heros"]) // unpack each player
-      heros[hd["user"]] = new Hero.fromPack(hd["hero"]);
-        
-    tdata = data["tdata"]; // load the map tiles
+    unpack(data);
   }
   pack() {
     List tmpheros = heros.values.toList(); // Copy to avoid concurrency issues
     List tmpactors = actors.toList();
     return {
+      "id"      : id,
       "heros"   : tmpheros.map((hero) => {"name": hero.name, "hero":hero.pack()}).toList(), // pack each hero
       "actors"  : tmpactors.map((act) => act.pack()).toList(), // pack each actor
       "tdata"   : tdata
     };
   }
   unpack(data) {
+    id = data["id"];
+    
     // expensively overwrites hero list each time, should really update them
     heros = {}; // clear so that disconnected players don't show
     for (var hd in data["heros"]) { // unpack each hero

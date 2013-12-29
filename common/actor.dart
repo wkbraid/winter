@@ -161,6 +161,8 @@ class Hero extends Being {
     vx += (input["right"] - input["left"])*stats.speed*dt;
     if (down && input["up"] > 0) vy -= stats.jump;
     down = false;
+    if (input["down"] != 0) // change map yay!
+      mapid = "test2";
     super.update(dt);
   }
   

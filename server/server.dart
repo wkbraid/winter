@@ -102,6 +102,7 @@ class Client {
   WebSocket ws; // the websocket connection with the server
   
   Account acc; // The logged in account
+  GameMap map; // The game map the hero is currently on
   
   Client(this.ws,this.gsrv) {
     print('Client [${ws.hashCode}] connected');
@@ -116,8 +117,9 @@ class Client {
         gsrv.maps[acc.hero.mapid] = db.maps[acc.hero.mapid]; // if not load the map
       
       // add the hero to the map
-      acc.hero.map = gsrv.maps[acc.hero.mapid];
-      gsrv.maps[acc.hero.mapid].addHero(acc.hero);
+      map = gsrv.maps[acc.hero.mapid];
+      acc.hero.map = map;
+      map.addHero(acc.hero);
       
       // TODO should send more detailed information than hero.pack() provides to client
       send({"cmd":"login","success":true,"hero":acc.hero.pack()});
@@ -137,8 +139,15 @@ class Client {
   
   void update() { // Send updates to the client
     if (!loggedin) return;
+    if (map.id != acc.hero.mapid) { // the hero's map has changed
+      map.removeHero(acc.hero);
+      if (!gsrv.maps.containsKey(acc.hero.mapid)) // chech that the map is loaded
+        gsrv.maps[acc.hero.mapid] = db.maps[acc.hero.mapid]; // if not load the map
+      map = gsrv.maps[acc.hero.mapid];
+      map.addHero(acc.hero);
+    }
     send({"cmd":"update",
-      "map": gsrv.maps[acc.hero.mapid].pack(),
+      "map": map.pack(),
       "hero" : acc.hero.pack()
     });
   }
@@ -161,7 +170,7 @@ class Client {
   void close() { // close this client's connection
     // TODO: Save character information to the fake database...
     // TODO: Get a real database...
-    gsrv.maps[acc.hero.mapid].removeHero(acc.hero); // Remove the hero from the map
+    map.removeHero(acc.hero); // Remove the hero from the map
     print('Client [${ws.hashCode}] disconnected');
     gsrv.removeClient(this); // remove the client from the connected clients
   }
