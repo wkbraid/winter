@@ -144,7 +144,9 @@ class Hero extends Being {
   
   // Inventory inv; // The hero's inventory
 
-  Stats get stats => base; // + inv.stats + buffs.fold(new Stats(), (acc,buff) => acc + buff.stats);
+  Stats get stats => base + inv.stats + buffs.fold(new Stats(), (acc,buff) => acc + buff.stats);
+  
+  Inventory inv = new Inventory(); // The hero's inventory
   
   // most recent input information from the client
   dynamic input = {"up":0,"down":0,"left":0,"right":0,
@@ -176,6 +178,16 @@ class Hero extends Being {
     mp.clamp(0, stats.mpmax); // restrict mp from being greater than mpmax
     
     super.update(dt);
+  }
+  
+  void collide(Actor other) {
+    if (other is Pickupable && input["down"] != 0) {
+      other.dead = inv.put(other.item); // pick up the item
+      if (other.item is Equipable)
+        inv.equip(other.item); // equip it right away
+    } else if (other is Portal && input["down"] != 0) {
+      other.open(this);
+    }
   }
   
   // ==== PACKING ====
@@ -230,5 +242,60 @@ class Stats extends Sync {
   unpack(data) {
     hpmax = data["hpmax"]; mpmax = data["mpmax"];
     jump = data["jump"]; speed = data["speed"];
+  }
+}
+
+class Inventory {
+  // the hero's inventory
+  // HOW IT WORKS:
+  // The inventory is divided into two parts: equipment and backpack
+  // Equipment holds one item for each item slot defined by Equipable.TYPE
+  // Backpack will hold all unequipped items
+  // The backpack will endlessly stack any items defined to be identical by their hashCode function
+  
+  List<Equipable> equipment = new List(6); // equipped items
+  Map<Item,int> backpack = {}; // unequipped items
+  
+  Stats get stats => // get the stat bonus from the inventory
+    equipment.fold(new Stats(), (acc,item) {
+        if (item != null)
+          return acc + item.stats;
+        else
+          return acc;
+    });
+  
+  bool equip(Equipable item) {
+    if (equipment[item.type] == null || unequip(equipment[item.type])) { // is the equipment slot free?
+      if (take(item)) { // take the item from the backpack
+        equipment[item.type] = item; // equip the item
+        return true;
+      }
+    }
+    return false; // might also fail later if some items are non-equipable
+  }
+  
+  bool unequip(Equipable item) {
+    if (put(item)) {
+      equipment[item.type] = null; // unequip the item
+      return true;
+    }
+    return false;
+  }
+  
+  bool take(Item item, {num count : 1}) { // take an item from the backpack
+    if (backpack[item] > count)
+      backpack[item] -= count;
+    else if (backpack[item] == count)
+      backpack.remove(item);
+    else
+      return false; // not enough items to take
+    return true; // otherwise we succeeded
+  }
+  bool put(Item item, {num count : 1}) { // put an item into the backpack
+    if (backpack.containsKey(item))
+      backpack[item] += count;
+    else
+      backpack[item] = count;
+    return true; // for now always succeeds, might later fail if backpack is full
   }
 }

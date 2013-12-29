@@ -10,6 +10,8 @@ part 'common/gamemap.dart';
 part 'common/spell.dart';
 part 'common/enemy.dart';
 part 'common/projectile.dart';
+part 'common/item.dart';
+part 'common/inanimate.dart';
 
 class Sync {
   // Base class for all objects which will be synced across the server

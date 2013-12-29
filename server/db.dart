@@ -21,7 +21,9 @@ Map<String,Account> accs = {
 // Maps indexed by mapid
 Map<String, GameMap> maps = {
   "test1" : new GameMap("test1",
-      [new Actor(140,100),
+      [new Pickupable(140,100,new HealthPotion()),
+       new Pickupable(400,100,new PropellorHat()),
+       new Portal(500,100,50,50,"test2"),
        new RandEnemy(200,100,new Stats(hpmax:100))],
       [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
        [1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
