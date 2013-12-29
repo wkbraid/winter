@@ -1,6 +1,7 @@
 library gui;
 import '../stage/stage.dart';
 import '../utils/utils.dart';
+import 'dart:html';
 
 class Gui {
   Stage stage;
@@ -9,6 +10,7 @@ class Gui {
   Gui(this.stage, this.view);
   
   update() { }
+
   
   draw() {
     // get the gui context
@@ -47,15 +49,15 @@ class Gui {
        ..strokeRect(600,0,50,400);
     
     // draw the hero's items in the gui
-    ctx..strokeStyle = "purple"
-       ..textAlign = "center";
     int i = 0;
+    querySelector("#inventory").children = [];
     for (Item key in stage.hero.inv.backpack.keys) {
       int count = stage.hero.inv.backpack[key];
-      ctx..fillStyle = key.color
-         ..fillRect(610,10+40*i,30,30)
-         ..strokeRect(610,10+40*i,30,30)
-         ..strokeText(count.toString(), 625, 25+40*i);
+      DivElement obj = new DivElement();
+      obj.className = "inv_obj";
+      querySelector("#inventory").children.add(obj);
+      obj.style.background = key.color;
+      obj.text = count.toString();
       i++;
     }
   }

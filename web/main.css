@@ -25,6 +25,35 @@ h1, p {
   float:left;
 }
 
+#overlay {
+  position:absolute;
+  float:left;
+  height:399px;
+  width:649px;
+  border:none;
+}
+
+#inventory {
+  position:relative;
+  float:right;
+  width:50px;
+  height:397px;
+  background-color:thistle;
+  border:1px solid violet;
+}
+
+.inv_obj {
+  position:relative;
+  width:30px;
+  height:25px;
+  left:10px;
+  margin-top:10px;
+  background-color:blue;
+  text-align:center;
+  padding-top:5px;
+  border:1px solid black;
+}
+
 #sample_text_id {
   font-size: 24pt;
   text-align: center;
