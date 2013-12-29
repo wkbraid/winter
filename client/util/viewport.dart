@@ -13,12 +13,14 @@ class Viewport {
   
   num x = 0,y = 0; // the top left corner of the viewport in map coordinates
   
+  Actor following; // The actor the viewport is following
+  
   Viewport(this.canvas);
   
   void update() { // update the viewport
-    //ctx.translate(x, y); // move back to the origin
+    // ctx.translate(x, y); // move back to the origin
 
-    //ctx.translate(-x, -y);
+    // ctx.translate(-x, -y);
   }
   
   // ==== DRAW FUNCTIONS ====

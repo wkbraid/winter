@@ -116,7 +116,10 @@ class Being extends Actor {
   num aimx, aimy;
   Being target;
   
-  Being(x,y,this.base) : super(x,y);
+  Being(x,y,this.base) : super(x,y){
+    hp = stats.hpmax; // start with full hp/mp
+    mp = stats.mpmax;
+  }
   
   void update(dt) {
     super.update(dt);
@@ -127,7 +130,7 @@ class Being extends Actor {
   }
   
   // ==== PACKING ====
-  // The client's shouldn't need to know anything more about beings
+  // Client should not get all data
   Being.fromPack(data) : super.fromPack(data);
 }
 
@@ -144,7 +147,7 @@ class Hero extends Being {
   Stats get stats => base; // + inv.stats + buffs.fold(new Stats(), (acc,buff) => acc + buff.stats);
   
   // most recent input information from the client
-  dynamic input = {"up":0,"down":0,"left":0,"right":0}; 
+  dynamic input = {"up":0,"down":0,"left":0,"right":0,"mousex":0,"mousey":0}; 
   
   Hero(this.name,x,y,this.mapid,base) : super(x,y,base) {
     width = 20;
@@ -153,6 +156,8 @@ class Hero extends Being {
   }
   
   void update(num dt) {
+    aimx = input["mousex"]; // aim at the mouse position
+    aimy = input["mousey"];
     vx += (input["right"] - input["left"])*stats.speed*dt;
     if (down && input["up"] > 0) vy -= stats.jump;
     down = false;

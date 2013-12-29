@@ -23,12 +23,51 @@ class GameMap extends Sync {
       hero.update(dt); // update each player on the map
     }
     
-    // TODO: Remove dead actors
-    tmp = actors.toList();
+    // remove the dead actors
+    actors.removeWhere((act) => act.dead);
+    tmp = actors.toList(); // take a copy for concurrency
     for (Actor act in tmp) { // update all other actors
       act.update(dt);
     }
+    
+    collide(); // check for collision
   }
+  
+  void collide() { // Check for and perform any collisions
+    var tmpheros = heros.values.toList();
+    var tmpactors = actors.toList();
+    
+    // Check heros for collisions
+    for (int h = 0; h < tmpheros.length; h++) {
+      for(Actor act in tmpactors) { // collide with actors
+        if (collision(act,tmpheros[h])) {
+          act.collide(tmpheros[h]);
+          tmpheros[h].collide(act);
+        }
+      }
+      for (int h2 = h+1; h2 < tmpheros.length; h2++) { // collide with all other heros
+        if (collision(tmpheros[h],tmpheros[h2])) {
+          tmpheros[h].collide(tmpheros[h2]);
+          tmpheros[h2].collide(tmpheros[h]);
+        }
+      }
+    }
+    // Check actor-actor collisions
+    for (int a = 0; a < tmpactors.length; a++) {
+      for (int a2 = a+1; a2 < tmpactors.length; a2++) {
+        if (collision(tmpactors[a],tmpactors[a2])) {
+          tmpactors[a].collide(tmpactors[a2]);
+          tmpactors[a2].collide(tmpactors[a]);
+        }
+      }
+    }
+  }
+  bool collision(Actor act1, Actor act2) =>  // Check whether two actors collided
+    act2.x - act2.width/2 < act1.x + act1.width/2
+    && act2.x + act2.width/2 > act1.x - act1.width/2
+    && act2.y - act2.height/2 < act1.y + act1.height/2
+    && act2.y + act2.height/2 > act1.y - act1.height/2;
+  
   
   // === Heros ===
   void addHero(Hero hero) { // Add a player to the map

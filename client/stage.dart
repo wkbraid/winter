@@ -36,7 +36,8 @@ class Stage {
     if (Keyboard.isDown(KeyCode.A)) left = dt;
     if (Keyboard.isDown(KeyCode.D)) right = dt;
     send({"cmd": "input",
-      "up":up, "down":down,"left":left,"right":right
+      "up":up, "down":down,"left":left,"right":right,
+      "mousex": Mouse.x + view.x, "mousey" : Mouse.y+view.y
     });
   }
   
