@@ -125,7 +125,7 @@ class Being extends Actor {
     super.update(dt);
     buffs.removeWhere((buff) => buff.duration <= 0); // clear finished buffs
     for (Buff buff in buffs) { // update buffs
-      buff.update();
+      buff.update(dt);
     }
   }
   
@@ -158,12 +158,19 @@ class Hero extends Being {
     height = 20;
     color = "lightgreen";
     
+    target = this; // target yourself
+    
     spells = {
-      "pellet" : new PelletSpell(this)
+      "pellet" : new PelletSpell(this),
+      "poison" : new PoisonSpell(this)
     }; 
   }
   
   void update(num dt) {
+    if (hp < 0) {
+      print("$name is dead.");
+      hp = stats.hpmax;
+    }
     aimx = input["mousex"]; // aim at the mouse position
     aimy = input["mousey"];
     vx += (input["right"] - input["left"])*stats.speed*dt;

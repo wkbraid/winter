@@ -37,8 +37,8 @@ class Buff {
   
   Buff(this.target);
   
-  void update() { // update the effects of the buff
-    duration--;
+  void update(dt) { // update the effects of the buff
+    duration -= dt;
   }
 }
 
@@ -61,5 +61,29 @@ class PelletSpell extends Spell {
         caster.vx + (caster.aimx - caster.x)*20/dist,
         caster.vy + (caster.aimy - caster.x)*20/dist,
         10, caster));
+  }
+}
+
+class PoisonSpell extends Spell {
+  // poisons the caster's target
+  PoisonSpell(caster) : super(caster) {
+    mana = 10; cooldown = 500;
+  }
+  void effects() {
+    caster.target.buffs.add(new PoisonBuff(caster.target));
+  }
+}
+
+//==========================================
+// Game Buffs
+//==========================================
+class PoisonBuff extends Buff {
+  PoisonBuff(target) : super(target) {
+    duration = 1000; // 1 second duration
+    color = "green";
+  }
+  void update(dt) {
+    super.update(dt);
+    target.hp -= dt/100;
   }
 }
