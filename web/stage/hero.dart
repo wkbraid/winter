@@ -85,6 +85,7 @@ class Hero extends Being {
   // Spell keybindings for the hero
   Map<int,String> Keybindings = {}; // keybindings should eventually be taken care of by the gui
   String mousespell;
+  bool settingSpell;
   
   Stats base = new Stats(); // base statistics for the hero
   
@@ -128,6 +129,9 @@ class Hero extends Being {
     bordercolor = "darkred";
     
     target = this; // default target self
+    
+    //~~~~~
+    settingSpell = false;
   }
   
   Stats get stats => base + inv.stats + buffs.fold(new Stats(), (acc,buff) => acc + buff.stats); // get the hero's stats
@@ -143,9 +147,19 @@ class Hero extends Being {
     if (Keyboard.isDown(KeyCode.W) && down)  vy -= stats.jump; //only jump if on a surface
 
     // Check for keybindings
-    for (int key in Keybindings.keys) {
-      if (Keyboard.isDown(key))
-        spells[Keybindings[key]].cast();
+    if(settingSpell){ //check if in spell-setting mode
+      for (int key in Keybindings.keys){ //if yes, set spell to left click
+        if (Keyboard.isDown(key)){
+          mousespell = Keybindings[key];
+          settingSpell = false;
+        }
+     }
+    }
+    else{
+      for (int key in Keybindings.keys){ // if no, cast it
+        if (Keyboard.isDown(key))
+          spells[Keybindings[key]].cast();
+     }
     }
     
     // Check for mouse
@@ -157,6 +171,11 @@ class Hero extends Being {
     posy = stage.view.height/2;
     aimx = Mouse.x; // default aim towards the mouse
     aimy = Mouse.y;
+    
+    //~~~~~HOTBAR Testing
+    
+    if(Keyboard.isDown(KeyCode.M))//for memoize..
+        settingSpell = true;
     
     super.update();
   }
@@ -185,4 +204,6 @@ class Hero extends Being {
       other.open(this);
     }
   }
+  
+
 }

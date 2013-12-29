@@ -58,5 +58,34 @@ class Gui {
          ..strokeText(count.toString(), 625, 25+40*i);
       i++;
     }
+    //~~~~~~~~~~~spell/hotbar graphics~~~~~~~~~~~~
+    
+    //draw hotbar/hotcircle
+    ctx..strokeStyle = "purple" // red bit
+      ..fillStyle = "red"
+      ..lineWidth = 90
+      ..beginPath()
+        ..arc(-30, 430, 75, -1.4, -.2, false)
+      ..fill()
+      ..stroke()
+      ..closePath();
+    //draw current spell icon
+    ctx..strokeStyle = "black"
+        ..fillStyle = "white"
+        ..lineWidth = 3
+        ..beginPath()
+        ..arc(30, 370, 20, 0, 6.3, false)
+        ..fill()
+        ..stroke()
+        ..closePath()
+        ..lineWidth = 1
+        //this ought to have an image represeting the spell eventually
+        ..strokeText(stage.hero.mousespell, 30, 372, 40);
+    
+
+
+    
+    
+    
   }
 }
