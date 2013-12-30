@@ -23,6 +23,8 @@ Map<String, GameMap> maps = {
   "test1" : new GameMap("test1",
       [new Pickupable(140,100,new HealthPotion()),
        new Pickupable(400,100,new PropellorHat()),
+       new Pickupable(170,100,new HealthPotion()),
+       new Pickupable(450,100,new ManaPotion()),
        new Portal(500,100,50,50,"test2"),
        new RandEnemy(200,100,new Stats(hpmax:100))],
       [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],

@@ -66,10 +66,8 @@ class Viewport {
     // draw the hero's items in the gui
     int i = 0;
     querySelector("#inventory").children = [];
-    print(hero.inv.backpack);
     
     for (Item key in hero.inv.backpack.keys) {
-      print("There are ${hero.inv.backpack[key]} of item ${key.id} in the backpack");
       int count = hero.inv.backpack[key];
       DivElement obj = new DivElement();
       obj.className = "inv_obj";
