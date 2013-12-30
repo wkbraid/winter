@@ -15,6 +15,21 @@ class Item {
   
   int get hashCode => id.hashCode; // by default, items are defined to be the same if their ids are the same
   bool operator==(other) => (other is Item) && hashCode == other.hashCode;
+  
+  // ==== PACKING ====
+  Item.fromPack(data) {
+    unpack(data);
+  }
+  pack() {
+    return {
+      "id" : id,
+      "color" : color,
+    };
+  }
+  unpack(data) {
+    id = data["id"];
+    color = data["color"];
+  }
 }
 
 class Equipable extends Item {
@@ -39,6 +54,21 @@ class Equipable extends Item {
   // Equipables are the same if they have the same type, stats and name
   int get hashCode => super.hashCode * 37 + 17 * type.hashCode + 37*stats.hashCode;
   bool operator==(other) => other is Equipable && type == other.type && stats == other.stats;
+  
+  // ==== PACKING ====
+  Equipable.fromPack(data) : super.fromPack(data) {
+    unpack(data);
+  }
+  pack() {
+    var data = super.pack();
+    data["type"] = type;
+    data["stats"] = stats.pack();
+    return data;
+  }
+  unpack(data) {
+    type = data["type"];
+    stats.unpack(data["stats"]);
+  }
 }
 //=============================================
 // Game Equipables

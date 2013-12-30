@@ -23,7 +23,7 @@ class Stage {
   void receive(data) { // receive data from the server, passed from the game
     if (data["cmd"] == "update") { // update from server
       map.unpack(data["map"]);
-      hero.unpack(data["hero"]);
+      hero.unpackRest(data["hero"]);
     }
   }
   void update(num dt) { // update the stage's contents

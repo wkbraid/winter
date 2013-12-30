@@ -148,7 +148,7 @@ class Client {
     }
     send({"cmd":"update",
       "map": map.pack(),
-      "hero" : acc.hero.pack()
+      "hero" : acc.hero.packRest()
     });
   }
   
