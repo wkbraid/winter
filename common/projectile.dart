@@ -17,18 +17,23 @@ class Projectile extends Actor {
   }
   
   void update(dt) {
-    dead = (vx.truncate() == 0) && (vy.truncate() == 0) && down;
+    dead = (vx.truncate() == 0) && (vy.truncate() == 0) && edges.down.contains(Tile.WALL);
     super.update(dt); // physics and move
   }
   
   num collideX(num dx) {
-    vx *= -0.9;
-    return 0;
+    if ((dx < 0 && edges.left.contains(Tile.WALL)) || dx > 0 && edges.right.contains(Tile.WALL)) {
+      vx *= -0.9;
+      return 0;
+    }
+    return dx; // No collision
   }
   num collideY(num dy) {
-    vy *= -0.9;
-    if (dy > 0) down = true;
-    return 0;
+    if ((dy < 0 && edges.up.contains(Tile.WALL)) || dy > 0 && edges.down.contains(Tile.WALL)) {
+      vy *= -0.9; // bounce
+      return 0;
+    }
+    return dy; // No collision
   }
   
   void collide(Actor other) {

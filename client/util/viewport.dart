@@ -34,7 +34,12 @@ class Viewport {
       for (var i = x ~/ m.ts; i <= (x + width) ~/ m.ts; i++) {
         if (i >= 0 && i < m.tdata[0].length && j >= 0 && j < m.tdata.length) {
           // simple differentiation of colors
-          ctx.fillStyle = (m.tdata[j][i] == 0) ? "white" : "black";
+          switch(m.tdata[j][i]) {
+            case Tile.AIR: ctx.fillStyle = "white"; break;
+            case Tile.WALL: ctx.fillStyle = "black"; break;
+            case Tile.CLOUD: ctx.fillStyle = "gray"; break;
+            case Tile.LADDER: ctx.fillStyle = "orange"; break;
+          }
           ctx.fillRect(i*m.ts,j*m.ts,m.ts,m.ts);
         }
       }

@@ -1,6 +1,13 @@
 // file: gamemap.dart
 part of common;
 
+class Tile {
+  static const int AIR = 0;
+  static const int WALL = 1;
+  static const int CLOUD = 2;
+  static const int LADDER = 3;
+}
+
 class GameMap extends Sync {
   // Represents a game map instance
   // Handles the map scenery, as well as all the actors on the map

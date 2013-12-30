@@ -1,6 +1,13 @@
 // file: actor.dart
 part of common;
 
+class Edges {
+  // Keeps track of the most recent tiles on the edges of the hero
+  List up = [];
+  List down = [];
+  List left = [];
+  List right = [];
+}
 
 class Actor extends Sync {
   // Base class for all map dwellers
@@ -9,10 +16,10 @@ class Actor extends Sync {
   
   num x,y; // Actor position in map coordinates
   num width = 10, height = 10; // Actor dimensions
+  Edges edges = new Edges();
   String color = "red"; // Simple description needed to draw the actor
   
   bool dead = false; // Is the actor dead?
-  bool down = false; // Is there something below the map
   
   num vx = 0; num vy = 0; // Actor velocity
   
@@ -29,55 +36,59 @@ class Actor extends Sync {
   
   // default functions
   void move(num dx, num dy) { // move the actor by dx,dy
-    down = false; // reset the ground status
-    
-    if (dx > 0 && sumHorz(x+dx+width/2) != 0)
-      dx = collideX(dx); // collide right
-    if (dx < 0 && sumHorz(x+dx-width/2) != 0)
-      dx = collideX(dx); // collide left
-    
-    if (dy > 0 && sumVert(y+dy+height/2) != 0)
-      dy = collideY(dy);
-    if (dy < 0 && sumVert(y+dy-height/2) != 0)
-      dy = collideY(dy);
+    lookHorz(dx); // Refresh the edges
+    lookVert(dy);
+    dx = collideX(dx); // collide horizontally
+    dy = collideY(dy); // collide vertically
     
     x += dx; // move the hero
     y += dy;
   }
-  num collideX(num dx) { // collide with a wall in the x direction
-    if (dx < 0)
+  num collideX(num dx) { // check for collisions in the x direction
+    if (dx < 0 && edges.left.contains(Tile.WALL)) {
       x = ((x+dx-width/2) ~/ map.ts)*map.ts + map.ts + width/2;
-    else
+      vx = 0;
+      return 0; // how much further we should move
+    } else if (dx > 0 && edges.right.contains(Tile.WALL)) {
       x = ((x+dx+width/2) ~/ map.ts)*map.ts - width/2 - 0.001;
-    vx = 0;
-    return 0;
+      vx = 0;
+      return 0; // how much further we should move
+    }
+    return dx; // No collision
   }
-  num collideY(num dy) { // collide with a wall in the y direction
-    if (dy > 0) down = true; // there is something below us
-    if (dy < 0)
+  num collideY(num dy) { // check for collisions in the y direction
+    if (dy < 0 && edges.up.contains(Tile.WALL)) {
       y = ((y+dy-height/2) ~/ map.ts)*map.ts + map.ts + height/2;
-    else
-      y = ((y+dy+height/2) ~/ map.ts)*map.ts - height/2 - 0.001; 
-    vy = 0;
-    return 0;
-  }
-  
-  // sum over the map coordinates along the ypos along the edge along the width of the actor
-  num sumVert(ypos) {
-    num sum = 0;
-    for (num xpos = x - width/2; xpos < x + width/2; xpos += map.ts/2) {
-      sum += map.get(xpos, ypos);
+      vy = 0;
+     return 0; // how much further we should move
+    } else if (dy > 0 && (edges.down.contains(Tile.WALL) || edges.down.contains(Tile.CLOUD))) {
+      y = ((y+dy+height/2) ~/ map.ts)*map.ts - height/2 - 0.001;
+      vy = 0;
+      return 0; // how much further we should move
     }
-    return sum + map.get(x + width/2, ypos);
+    return dy; // No collision
   }
   
-  // sum over the map coordinates along the xpos along the edge along the height of the actor
-  num sumHorz(xpos) {
-    num sum = 0;
+  
+  void lookVert(num dy) { // Refresh the tiles along the top and bottom of the actor
+    edges.up = []; // reset edges
+    edges.down = [];
+    for (num xpos = x - width/2; xpos < x + width/2; xpos += map.ts) {
+      edges.up.add(map.get(xpos, y+dy-height/2));
+      edges.down.add(map.get(xpos, y+dy+height/2));
+    }
+    edges.up.add(map.get(x+width/2, y+dy-height/2));
+    edges.down.add(map.get(x+width/2, y+dy+height/2));
+  }
+  void lookHorz(num dx) { // Refresh the tiles along the sides of the actor
+    edges.left = []; //reset edges
+    edges.right = [];
     for (num ypos = y - height/2; ypos < y + height/2; ypos += map.ts/2) {
-      sum += map.get(xpos, ypos);
+      edges.left.add(map.get(x+dx-width/2,ypos));
+      edges.right.add(map.get(x+dx+width/2,ypos));
     }
-    return sum + map.get(xpos,y+height/2);
+    edges.left.add(map.get(x+dx-width/2,y+height/2));
+    edges.right.add(map.get(x+dx+width/2,y+height/2));
   }
   
   // ==== PACKING ====
@@ -174,8 +185,11 @@ class Hero extends Being {
     aimx = input["mousex"]; // aim at the mouse position
     aimy = input["mousey"];
     vx += (input["right"] - input["left"])*stats.speed*dt;
-    if (down && input["up"] > 0) vy -= stats.jump;
-    down = false;
+    if (edges.up.contains(Tile.LADDER) && input["up"] > 0) {
+      vy -= stats.speed*dt*5 + g*dt; // move upwards countering gravity
+    } else if ((edges.down.contains(Tile.WALL) || edges.down.contains(Tile.CLOUD)) && input["up"] > 0) {
+      vy -= stats.jump;
+    }
     
     if (input["mousedown"]) {
       spells["pellet"].cast();

@@ -46,7 +46,7 @@ class RandEnemy extends Enemy {
   void update(dt) {
     // decide whether we should randomly jump
     var rand = new Random();
-    if (rand.nextDouble() < 0.01 && down)
+    if (rand.nextDouble() < 0.01 && edges.down.contains(Tile.WALL))
       vy -= 18;
     // now decide which way we should push
     if (vx.abs() < 1)
