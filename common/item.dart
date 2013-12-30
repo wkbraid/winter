@@ -68,6 +68,7 @@ class Equipable extends Item {
   unpack(data) {
     type = data["type"];
     stats.unpack(data["stats"]);
+    super.unpack(data);
   }
 }
 //=============================================
