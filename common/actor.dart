@@ -209,6 +209,7 @@ class Hero extends Being {
       other.dead = inv.put(other.item); // pick up the item
       if (other.item is Equipable)
         inv.equip(other.item); // equip it right away
+
     } else if (other is Portal && input["down"] != 0) {
       other.open(this);
     }
@@ -230,6 +231,15 @@ class Hero extends Being {
     name = data["name"];
     mapid = data["mapid"];
     super.unpack(data); // Unpack basics
+  }
+	packRest() { // Pack up semi-secret data to be saved in the database, or sent to the client who owns the hero
+    var data = pack();
+    data["inv"] = inv.pack();
+    return data;
+  }
+  unpackRest(data) { // unpack semi-secret data
+    inv.unpack(data["inv"]);
+    unpack(data);
   }
 }
 
@@ -321,5 +331,35 @@ class Inventory {
     else
       backpack[item] = count;
     return true; // for now always succeeds, might later fail if backpack is full
+  }
+  
+  // ==== PACKING ====
+  pack() {
+    var data = {};
+    data["equipment"] = [];
+    var tmp = equipment.toList();
+    for (Equipable item in tmp) {
+      if (item != null)
+        data["equipment"].add(item.pack());
+    }
+    
+    
+    tmp = backpack.keys.toList(); // take a copy for concurrency
+    data["backpack"] = [];
+    for (Item item in tmp) { // pack up the backpack
+      data["backpack"].add({"key":item.pack(),"value":backpack[item]});
+    }
+    return data;
+  }
+  unpack(data) {
+    equipment = new List(6);
+    for (var itemd in data["equipment"]) {
+      Equipable item = new Equipable.fromPack(itemd);
+      equipment[item.type] = item;
+    }
+    backpack = {}; // expensively overwrite backpack
+    for (var kvpair in data["backpack"]) {
+      backpack[new Item.fromPack(kvpair["key"])] = kvpair["value"];
+    }
   }
 }
