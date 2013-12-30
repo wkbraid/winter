@@ -145,7 +145,20 @@ class Being extends Actor {
   
   // ==== PACKING ====
   // Client should not get all data
-  Being.fromPack(data) : super.fromPack(data);
+  Being.fromPack(data) : super.fromPack(data) {
+    unpack(data);
+  }
+  pack() {
+    var data = super.pack();
+    data["hp"] = hp;
+    data["mp"] = mp;
+    return data;
+  }
+  unpack(data) {
+    mp = data["mp"];
+    hp = data["hp"];
+    super.unpack(data);
+  }
 }
 
 
