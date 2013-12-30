@@ -54,6 +54,16 @@ h1, p {
   border:1px solid black;
 }
 
+#stats{
+  position:relative;
+  float:left;
+  height:150px;
+  width:150px;
+  background-color:white;
+  opacity:0.4;
+  border:1px solid black;
+}
+
 #sample_text_id {
   font-size: 24pt;
   text-align: center;

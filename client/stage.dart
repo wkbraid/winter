@@ -24,7 +24,6 @@ class Stage {
     if (data["cmd"] == "update") { // update from server
       map.unpack(data["map"]);
       hero.unpackRest(data["hero"]);
-      print(hero.inv.pack());
     }
   }
   void update(num dt) { // update the stage's contents
@@ -47,5 +46,7 @@ class Stage {
     view.clear(); // Clear the screen
     view.drawGameMap(map); // Draw the map
     view.drawInv(hero); // Draw the inventory
+    print(hero.stats.speed);
+    //view.drawStats(hero);
     }
 }

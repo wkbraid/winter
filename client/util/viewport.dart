@@ -78,6 +78,11 @@ class Viewport {
     }
   }
   
+  void drawStats(Hero hero){
+    // draw the hero's stats in the gui
+    querySelector("#stats").text = hero.stats.toString();
+  }
+  
   
   
 }
