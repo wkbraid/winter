@@ -252,12 +252,14 @@ class Stats extends Sync {
   num hp,hpmax,mp,mpmax,jump,speed; // all of the stats
   Stats({this.hpmax:0,this.mpmax:0,this.jump:0,this.speed:0}); // everything is zero by default
   Stats operator+(Stats other) { // add the stats together and return a new Stats object
-    Stats result = new Stats();
-    result.hpmax = hpmax + other.hpmax; // it would be nice to find a more compact way of doing this
-    result.mpmax = mpmax + other.mpmax;
-    result.jump = jump + other.jump;
-    result.speed = speed + other.speed;
-    return result;
+    if (other != null) {  
+      Stats result = new Stats();
+      result.hpmax = hpmax + other.hpmax; // it would be nice to find a more compact way of doing this
+      result.mpmax = mpmax + other.mpmax;
+      result.jump = jump + other.jump;
+      result.speed = speed + other.speed;
+      return result;
+    }
   }
   
   // stats are equal if all of their internal components are equal
