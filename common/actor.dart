@@ -145,7 +145,20 @@ class Being extends Actor {
   
   // ==== PACKING ====
   // Client should not get all data
-  Being.fromPack(data) : super.fromPack(data);
+  Being.fromPack(data) : super.fromPack(data) {
+    unpack(data);
+  }
+  pack() {
+    var data = super.pack();
+    data["hp"] = hp;
+    data["mp"] = mp;
+    return data;
+  }
+  unpack(data) {
+    mp = data["mp"];
+    hp = data["hp"];
+    super.unpack(data);
+  }
 }
 
 
@@ -207,12 +220,8 @@ class Hero extends Being {
   void collide(Actor other) {
     if (other is Pickupable && input["down"] != 0) {
       other.dead = inv.put(other.item); // pick up the item
-      print(inv.equipment);
-      print(inv.backpack);
       if (other.item is Equipable)
         inv.equip(other.item); // equip it right away
-        print(inv.equipment);
-        print(inv.backpack);
     } else if (other is Portal && input["down"] != 0) {
       other.open(this);
     }

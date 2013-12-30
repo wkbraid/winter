@@ -13,6 +13,7 @@ part 'common/enemy.dart';
 part 'common/projectile.dart';
 part 'common/item.dart';
 part 'common/inanimate.dart';
+part 'common/battle.dart';
 
 class Sync {
   // Base class for all objects which will be synced across the server
