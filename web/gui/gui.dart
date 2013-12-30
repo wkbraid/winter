@@ -5,14 +5,14 @@ import '../utils/utils.dart';
 class Gui {
   Stage stage;
   Viewport view;
+
+  Gui(this.stage, this.view){ }
   
-  Gui(this.stage, this.view);
+  void update(){ }
   
-  update() { }
-  
-  draw() {
+  void draw() {
     // get the gui context
-    var ctx = view.guicontext;
+    var ctx = view.guicontext; //what class is this thing?
     // pretty box
     ctx..fillStyle = "lightgreen"
        ..strokeStyle = "darkgreen"
@@ -62,30 +62,49 @@ class Gui {
     
     //draw hotbar/hotcircle
     ctx..strokeStyle = "purple" // red bit
-      ..fillStyle = "red"
+      ..fillStyle = "purple"
       ..lineWidth = 90
       ..beginPath()
-        ..arc(-30, 430, 75, -1.4, -.2, false)
+        ..arc(30, 400, 30, -3.2, 0, false)
       ..fill()
       ..stroke()
-      ..closePath();
-    //draw current spell icon
+      ..closePath()
+      ..fillRect(0, 370, 600, 100);
+    
+    //draw left click spell icon
     ctx..strokeStyle = "black"
-        ..fillStyle = "white"
-        ..lineWidth = 3
+        ..fillStyle = "grey"
+        ..lineWidth = 2
         ..beginPath()
-        ..arc(30, 370, 20, 0, 6.3, false)
+        ..ellipse(40, 370, 25, 35, 0, 0, 6.4, false)
         ..fill()
         ..stroke()
         ..closePath()
-        ..lineWidth = 1
+        ..strokeRect(18, 355, 45, 1)
+        ..strokeRect(40, 335, 1, 20)
         //this ought to have an image represeting the spell eventually
-        ..strokeText(stage.hero.mousespell, 30, 372, 40);
+        ..lineWidth = 1
+        ..strokeText(stage.hero.mousespell, 40, 380, 50)
+        ..strokeStyle = "red"
+        ..strokeRect(31, 348, 1, 22);
     
-
-
-    
-    
-    
+    //draw other spell icons
+    Map<int,String> spellList = stage.hero.Keybindings;
+    drawSpellIcon('Z', 90, 100, spellList);
+    drawSpellIcon("X", 88, 170, spellList);
+    drawSpellIcon("C", 67, 240, spellList);
+    drawSpellIcon("V", 86, 310, spellList);
+    drawSpellIcon("T", 84, 380, spellList);
+    drawSpellIcon("O", 80, 450, spellList);
+    drawSpellIcon("P", 79, 520, spellList);
+  }
+  void drawSpellIcon(String key, num keyNum, num sideDist, Map<int,String> spellList){
+    var ctx = view.guicontext;
+    ctx..strokeStyle = "black"
+       ..fillStyle = "white"
+       ..lineWidth = 1
+       ..fillRect(sideDist, 375, 50, 20)
+       ..strokeRect(sideDist, 375, 50, 20)
+       ..strokeText(key + " : " + spellList[keyNum], sideDist + 25, 390, 50);
   }
 }
