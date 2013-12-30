@@ -46,7 +46,6 @@ class Stage {
     view.clear(); // Clear the screen
     view.drawGameMap(map); // Draw the map
     view.drawInv(hero); // Draw the inventory
-    print(hero.stats.speed);
-    //view.drawStats(hero);
+    view.drawStats(hero); // Draw the hero's stats
     }
 }
