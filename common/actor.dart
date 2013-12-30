@@ -29,7 +29,9 @@ class Actor extends Sync {
   
   void update(dt) {
     vy += g*dt; // gravity
-    vx *= pow(mu,dt); // friction
+    // friction
+    if (!edges.down.contains(Tile.ICE))
+      vx *= pow(mu,dt); // ice has no friction
     vy *= pow(mu,dt);
     move(vx,vy); // move the enemy
   }
@@ -44,12 +46,13 @@ class Actor extends Sync {
     x += dx; // move the hero
     y += dy;
   }
+  
   num collideX(num dx) { // check for collisions in the x direction
-    if (dx < 0 && edges.left.contains(Tile.WALL)) {
+    if (dx < 0 && Tile.solid(edges.left)) {
       x = ((x+dx-width/2) ~/ map.ts)*map.ts + map.ts + width/2;
       vx = 0;
       return 0; // how much further we should move
-    } else if (dx > 0 && edges.right.contains(Tile.WALL)) {
+    } else if (dx > 0 && Tile.solid(edges.right)) {
       x = ((x+dx+width/2) ~/ map.ts)*map.ts - width/2 - 0.001;
       vx = 0;
       return 0; // how much further we should move
@@ -57,11 +60,11 @@ class Actor extends Sync {
     return dx; // No collision
   }
   num collideY(num dy) { // check for collisions in the y direction
-    if (dy < 0 && edges.up.contains(Tile.WALL)) {
+    if (dy < 0 && Tile.solid(edges.up)) {
       y = ((y+dy-height/2) ~/ map.ts)*map.ts + map.ts + height/2;
       vy = 0;
      return 0; // how much further we should move
-    } else if (dy > 0 && (edges.down.contains(Tile.WALL) || edges.down.contains(Tile.CLOUD))) {
+    } else if (dy > 0 && (Tile.solid(edges.down) || edges.down.contains(Tile.CLOUD))) {
       y = ((y+dy+height/2) ~/ map.ts)*map.ts - height/2 - 0.001;
       vy = 0;
       return 0; // how much further we should move
@@ -187,7 +190,7 @@ class Hero extends Being {
     vx += (input["right"] - input["left"])*stats.speed*dt;
     if (edges.up.contains(Tile.LADDER) && input["up"] > 0) {
       vy -= stats.speed*dt*5 + g*dt; // move upwards countering gravity
-    } else if ((edges.down.contains(Tile.WALL) || edges.down.contains(Tile.CLOUD)) && input["up"] > 0) {
+    } else if (vy >= 0 && (Tile.solid(edges.down) || edges.down.contains(Tile.CLOUD)) && input["up"] > 0) {
       vy -= stats.jump;
     }
     

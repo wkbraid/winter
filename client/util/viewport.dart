@@ -39,6 +39,7 @@ class Viewport {
             case Tile.WALL: ctx.fillStyle = "black"; break;
             case Tile.CLOUD: ctx.fillStyle = "gray"; break;
             case Tile.LADDER: ctx.fillStyle = "orange"; break;
+            case Tile.ICE: ctx.fillStyle = "lightblue"; break;
           }
           ctx.fillRect(i*m.ts,j*m.ts,m.ts,m.ts);
         }

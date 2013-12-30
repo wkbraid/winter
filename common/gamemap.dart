@@ -6,6 +6,11 @@ class Tile {
   static const int WALL = 1;
   static const int CLOUD = 2;
   static const int LADDER = 3;
+  static const int ICE = 4;
+  
+  // Are there any solid tiles?
+  static bool solid(List<int> ts) =>
+    ts.any((t) => t == WALL || t == ICE);
 }
 
 class GameMap extends Sync {
