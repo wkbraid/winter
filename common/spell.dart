@@ -40,6 +40,20 @@ class Buff {
   void update(dt) { // update the effects of the buff
     duration -= dt;
   }
+  
+  // ==== PACKING ====
+  Buff.fromPack(data) {
+    duration = data["duration"];
+    color = data["color"];
+    stats = stats.unpack(data["stats"]);
+  }
+  pack() {
+    return {
+      "duration" : duration,
+      "color": color,
+      "stats": stats.pack()
+    }; // no way to send effects, so those should have a description
+  }
 }
 
 //===========================================

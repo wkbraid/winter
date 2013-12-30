@@ -121,7 +121,7 @@ class Being extends Actor {
   
   Map<String,Spell> spells = {}; // The spells which can be cast by this being
   
-  Stats base; // The being's base stats
+  Stats base = new Stats(); // The being's base stats
   Stats get stats => base; // get the being's stats
   
   num mp,hp; // mana and health points
@@ -205,7 +205,6 @@ class Hero extends Being {
   }
   
   void collide(Actor other) {
-    print(other);
     if (other is Pickupable && input["down"] != 0) {
       other.dead = inv.put(other.item); // pick up the item
       print(inv.equipment);
@@ -239,10 +238,14 @@ class Hero extends Being {
   packRest() { // Pack up semi-secret data to be saved in the database, or sent to the client who owns the hero
     var data = pack();
     data["inv"] = inv.pack();
+    data["base"] = base.pack();
+    data["buffs"] = buffs.map((buff) => buff.pack()).toList();
     return data;
     }
   unpackRest(data) { // unpack semi-secret data
     inv.unpack(data["inv"]);
+    base.unpack(data["base"]);
+    buffs = data["buffs"].map((buffd) => new Buff.fromPack(buffd)).toList();
     unpack(data);
     }
 }

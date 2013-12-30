@@ -81,14 +81,14 @@ class SkiGoggles extends Equipable {
   SkiGoggles() : super("Ski Goggles",Equipable.HEAD) {
     desc = "Perhaps this used to be a ski resort. Perhaps not.";
     color = "brown";
-    stats.speed += 0.2; // increases speed by 0.2
+    stats.speed = 0.2; // increases speed by 0.2
   }
 }
 class PropellorHat extends Equipable {
   PropellorHat() : super("Propellor Hat",Equipable.HEAD) {
     desc = "You can't REALLY fly with one of these, can you? Well, can you?";
     color = "yellow";
-    stats.jump += 5; // increases jump by 5
+    stats.jump = 5; // increases jump by 5
   }
 }
 class MagicRing extends Equipable {
@@ -96,7 +96,7 @@ class MagicRing extends Equipable {
   MagicRing() : super("Ring of Magic Doing",Equipable.RING) {
     desc = "'A powerful wizard once owned this ring,' they said. But it looks suspiciously like one from a cereal box";
     color = "grey";
-    stats.mpmax *= 1.5; //gives 1.5x mana
+    stats.mpmax = 50; // gives 50 mana
   }
 }
 class ChainMailCape extends Equipable {
@@ -104,8 +104,8 @@ class ChainMailCape extends Equipable {
   ChainMailCape() : super("Cape of Chain Mail - The Worse Kind",Equipable.CAPE) {
     desc = "Chain mail! Look at all these links... to virus-filled web pages! It's THAT kind of chain mail.";
     color = "orange";
-    stats.jump -= 3; //decreases jump by 3
-    stats.hpmax *= .75; //decreases health to 3/4 health
+    stats.jump = -3; //decreases jump by 3
+    stats.hpmax = -25; //decreases health to 3/4 health
   }
 }
 class ChainMailCape2 extends Equipable {
@@ -113,8 +113,8 @@ class ChainMailCape2 extends Equipable {
   ChainMailCape2() : super("Cape of Chain Mail - The Better Kind",Equipable.CAPE) {
     desc = "Chain mail! Look at all these links... the more steel between me and my enemy, the better.";
     color = "orange";
-    stats.speed -= 0.2; //decreases speed by 0.2
-    stats.hpmax *= 2; //doubles max health
+    stats.speed = -3/1000; //decreases speed by 0.2
+    stats.hpmax = 100; //doubles max health
   }
 }
 class UrgencyBoots extends Equipable {
@@ -122,8 +122,8 @@ class UrgencyBoots extends Equipable {
   UrgencyBoots() : super("Boots of RUNNING AWAY!!!", Equipable.FEET) {
     desc = "Brave Sir Robin ran away. But not as fast as you with these boots.";
     color = "brown";
-    stats.speed *= 2; //doubles speed
-    stats.hpmax *= 0.6; //decreases wearer's max health to 3/5 of base hpmax.
+    stats.speed = 3/1000; //doubles speed
+    stats.hpmax = -40; //decreases wearer's max health to 3/5 of base hpmax.
   }
 }
 
