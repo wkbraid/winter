@@ -45,5 +45,6 @@ class Stage {
   void draw() { // draw the stage to the screen
     view.clear(); // Clear the screen
     view.drawGameMap(map); // Draw the map
-  }
+    view.drawInv(hero); // Draw the inventory
+    }
 }

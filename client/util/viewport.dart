@@ -59,5 +59,27 @@ class Viewport {
   void drawActor(Actor act) {
     ctx.fillStyle = act.color;
     ctx.fillRect(act.x-act.width/2, act.y-act.height/2, act.width, act.height);
+    
   }
+  
+  void drawInv(Hero hero){
+    // draw the hero's items in the gui
+    int i = 0;
+    querySelector("#inventory").children = [];
+    print(hero.inv.backpack);
+    
+    for (Item key in hero.inv.backpack.keys) {
+      print("There are ${hero.inv.backpack[key]} of item ${key.id} in the backpack");
+      int count = hero.inv.backpack[key];
+      DivElement obj = new DivElement();
+      obj.className = "inv_obj";
+      querySelector("#inventory").children.add(obj);
+      obj.style.background = key.color;
+      obj.text = count.toString();
+      i++;
+    }
+  }
+  
+  
+  
 }

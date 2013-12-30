@@ -205,10 +205,15 @@ class Hero extends Being {
   }
   
   void collide(Actor other) {
+    print(other);
     if (other is Pickupable && input["down"] != 0) {
       other.dead = inv.put(other.item); // pick up the item
+      print(inv.equipment);
+      print(inv.backpack);
       if (other.item is Equipable)
         inv.equip(other.item); // equip it right away
+        print(inv.equipment);
+        print(inv.backpack);
     } else if (other is Portal && input["down"] != 0) {
       other.open(this);
     }
