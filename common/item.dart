@@ -77,15 +77,47 @@ class Equipable extends Item {
 class SkiGoggles extends Equipable {
   SkiGoggles() : super("Ski Goggles",Equipable.HEAD) {
     color = "brown";
-    stats.speed = 0.2; // increases speed by 0.2
+    stats.speed += 0.2; // increases speed by 0.2
   }
 }
 class PropellorHat extends Equipable {
   PropellorHat() : super("Propellor Hat",Equipable.HEAD) {
     color = "yellow";
-    stats.jump = 5; // increases jump by 5
+    stats.jump += 5; // increases jump by 5
   }
 }
+class MagicRing extends Equipable {
+  //A powerful wizard's energy ring, increases mana.
+  MagicRing() : super("Ring of Magic Doing",Equipable.RING) {
+    color = "grey";
+    stats.mpmax *= 1.5; //gives 1.5x mana
+  }
+}
+class ChainMailCape extends Equipable {
+  //Spammy chain mail - weighs you down, more prone to viruses -> less health
+  ChainMailCape() : super("Cape of Chain Mail - The Worse Kind",Equipable.CAPE) {
+    color = "orange";
+    stats.jump -= 3; //decreases jump by 3
+    stats.hpmax *= .75; //decreases health to 3/4 health
+  }
+}
+class ChainMailCape2 extends Equipable {
+  //Medieval chain mail - heavy, so slower movement, but better resistance to damage
+  ChainMailCape2() : super("Cape of Chain Mail - The Better Kind",Equipable.CAPE) {
+    color = "orange";
+    stats.speed -= 0.2; //decreases speed by 0.2
+    stats.hpmax *= 2; //doubles max health
+  }
+}
+class UrgencyBoots extends Equipable {
+  //Special boots for running away - faster but you take more damage if hit
+  UrgencyBoots() : super("Boots of RUNNING AWAY!!!", Equipable.FEET) {
+    color = "brown";
+    stats.speed *= 2; //doubles speed
+    stats.hpmax *= 0.6; //decreases wearer's max health to 3/5 of base hpmax.
+  }
+}
+
 
 //=============================================
 // Game Items
