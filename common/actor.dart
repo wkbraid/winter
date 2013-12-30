@@ -343,11 +343,10 @@ class Inventory {
         data["equipment"].add(item.pack());
     }
     
-    
     tmp = backpack.keys.toList(); // take a copy for concurrency
     data["backpack"] = [];
     for (Item item in tmp) { // pack up the backpack
-      data["backpack"].add({"key":item.pack(),"value":backpack[item]});
+      data["backpack"].add({"key":item.pack(),"value":backpack[item],"equipable": item is Equipable});
     }
     return data;
   }
@@ -359,7 +358,10 @@ class Inventory {
     }
     backpack = {}; // expensively overwrite backpack
     for (var kvpair in data["backpack"]) {
-      backpack[new Item.fromPack(kvpair["key"])] = kvpair["value"];
+      if (kvpair["equipable"]) // TODO find a better way to do this
+        backpack[new Equipable.fromPack(kvpair["key"])] = kvpair["value"];
+      else
+        backpack[new Item.fromPack(kvpair["key"])] = kvpair["value"];
     }
   }
 }
