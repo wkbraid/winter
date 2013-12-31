@@ -6,9 +6,10 @@ import 'dart:async';
 import '../common.dart'; // common libs
 import 'util/utils.dart';
 import 'stage.dart';
+import 'gui.dart';
 
 void main() {
-  var g = new Game()..connect('127.0.0.1',23193);
+  var g = new Game()..connect('192.168.1.4',23193);
   querySelector("#area").requestFullscreen(); // TODO: figure out why this doesn't work
 }
 
@@ -23,6 +24,7 @@ class Game {
   Hero hero; // the currently logged in hero
   Viewport view; // The main game viewport
   Stage stage; // The game stage, handles most of the game logic
+  Gui gui; // handles graphical user interface
   
   void begin() { // We have successfully logged in, begin the game
     if (!loggedin) return;
@@ -42,7 +44,12 @@ class Game {
   void start(e) { // We are connected, start the game (should not be called directly)
     if (!connected) return; // game must be connected to the server to start
     print("Connected. Logging in");
-    send({"cmd":"login","user":"fred"}); // ask the server to log in
+    gui = new Gui();
+    gui.login((username) {      
+      send({"cmd":"login","user":username});
+      print("about to send");
+    });
+ // ask the server to log in
   }
   void stop(e) { // The connection is closed, stop the game
     if (connected) return; // stop should not be called directly, use disconnect instead

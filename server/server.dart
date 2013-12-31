@@ -170,7 +170,8 @@ class Client {
   void close() { // close this client's connection
     // TODO: Save character information to the fake database...
     // TODO: Get a real database...
-    map.removeHero(acc.hero); // Remove the hero from the map
+    if (loggedin)
+      map.removeHero(acc.hero); // Remove the hero from the map
     print('Client [${ws.hashCode}] disconnected');
     gsrv.removeClient(this); // remove the client from the connected clients
   }

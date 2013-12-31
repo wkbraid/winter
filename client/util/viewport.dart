@@ -77,6 +77,7 @@ class Viewport {
       i++;
     }
   }
+
   
   void drawStats(Hero hero){
     // draw the hero's stats in the gui
@@ -87,7 +88,5 @@ class Viewport {
     querySelector(".mana").style.width = hero.mp.toString() + "px"; // set manabar to mp, takes a little to catch up with game logic
     querySelector(".mana").text = hero.mp.toInt().toString(); // print mana
   }
-  
-  
   
 }
