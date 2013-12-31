@@ -31,6 +31,7 @@ h1, p {
   height:399px;
   width:649px;
   border:none;
+  cursor:default;
 }
 
 #inventory {

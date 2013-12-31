@@ -12,6 +12,9 @@ Map<String,Account> accs = {
   "knarr" : new Account("knarr", 
       new Hero("knarrc",300,50,"test1",
         new Stats(hpmax:100,mpmax:100,speed: 3/1000,jump:30))),
+  "arielle" : new Account("arielle", 
+      new Hero("ariellec",250,50,"test1",
+        new Stats(hpmax:100,mpmax:100,speed: 3/1000,jump:30))),
   "fred" : new Account("fred",
       new Hero("fredc",200,50,"test1",
         new Stats(hpmax:100,mpmax:100,speed: 2/1000,jump:20)))
