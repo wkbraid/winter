@@ -211,8 +211,12 @@ class Hero extends Being {
       spells["pellet"].cast();
     }
     
-    mp += dt/100;
-    mp.clamp(0, stats.mpmax); // restrict mp from being greater than mpmax
+    if(mp < stats.mpmax)
+      mp += dt/stats.mpmax; // replenish mp
+    if(mp > stats.mpmax) // make sure hp is never above hpmax
+      mp = stats.mpmax;
+    if(hp > stats.hpmax)
+      hp = stats.hpmax; // make sure mp is never above mpmax
     
     super.update(dt);
   }

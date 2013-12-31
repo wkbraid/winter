@@ -46,5 +46,6 @@ class Stage {
     view.clear(); // Clear the screen
     view.drawGameMap(map); // Draw the map
     view.drawInv(hero); // Draw the inventory
+    view.drawStats(hero); // Draw the health and mana bars (possibly other stats later)
   }
 }
