@@ -46,5 +46,5 @@ class Stage {
     view.clear(); // Clear the screen
     view.drawGameMap(map); // Draw the map
     view.drawInv(hero); // Draw the inventory
-    }
+  }
 }
