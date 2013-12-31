@@ -11,7 +11,7 @@ class Stage {
   Viewport view; // The main game viewport
   
   Hero hero;
-  GameMap map = new GameMap("",[],[[]]); // The map we are currently on
+  Instance instance; // The map we are currently on
   
   var send; // Send function passed in from the main game object
   
@@ -21,8 +21,9 @@ class Stage {
   }
   
   void receive(data) { // receive data from the server, passed from the game
+    if (instance == null) instance = new Instance.fromPack(data["instance"]); // TODO: move this
     if (data["cmd"] == "update") { // update from server
-      map.unpack(data["map"]);
+      instance.unpack(data["instance"]);
       hero.unpackRest(data["hero"]);
     }
   }
@@ -43,9 +44,11 @@ class Stage {
   }
   
   void draw() { // draw the stage to the screen
-    view.clear(); // Clear the screen
-    view.drawGameMap(map); // Draw the map
-    view.drawInv(hero); // Draw the inventory
-    view.drawStats(hero); // Draw the health and mana bars (possibly other stats later)
+    if (instance != null) { // ie only if we have recieved an update already
+      view.clear(); // Clear the screen
+      view.drawInstance(instance); // Draw the map
+      view.drawInv(hero); // Draw the inventory
+      view.drawStats(hero); // Draw the health and mana bars (possibly other stats later)
+    }
   }
 }

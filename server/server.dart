@@ -118,7 +118,6 @@ class Client {
       
       // add the hero to the map
       map = gsrv.maps[acc.hero.mapid];
-      acc.hero.map = map;
       map.addHero(acc.hero);
       
       // TODO should send more detailed information than hero.pack() provides to client
@@ -140,15 +139,17 @@ class Client {
   void update() { // Send updates to the client
     if (!loggedin) return;
     if (map.id != acc.hero.mapid) { // the hero's map has changed
-      map.removeHero(acc.hero);
       if (!gsrv.maps.containsKey(acc.hero.mapid)) // chech that the map is loaded
         gsrv.maps[acc.hero.mapid] = db.maps[acc.hero.mapid]; // if not load the map
-      map = gsrv.maps[acc.hero.mapid];
-      map.addHero(acc.hero);
+      if (gsrv.maps[acc.hero.mapid].addHero(acc.hero)) { // try to add the hero to the new map
+        map = gsrv.maps[acc.hero.mapid];
+      } else {
+        print("Failed to add hero to the new map");
+      }
     }
     send({"cmd":"update",
-      "map": map.pack(),
-      "hero" : acc.hero.packRest()
+      "instance": acc.hero.instance.pack(), // pack up the hero's instance
+      "hero" : acc.hero.packRest() // send complete hero data
     });
   }
   
@@ -171,7 +172,7 @@ class Client {
     // TODO: Save character information to the fake database...
     // TODO: Get a real database...
     if (loggedin)
-      map.removeHero(acc.hero); // Remove the hero from the map
+      acc.hero.instance.removeHero(acc.hero); // Remove the hero from the instance it is in
     print('Client [${ws.hashCode}] disconnected');
     gsrv.removeClient(this); // remove the client from the connected clients
   }

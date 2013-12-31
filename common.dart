@@ -13,4 +13,4 @@ part 'common/enemy.dart';
 part 'common/projectile.dart';
 part 'common/item.dart';
 part 'common/inanimate.dart';
-part 'common/battle.dart';
+part 'common/instance.dart';
