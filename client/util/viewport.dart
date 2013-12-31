@@ -80,15 +80,12 @@ class Viewport {
   
   void drawStats(Hero hero){
     // draw the hero's stats in the gui
-    if(hero.stats.hpmax != 100){
-      querySelector("#bar:nth-child(1)").style.width = hero.stats.hpmax.toString();
-    }
-    if(hero.stats.mpmax != 100){
-      querySelector("#bar:nth-child(2)").style.width = hero.stats.hpmax.toString();
-    }
-    querySelector(".health").style.width = hero.stats.hp.toString();
-    querySelector(".health").text = hero.stats.hp.toString();
-    querySelector(".mana").style.width = hero.stats.mp.toString();
+    querySelector("#bar:nth-child(1)").style.width = hero.stats.hpmax.toString() + "px"; // set healthbar border to max hp
+    querySelector("#bar:nth-child(2)").style.width = hero.stats.mpmax.toString() + "px"; //set manabar holder to max mp
+    querySelector(".health").style.width = hero.hp.toString() + "px"; // set healthbar to hp
+    querySelector(".health").text = hero.hp.toString(); // print health
+    querySelector(".mana").style.width = hero.mp.toString() + "px"; // set manabar to mp, takes a little to catch up with game logic
+    querySelector(".mana").text = hero.mp.toInt().toString(); // print mana
   }
   
   

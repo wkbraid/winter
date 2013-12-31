@@ -211,8 +211,12 @@ class Hero extends Being {
       spells["pellet"].cast();
     }
     
-    mp += dt/100;
-    mp.clamp(0, stats.mpmax); // restrict mp from being greater than mpmax
+    if(mp < stats.mpmax)
+      mp += dt/stats.mpmax; // replenish mp
+    if(mp > stats.mpmax) // make sure hp is never above hpmax
+      mp = stats.mpmax;
+    if(hp > stats.hpmax)
+      hp = stats.hpmax; // make sure mp is never above mpmax
     
     super.update(dt);
   }
@@ -262,7 +266,7 @@ class Hero extends Being {
 class Stats extends Sync {
   // Class for holding static statistics, used by hero/items/buffs
   num hp,hpmax,mp,mpmax,jump,speed; // all of the stats
-  Stats({this.hpmax:100,this.mpmax:100,this.jump:0,this.speed:0}); // everything is zero by default
+  Stats({this.hpmax:0,this.mpmax:0,this.jump:0,this.speed:0}); // everything is zero by default
   Stats operator+(Stats other) { // add the stats together and return a new Stats object
     if (other != null) {  
       Stats result = new Stats();
@@ -283,19 +287,16 @@ class Stats extends Sync {
   // packing
   Stats.fromPack(data) {
     hpmax = data["hpmax"]; mpmax = data["mpmax"];
-    hp = data["hp"]; mp = data["mp"];
     jump = data["jump"]; speed = data["speed"];
   }
   pack() {
     return {
       "hpmax" : hpmax, "mpmax" : mpmax,
-      "hp" : hp, "mp" : mp,
       "speed" : speed, "jump" : jump
     };
   }
   unpack(data) {
     hpmax = data["hpmax"]; mpmax = data["mpmax"];
-    hp = data["hp"]; mp = data["mp"];
     jump = data["jump"]; speed = data["speed"];
   }
 }

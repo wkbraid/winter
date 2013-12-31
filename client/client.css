@@ -58,7 +58,6 @@ h1, p {
   position:relative;
   float:left;
   height:150px;
-  width:150px;
   background-color:none;
   opacity:0.8;
   border:none;
@@ -68,25 +67,25 @@ h1, p {
   position:relative;
   border:1px solid black;
   height:15px;
-  width: 100px;
   margin-left:10px;
   margin-top:5px;
-  transition: width 2s;
-  -webkit-transition: width 2s;
+  transition: width 1s;
+  -webkit-transition: width 1s;
+  background-color:white;
 }
 
 .health{
   height:15px;
   background-color:red;
-  transition: width 2s;
-  -webkit-transition: width 2s;
+  transition: width 1s;
+  -webkit-transition: width 1s;
 }
 
 .mana{
   height:15px;
   background-color:blue;
-  transition: width 2s;
-  -webkit-transition: width 2s;
+  transition: width 1s;
+  -webkit-transition: width 1s;
 }
 
 #sample_text_id {
