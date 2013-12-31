@@ -47,6 +47,7 @@ class Game {
     gui = new Gui();
     gui.login((username) {      
       send({"cmd":"login","user":username});
+      print("about to send");
     });
  // ask the server to log in
   }
