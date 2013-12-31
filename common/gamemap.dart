@@ -13,7 +13,7 @@ class Tile {
     ts.any((t) => t == WALL || t == ICE);
 }
 
-class GameMap extends Sync {
+class GameMap {
   // Represents a game map instance
   // Handles the map scenery, as well as all the actors on the map
   

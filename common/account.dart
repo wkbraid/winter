@@ -2,7 +2,7 @@
 part of common;
 
 
-class Account extends Sync {
+class Account {
   // Holds basic account information, returned from the server when a login is authenticated
   String user; // Username
   Hero hero; // The Hero associated with this account

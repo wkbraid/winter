@@ -9,7 +9,7 @@ class Edges {
   List right = [];
 }
 
-class Actor extends Sync {
+class Actor {
   // Base class for all map dwellers
   
   GameMap map; // The map the actor is on
@@ -264,7 +264,7 @@ class Hero extends Being {
     }
 }
 
-class Stats extends Sync {
+class Stats {
   // Class for holding static statistics, used by hero/items/buffs
   num hp,hpmax,mp,mpmax,jump,speed; // all of the stats
   Stats({this.hpmax:0,this.mpmax:0,this.jump:0,this.speed:0}); // everything is zero by default
