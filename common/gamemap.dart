@@ -19,7 +19,7 @@ class GameMap extends Sync {
   
   String id; // The id of the map, used by players
   
-  num ts = 32; // Tile size in map coordinates
+  num ts = 30; // Tile size in map coordinates
   List<List<int>> tdata; // Row major representation of the tile data
   
   Map<String,Hero> heros = {}; // Players on the map, accessed by username
