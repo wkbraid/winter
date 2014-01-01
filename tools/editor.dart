@@ -68,8 +68,10 @@ void loop() {
     // We have the mouse down inside the map
     if (mode == 0) // point
       tdata[ty][tx] = select;
-    else if (mode == 1) // fill
+    else if (mode == 1) {// fill
+      mode = 0;
       fill(tx,ty,tdata[ty][tx],select);
+    }
   }
   
   view.clear();
