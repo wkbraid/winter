@@ -29,7 +29,7 @@ class Server {
       server.listen((HttpRequest request) { // begin listening for connections
         WebSocketTransformer.upgrade(request).then((WebSocket ws) {
           // We have a new connection!
-          print('Accepting request from ${request.connectionInfo.remoteAddress}');
+          //print('Accepting request from ${request.connectionInfo.remoteAddress}');
           gsrv.addClient(ws);
         });
       });

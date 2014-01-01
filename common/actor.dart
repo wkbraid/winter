@@ -208,6 +208,7 @@ class Hero extends Being {
       vy -= stats.jump;
     }
     
+  
     if (input["mousedown"]) {
       spells["pellet"].cast();
     }

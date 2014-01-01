@@ -29,29 +29,88 @@ h1, p {
 #overlay {
   position:absolute;
   float:left;
-  height:399px;
-  width:649px;
+  height:599px;
+  width:809px;
+  border:none;
+  cursor:default;
 }
 
-#inventory {
+#bottom-bar {
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:148px;
+  background-color:#AD8533;
+  border:1px solid #663300;
+  overflow:hidden;
+  opacity:0.8;
+}
+
+#chat {
+  border:1px solid #663300;
+  background-color:red;
+  position:relative;
+  float:left;
+  margin-left:15px;
+  margin-top:5px;
+  width:350px;
+  height:144px;
+  text-align:center;
+}
+
+.nav {
   position:relative;
   float:right;
-  width:50px;
-  height:397px;
-  background-color:thistle;
-  border:1px solid violet;
+  margin-right:50px;
+  border:none;
+  background-color:none;
+  margin-top:5px;
+  height:35px;
+  border-spacing:25px 0px;
+  border-collapse:separate;
 }
 
-.inv_obj {
-  position:relative;
-  width:30px;
-  height:25px;
-  left:10px;
-  margin-top:10px;
-  background-color:blue;
+.nav td {
+  background-color:yellow;
+  border:1px solid #663300;
+  height:35px;
+  width:35px;
   text-align:center;
-  padding-top:5px;
-  border:1px solid black;
+}
+
+.hotbar {
+  position:relative;
+  float:right;
+  margin-right:40px;
+  margin-top:5px;
+  border:1px solid #663300;
+  background-color:#C9AB6B;
+  height:100px;
+  width:370px;
+  overflow:hidden;
+}
+
+.hotbar table{
+  border-spacing:15px 10px;
+  border-collapse:separate;
+  border:none;
+  height:100px;
+  width:370px;
+}
+
+.hotbar td{
+  position:relative;
+  text-align:center;
+  table-layout:fixed;
+  height:35px;
+  width:35px;
+  padding:0;
+}
+
+.empty {
+  background-color:#998251;
+  border:none;
+  border:1px solid #857148;
 }
 
 #stats{
@@ -105,16 +164,12 @@ h1, p {
 
 #form {
   position: relative;
-  
   width  : 200px;
   height : 30px;
   float: left;
-  
 }
 
 #button {
-  
    position: relative;
    float: left;
-   
 }

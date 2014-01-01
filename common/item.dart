@@ -150,6 +150,153 @@ class HealthPotion extends Item {
   }
 }
 
+class Thing1 extends Item {
+  // A simple health potion
+  Thing1() : super("Thing 1") {
+    desc = "Drink up! Guaranteed* to increase your health.";
+    color = "purple";
+  }
+  
+  bool use(Hero user) {
+    if(super.use(user) && user.hp < user.stats.hpmax){
+      if(user.hp <= (user.stats.hpmax - 30))
+        user.hp += 30;
+      else user.hp = user.stats.hpmax;
+      return true;
+    }
+    return false; // item was not used
+  }
+}
+
+class Thing2 extends Item {
+  // A simple health potion
+  Thing2() : super("Thing 2") {
+    desc = "Drink up! Guaranteed* to increase your health.";
+    color = "cyan";
+  }
+  
+  bool use(Hero user) {
+    if(super.use(user) && user.hp < user.stats.hpmax){
+      if(user.hp <= (user.stats.hpmax - 30))
+        user.hp += 30;
+      else user.hp = user.stats.hpmax;
+      return true;
+    }
+    return false; // item was not used
+  }
+}
+
+class Thing3 extends Item {
+  // A simple health potion
+  Thing3() : super("Thing 3") {
+    desc = "Drink up! Guaranteed* to increase your health.";
+    color = "thistle";
+  }
+  
+  bool use(Hero user) {
+    if(super.use(user) && user.hp < user.stats.hpmax){
+      if(user.hp <= (user.stats.hpmax - 30))
+        user.hp += 30;
+      else user.hp = user.stats.hpmax;
+      return true;
+    }
+    return false; // item was not used
+  }
+}
+
+class Thing4 extends Item {
+  // A simple health potion
+  Thing4() : super("Thing 4") {
+    desc = "Drink up! Guaranteed* to increase your health.";
+    color = "thistle";
+  }
+  
+  bool use(Hero user) {
+    if(super.use(user) && user.hp < user.stats.hpmax){
+      if(user.hp <= (user.stats.hpmax - 30))
+        user.hp += 30;
+      else user.hp = user.stats.hpmax;
+      return true;
+    }
+    return false; // item was not used
+  }
+}
+
+class Thing5 extends Item {
+  // A simple health potion
+  Thing5() : super("Thing 5") {
+    desc = "Drink up! Guaranteed* to increase your health.";
+    color = "thistle";
+  }
+  
+  bool use(Hero user) {
+    if(super.use(user) && user.hp < user.stats.hpmax){
+      if(user.hp <= (user.stats.hpmax - 30))
+        user.hp += 30;
+      else user.hp = user.stats.hpmax;
+      return true;
+    }
+    return false; // item was not used
+  }
+}
+
+class Thing6 extends Item {
+  // A simple health potion
+  Thing6() : super("Thing 6") {
+    desc = "Drink up! Guaranteed* to increase your health.";
+    color = "thistle";
+  }
+  
+  bool use(Hero user) {
+    if(super.use(user) && user.hp < user.stats.hpmax){
+      if(user.hp <= (user.stats.hpmax - 30))
+        user.hp += 30;
+      else user.hp = user.stats.hpmax;
+      return true;
+    }
+    return false; // item was not used
+  }
+}
+
+class MilkCake extends Item {
+  // A food item supplying a small amount of health
+  MilkCake() : super("Milk Cake") {
+    desc = "This sugary treat makes your bones stronger and your teeth weaker!";
+    color = "tan";
+  }
+  
+  bool use(Hero user) {
+    if(super.use(user) && user.hp < user.stats.hpmax){
+      if(user.hp <= (user.stats.hpmax - 10))
+        user.hp += 10;
+      else user.hp = user.stats.hpmax;
+      return true;
+    }
+    return false; // item was not used
+  }
+}
+
+class Ale extends Item {
+  // Ale ups your mana, decreases health
+  Ale() : super("Ale") {
+    desc = "The best companion for any adventurer.";
+    color = "green";
+  }
+  
+  bool use(Hero user) {
+    if(super.use(user) && user.mp < user.stats.mpmax){
+      if(user.hp >= 0)
+        user.hp -= 5;
+      else user.hp = 0;
+      if(user.mp <= (user.stats.mpmax - 15))
+        user.mp += 15;
+      else user.mp = user.stats.mpmax;
+      return true;
+    }
+    return false; // item was not used
+  }
+}
+
 class ManaPotion extends Item {
   // A simple mana potion
   ManaPotion() : super("Mana Potion") {
