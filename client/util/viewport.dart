@@ -53,6 +53,7 @@ class Viewport {
     ctx.fillRect(act.x-act.width/2, act.y-act.height/2, act.width, act.height);
     
   }
+  
  
   
   
