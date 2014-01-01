@@ -82,20 +82,20 @@ h1, p {
   position:relative;
   float:right;
   margin-right:40px;
-  margin-top:5px;
-  border:1px solid #663300;
-  background-color:#C9AB6B;
-  height:100px;
+  height:110px;
   width:370px;
   overflow:hidden;
 }
 
 .hotbar table{
-  border-spacing:15px 10px;
+  margin-top:3px;
+  border-spacing:15px 5px;
   border-collapse:separate;
-  border:none;
-  height:100px;
+  border:1px solid black;
+  height:40px;
   width:370px;
+  border:1px solid #663300;
+  background-color:#C9AB6B;
 }
 
 .hotbar td{
