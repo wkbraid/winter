@@ -2,6 +2,10 @@
 
 part of common;
 
+class BattleInstance extends Instance {
+  // An instance of a map on which a battle is taking place
+}
+
 class Instance {
   // Contains information about a specific instance of a GameMap
   

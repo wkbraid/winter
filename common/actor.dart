@@ -211,11 +211,7 @@ class Hero extends Being {
     if (input["mousedown"]) {
       spells["pellet"].cast();
     }
-    
-    if (input["down"] > 0) { // TODO: for testing purposes only
-      mapid = "test2";
-    }
-    
+
     if(mp < stats.mpmax)
       mp += dt/stats.mpmax; // replenish mp
     if(mp > stats.mpmax) // make sure hp is never above hpmax
