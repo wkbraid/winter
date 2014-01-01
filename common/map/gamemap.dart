@@ -1,13 +1,16 @@
 // file: gamemap.dart
+// contains: Tile, GameMap
 part of common;
 
 class Tile {
+  static const int VOID = -1; // the nothingness that exists beyond the edge of the map segment
   static const int AIR = 0;
   static const int WALL = 1;
   static const int CLOUD = 2;
   static const int LADDER = 3;
   static const int ICE = 4;
   static const int BANK = 10; //we should eventually make a new subclass out of interactable tiles
+                              // knarr: NO! interactable tiles are called actors :P
   
   // Are there any solid tiles?
   static bool solid(List<int> ts) =>
@@ -60,7 +63,7 @@ class GameMap {
     if (x >= 0 && x < tdata[0].length*ts && y >= 0 && y < tdata.length*ts)
       return tdata[y ~/ ts][x ~/ ts];
     else
-      return Tile.AIR; // everything outside the map walkable by default to allow moving right to the edge
+      return Tile.VOID; // outside the map is void, only walkable to heros
   }
   
   

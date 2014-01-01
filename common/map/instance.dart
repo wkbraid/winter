@@ -1,9 +1,14 @@
 // file: instance.dart
+// contains: BattleInstance, Instance
 
 part of common;
 
 class BattleInstance extends Instance {
   // An instance of a map on which a battle is taking place
+  
+  Map<bool,List<Being>> teams = {true: [], false:[]};
+  
+  
 }
 
 class Instance {

@@ -1,4 +1,6 @@
 // file: stage.dart
+// contains: Stage
+
 library stage;
 
 import 'dart:html';

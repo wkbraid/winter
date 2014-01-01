@@ -1,6 +1,6 @@
 // file: client.dart
-// contains:
-// game
+// contains: Game, 
+
 import 'dart:html';
 import 'dart:convert';
 import 'dart:async';

@@ -1,8 +1,6 @@
 // file: inanimate.dart
-// contains:
-// Inanimate
-// Portal
-// Pickupable
+// contains: Inanimate, Portal, Pickupable
+
 part of common;
 
 class Inanimate extends Actor {

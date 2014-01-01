@@ -1,8 +1,7 @@
+// file: spell.dart
+// contains: Spell, Buff
+
 part of common;
-// Contains:
-// Spell
-// Buffs
-// Pellet and Poison Spell/buff
 
 class Spell {
   // The base class for all spells castable by actors
@@ -57,52 +56,5 @@ class Buff {
       "color": color,
       "stats": stats.pack()
     }; // no way to send effects, so those should have a description
-  }
-}
-
-//===========================================
-// Game Spells
-//===========================================
-// NB: Summon spells (which create beings) should use map.addBeing() to allow teams in battles
-class PelletSpell extends Spell {
-  // simple missile spell
-
-  PelletSpell(caster) : super(caster) {
-    mana = 10;
-    cooldown = 200;
-  }
-  
-  void effects() {
-    // creates a simple projectile
-    num dist = sqrt(pow(caster.x-caster.aimx,2)+pow(caster.y-caster.aimy,2));
-    
-    caster.instance.addActor(new Projectile(caster.x,caster.y,
-        caster.vx + (caster.aimx - caster.x)*20/dist,
-        caster.vy + (caster.aimy - caster.x)*20/dist,
-        10, caster));
-  }
-}
-
-class PoisonSpell extends Spell {
-  // poisons the caster's target
-  PoisonSpell(caster) : super(caster) {
-    mana = 10; cooldown = 500;
-  }
-  void effects() {
-    caster.target.buffs.add(new PoisonBuff(caster.target));
-  }
-}
-
-//==========================================
-// Game Buffs
-//==========================================
-class PoisonBuff extends Buff {
-  PoisonBuff(target) : super(target) {
-    duration = 1000; // 1 second duration
-    color = "green";
-  }
-  void update(dt) {
-    super.update(dt);
-    target.hp -= dt/100;
   }
 }
