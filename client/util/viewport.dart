@@ -17,12 +17,12 @@ class Viewport {
   void clear() { // Clear the screen
     ctx.clearRect(0, 0, width, height);
   }
-  void drawInstance(Instance inst) {
+  void drawTiles(List<List<int>> tdata) {
     // Draw the tiles
-    var tmp = inst.map.tdata.toList(); // take a copy for concurrency
+    var tmp = tdata.toList(); // take a copy for concurrency
     for (int j = 0; j < tmp.length; j++) {
       for (int i = 0; i < tmp[j].length; i++) {
-        switch(inst.map.tdata[j][i]) {
+        switch(tdata[j][i]) {
           case Tile.AIR: ctx.fillStyle = "white"; break;
           case Tile.WALL: ctx.fillStyle = "black"; break;
           case Tile.CLOUD: ctx.fillStyle = "gray"; break;
@@ -32,9 +32,13 @@ class Viewport {
         ctx.fillRect(i*ts,j*ts,ts,ts);
       }
     }
+  }
+  void drawInstance(Instance inst) {
+    // Draw the tiles
+    drawTiles(inst.map.tdata);
     
     // Draw the Actor
-    tmp = inst.heros.values.toList(); // take a copy for concurrency
+    var tmp = inst.heros.values.toList(); // take a copy for concurrency
     for (Hero hero in tmp) {
       drawActor(hero);
     }
