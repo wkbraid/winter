@@ -49,52 +49,6 @@ class Viewport {
     ctx.fillRect(act.x-act.width/2, act.y-act.height/2, act.width, act.height);
     
   }
-  
-  void drawInv(Hero hero){
-    // draw the hero's items in the gui
-    int i = 1;
-    querySelector("#backpack").children=[];
-    querySelector("#equipment").children=[];
-    for (Item key in hero.inv.backpack.keys) {
-      int count = hero.inv.backpack[key];
-      if(i <= 7){
-      TableCellElement obj = querySelector(".items td:nth-child("+i.toString()+")");
-      obj.id = key.id;
-      obj.classes.remove("empty");
-      obj.style.background = key.color;
-      obj.style.border = "1px solid black";
-      obj.text = count.toString();
-      }
-      if (i > 7){
-        DivElement obj = new DivElement();
-        obj.id = key.id;
-        obj.classes.add("bp_obj");
-        obj.style.background = key.color;
-        obj.text = count.toString();
-        querySelector("#backpack").children.add(obj);
-      }
-      i++;
-    }
-    for(Equipable eq in hero.inv.equipment){
-      if(eq != null){
-        DivElement obj = new DivElement();
-        obj.id = eq.id;
-        obj.classes.add("bp_obj");
-        obj.style.background = eq.color;
-        querySelector("#equipment").children.add(obj);
-      }
-    }
-  }
-
-  
-  void drawStats(Hero hero){
-    // draw the hero's stats in the gui
-    querySelector("#bar:nth-child(1)").style.width = hero.stats.hpmax.toString() + "px"; // set healthbar border to max hp
-    querySelector("#bar:nth-child(2)").style.width = hero.stats.mpmax.toString() + "px"; //set manabar holder to max mp
-    querySelector(".health").style.width = hero.hp.toString() + "px"; // set healthbar to hp
-    querySelector(".health").text = hero.hp.toString(); // print health
-    querySelector(".mana").style.width = hero.mp.toString() + "px"; // set manabar to mp, takes a little to catch up with game logic
-    querySelector(".mana").text = hero.mp.toInt().toString(); // print mana
- }
+ 
   
 }
