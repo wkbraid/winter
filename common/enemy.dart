@@ -1,4 +1,7 @@
 // file: enemy.dart
+// Contains Classes:
+// Enemy
+// RandEnemy
 part of common;
 
 class Enemy extends Being {

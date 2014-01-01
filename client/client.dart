@@ -1,4 +1,6 @@
 // file: client.dart
+// contains:
+// game
 import 'dart:html';
 import 'dart:convert';
 import 'dart:async';
@@ -31,12 +33,15 @@ class Game {
     view = new Viewport(querySelector("#area")); // setup the game viewport
     stage = new Stage(hero,view,this.send);
     new Timer(new Duration(milliseconds:interval),loop); // start the main game loop
+    gui.listen();
   }
   
   void loop() { // the main game loop
     if (!loggedin) return;
     stage.update(interval); // update the stage
     stage.draw();
+    gui.drawInv(hero); // Draw the inventory
+    gui.drawStats(hero); // Draw the health and mana bars (possibly other stats later)
     new Timer(new Duration(milliseconds:interval),loop); // start the loop again
   }
   

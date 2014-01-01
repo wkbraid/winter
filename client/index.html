@@ -16,16 +16,26 @@
       
     <div id="container">
       <canvas id="area" width="810px" height="600px"></canvas>
+      
       <div id="overlay">
-        <div id="stats">
+      
+        <div id="stats"> <!--Health and Mana Bar-->
           <div id="bar"><div class="health"></div></div>
           <div id="bar"><div class="mana"></div></div>
         </div>
-        <div id="bottom-bar">
+        
+        <div id="inventory">
+          <div id="equipment">
+          </div>
+          <div id="backpack">
+          </div>
+        </div>
+        
+        <div id="bottom-bar"> <!--Bottom Bar: Chat, Navigation, Hotbars-->
           <div id="chat">CHAT</div>
           <table class="nav">
           <tr>
-            <td>1</td>
+            <td>inv</td>
             <td>2</td>
             <td>3</td>
             <td>4</td>
@@ -33,10 +43,10 @@
           </tr>
           </table>
           <div class="hotbar">
-          <table class="items">
+          <table class="items"> <!--Item Hotbar-->
             <tr><td class="empty"> </td><td class="empty"> </td><td class="empty"> </td><td class="empty"> </td><td class="empty"> </td><td class="empty"> </td><td class="empty"> </td></tr>
           </table>
-          <table class="spells">
+          <table class="spells"> <!--Spell Hotbar-->
             <tr><td class="empty"> </td><td class="empty"> </td><td class="empty"> </td><td class="empty"> </td><td class="empty"> </td><td class="empty"> </td><td class="empty"></td></tr>
           </table>
         </div></div>

@@ -1,4 +1,8 @@
 // file: inanimate.dart
+// contains:
+// Inanimate
+// Portal
+// Pickupable
 part of common;
 
 class Inanimate extends Actor {
@@ -24,11 +28,11 @@ class Portal extends Inanimate {
     this.targy = targy;
     this.targmap = targmap;
   }
-  void open(Hero opener) {
+  void interact(Hero hero) {
     // open the portal and go through it
-    opener.mapid = targmap;
-    opener.x = targx;
-    opener.y = targy;
+    hero.mapid = targmap;
+    hero.x = targx;
+    hero.y = targy;
   }
 }
 
@@ -39,5 +43,16 @@ class Pickupable extends Inanimate {
   Pickupable(x,y,item) : super(x,y) {
     this.item = item;
     color = item.color;
+  }
+  
+  // kills the actor copy of the item, 
+  // then places pickupable thing in hero's inventory
+  // and immediately equips if possible.
+  void interact(Hero hero){
+    dead = true;
+    hero.inv.put(item);
+    if(item is Equipable){
+      hero.inv.equip(item);
+    }
   }
 }

@@ -1,4 +1,8 @@
 part of common;
+// Contains:
+// Spell
+// Buffs
+// Pellet and Poison Spell/buff
 
 class Spell {
   // The base class for all spells castable by actors
