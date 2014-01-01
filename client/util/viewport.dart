@@ -8,50 +8,37 @@ class Viewport {
   CanvasElement canvas; // The game canvas
   CanvasRenderingContext2D get ctx => canvas.context2D; // quick access to canvas context
   
-  num get width => canvas.width; // the viewport dimensions
+  num get width => canvas.width; // the size of the screen available to the stage
   num get height => canvas.height;
-  
-  num x = 0,y = 0; // the top left corner of the viewport in map coordinates
-  
-  Actor following; // The actor the viewport is following
   
   Viewport(this.canvas);
   
-  void update() { // update the viewport
-    // ctx.translate(x, y); // move back to the origin
-
-    // ctx.translate(-x, -y);
-  }
-  
   // ==== DRAW FUNCTIONS ====
   void clear() { // Clear the screen
-    ctx.clearRect(x, y, width, height);
+    ctx.clearRect(0, 0, width, height);
   }
-  void drawGameMap(GameMap m) {
+  void drawInstance(Instance inst) {
     // Draw the tiles
-    var tmp = m.tdata.toList(); // take a copy for concurrency
-    for (var j = y ~/ m.ts; j <= (y + height) ~/ m.ts; j++) {
-      for (var i = x ~/ m.ts; i <= (x + width) ~/ m.ts; i++) {
-        if (i >= 0 && i < m.tdata[0].length && j >= 0 && j < m.tdata.length) {
-          // simple differentiation of colors
-          switch(m.tdata[j][i]) {
-            case Tile.AIR: ctx.fillStyle = "white"; break;
-            case Tile.WALL: ctx.fillStyle = "black"; break;
-            case Tile.CLOUD: ctx.fillStyle = "gray"; break;
-            case Tile.LADDER: ctx.fillStyle = "orange"; break;
-            case Tile.ICE: ctx.fillStyle = "lightblue"; break;
-          }
-          ctx.fillRect(i*m.ts,j*m.ts,m.ts,m.ts);
+    var tmp = inst.map.tdata.toList(); // take a copy for concurrency
+    for (int j = 0; j < tmp.length; j++) {
+      for (int i = 0; i < tmp[j].length; i++) {
+        switch(inst.map.tdata[j][i]) {
+          case Tile.AIR: ctx.fillStyle = "white"; break;
+          case Tile.WALL: ctx.fillStyle = "black"; break;
+          case Tile.CLOUD: ctx.fillStyle = "gray"; break;
+          case Tile.LADDER: ctx.fillStyle = "orange"; break;
+          case Tile.ICE: ctx.fillStyle = "lightblue"; break;
         }
+        ctx.fillRect(i*ts,j*ts,ts,ts);
       }
     }
     
-    // Draw the map
-    tmp = m.heros.values.toList(); // take a copy for concurrency
+    // Draw the Actor
+    tmp = inst.heros.values.toList(); // take a copy for concurrency
     for (Hero hero in tmp) {
       drawActor(hero);
     }
-    tmp = m.actors.toList();
+    tmp = inst.actors.toList();
     for (Actor act in tmp) {
       drawActor(act);
     }

@@ -9,10 +9,10 @@ class Edges {
   List right = [];
 }
 
-class Actor extends Sync {
+class Actor {
   // Base class for all map dwellers
   
-  GameMap map; // The map the actor is on
+  Instance instance; // The instance the actor is part of
   
   num x,y; // Actor position in map coordinates
   num width = 10, height = 10; // Actor dimensions
@@ -49,11 +49,11 @@ class Actor extends Sync {
   
   num collideX(num dx) { // check for collisions in the x direction
     if (dx < 0 && Tile.solid(edges.left)) {
-      x = ((x+dx-width/2) ~/ map.ts)*map.ts + map.ts + width/2;
+      x = ((x+dx-width/2) ~/ ts)*ts + ts + width/2;
       vx = 0;
       return 0; // how much further we should move
     } else if (dx > 0 && Tile.solid(edges.right)) {
-      x = ((x+dx+width/2) ~/ map.ts)*map.ts - width/2 - 0.001;
+      x = ((x+dx+width/2) ~/ ts)*ts - width/2 - 0.001;
       vx = 0;
       return 0; // how much further we should move
     }
@@ -61,11 +61,11 @@ class Actor extends Sync {
   }
   num collideY(num dy) { // check for collisions in the y direction
     if (dy < 0 && Tile.solid(edges.up)) {
-      y = ((y+dy-height/2) ~/ map.ts)*map.ts + map.ts + height/2;
+      y = ((y+dy-height/2) ~/ ts)*ts + ts + height/2;
       vy = 0;
      return 0; // how much further we should move
     } else if (dy > 0 && (Tile.solid(edges.down) || edges.down.contains(Tile.CLOUD))) {
-      y = ((y+dy+height/2) ~/ map.ts)*map.ts - height/2 - 0.001;
+      y = ((y+dy+height/2) ~/ ts)*ts - height/2 - 0.001;
       vy = 0;
       return 0; // how much further we should move
     }
@@ -76,22 +76,22 @@ class Actor extends Sync {
   void lookVert(num dy) { // Refresh the tiles along the top and bottom of the actor
     edges.up = []; // reset edges
     edges.down = [];
-    for (num xpos = x - width/2; xpos < x + width/2; xpos += map.ts) {
-      edges.up.add(map.get(xpos, y+dy-height/2));
-      edges.down.add(map.get(xpos, y+dy+height/2));
+    for (num xpos = x - width/2; xpos < x + width/2; xpos += ts) {
+      edges.up.add(instance.map.get(xpos, y+dy-height/2));
+      edges.down.add(instance.map.get(xpos, y+dy+height/2));
     }
-    edges.up.add(map.get(x+width/2, y+dy-height/2));
-    edges.down.add(map.get(x+width/2, y+dy+height/2));
+    edges.up.add(instance.map.get(x+width/2, y+dy-height/2));
+    edges.down.add(instance.map.get(x+width/2, y+dy+height/2));
   }
   void lookHorz(num dx) { // Refresh the tiles along the sides of the actor
     edges.left = []; //reset edges
     edges.right = [];
-    for (num ypos = y - height/2; ypos < y + height/2; ypos += map.ts/2) {
-      edges.left.add(map.get(x+dx-width/2,ypos));
-      edges.right.add(map.get(x+dx+width/2,ypos));
+    for (num ypos = y - height/2; ypos < y + height/2; ypos += ts/2) {
+      edges.left.add(instance.map.get(x+dx-width/2,ypos));
+      edges.right.add(instance.map.get(x+dx+width/2,ypos));
     }
-    edges.left.add(map.get(x+dx-width/2,y+height/2));
-    edges.right.add(map.get(x+dx+width/2,y+height/2));
+    edges.left.add(instance.map.get(x+dx-width/2,y+height/2));
+    edges.right.add(instance.map.get(x+dx+width/2,y+height/2));
   }
   
   // ==== PACKING ====
@@ -125,7 +125,7 @@ class Being extends Actor {
   Stats get stats => base; // get the being's stats
   
   num mp,hp; // mana and health points
-  
+
   // targetting
   num aimx, aimy;
   Being target;
@@ -203,13 +203,18 @@ class Hero extends Being {
     vx += (input["right"] - input["left"])*stats.speed*dt;
     if (edges.up.contains(Tile.LADDER) && input["up"] > 0) {
       vy -= stats.speed*dt*5 + g*dt; // move upwards countering gravity
-    } else if (vy >= 0 && (Tile.solid(edges.down) || edges.down.contains(Tile.CLOUD)) && input["up"] > 0) {
+    } else if (vy >= 0 && (Tile.solid(edges.down) || edges.down.contains(Tile.CLOUD)) 
+        && !Tile.solid(edges.up) && input["up"] > 0) {
       vy -= stats.jump;
     }
     
   
     if (input["mousedown"]) {
       spells["pellet"].cast();
+    }
+    
+    if (input["down"] > 0) { // TODO: for testing purposes only
+      mapid = "test2";
     }
     
     if(mp < stats.mpmax)
@@ -264,7 +269,7 @@ class Hero extends Being {
     }
 }
 
-class Stats extends Sync {
+class Stats {
   // Class for holding static statistics, used by hero/items/buffs
   num hp,hpmax,mp,mpmax,jump,speed; // all of the stats
   Stats({this.hpmax:0,this.mpmax:0,this.jump:0,this.speed:0}); // everything is zero by default

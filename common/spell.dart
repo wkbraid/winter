@@ -59,6 +59,7 @@ class Buff {
 //===========================================
 // Game Spells
 //===========================================
+// NB: Summon spells (which create beings) should use map.addBeing() to allow teams in battles
 class PelletSpell extends Spell {
   // simple missile spell
 
@@ -71,7 +72,7 @@ class PelletSpell extends Spell {
     // creates a simple projectile
     num dist = sqrt(pow(caster.x-caster.aimx,2)+pow(caster.y-caster.aimy,2));
     
-    caster.map.addActor(new Projectile(caster.x,caster.y,
+    caster.instance.addActor(new Projectile(caster.x,caster.y,
         caster.vx + (caster.aimx - caster.x)*20/dist,
         caster.vy + (caster.aimy - caster.x)*20/dist,
         10, caster));
