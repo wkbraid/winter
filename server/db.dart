@@ -50,8 +50,7 @@ Map<String, GameMap> maps = {
        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]]),
        
   "test2" : new GameMap("test2",
-      [new Portal(500,100,50,50,"test1"),
-       new Pickupable(150,100,new HealthPotion()),
+      [new Pickupable(150,100,new HealthPotion()),
        new Pickupable(140, 100, new UrgencyBoots()),
        new Pickupable(400, 100, new ChainMailCape2()),
        new Pickupable(300, 100, new Thing1()),
