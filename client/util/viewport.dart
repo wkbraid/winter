@@ -52,17 +52,35 @@ class Viewport {
   void drawInv(Hero hero){
     // draw the hero's items in the gui
     int i = 1;
-    
+    querySelector("#backpack").children=[];
+    querySelector("#equipment").children=[];
     for (Item key in hero.inv.backpack.keys) {
-      if(i <= 7){
       int count = hero.inv.backpack[key];
+      if(i <= 7){
       TableCellElement obj = querySelector(".items td:nth-child("+i.toString()+")");
       obj.id = key.id;
       obj.classes.remove("empty");
       obj.style.background = key.color;
       obj.style.border = "1px solid black";
       obj.text = count.toString();
+      }
+      if (i > 7){
+        DivElement obj = new DivElement();
+        obj.id = key.id;
+        obj.classes.add("bp_obj");
+        obj.style.background = key.color;
+        obj.text = count.toString();
+        querySelector("#backpack").children.add(obj);
+      }
       i++;
+    }
+    for(Equipable eq in hero.inv.equipment){
+      if(eq != null){
+        DivElement obj = new DivElement();
+        obj.id = eq.id;
+        obj.classes.add("bp_obj");
+        obj.style.background = eq.color;
+        querySelector("#equipment").children.add(obj);
       }
     }
   }

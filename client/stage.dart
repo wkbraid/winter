@@ -41,6 +41,9 @@ class Stage {
       "mousex": Mouse.x, "mousey" : Mouse.y,
       "mousedown" : Mouse.down
     });
+    
+    querySelector(".nav tr td:nth-child(1)").onClick.listen(
+        (e) => toggleVisible(querySelector("#inventory")));
   }
   
   void draw() { // draw the stage to the screen
@@ -50,5 +53,12 @@ class Stage {
       view.drawInv(hero); // Draw the inventory
       view.drawStats(hero); // Draw the health and mana bars (possibly other stats later)
     }
+  }
+  
+  void toggleVisible(DivElement div){
+    if (div.style.left == "900px")
+      div.style.left = "-5px";
+    else div.style.left = "900px";
+    //print("working");
   }
 }
