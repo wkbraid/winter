@@ -1,4 +1,6 @@
 // file: gui.dart
+// contains: Gui
+
 library gui;
 
 import 'dart:html';

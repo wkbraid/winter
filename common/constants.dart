@@ -1,4 +1,6 @@
 // file: constants.dart
+// contains:
+
 part of common;
 //==============================================
 // Game Constants

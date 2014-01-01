@@ -1,3 +1,6 @@
+// file: utils.dart
+// contains: Keyboard, Mouse
+
 library util;
 
 import 'dart:html';

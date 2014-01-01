@@ -1,4 +1,5 @@
 // file: projectile.dart
+// contains: Projectile
 part of common;
 
 
@@ -25,14 +26,16 @@ class Projectile extends Actor {
     if ((dx < 0 && Tile.solid(edges.left)) || dx > 0 && Tile.solid(edges.right)) {
       vx *= -0.9;
       return 0;
-    }
+    } else if (edges.left.contains(Tile.VOID) || edges.right.contains(Tile.VOID))
+      dead = true;
     return dx; // No collision
   }
   num collideY(num dy) {
     if ((dy < 0 && Tile.solid(edges.up)) || dy > 0 && Tile.solid(edges.down)) {
       vy *= -0.9; // bounce
       return 0;
-    }
+    } else if (edges.up.contains(Tile.VOID) || edges.down.contains(Tile.VOID))
+      dead = true;
     return dy; // No collision
   }
   
