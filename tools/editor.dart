@@ -49,7 +49,8 @@ void loop() {
   ty = Mouse.y ~/ ts;
   
   // change selection
-  if (Keyboard.isDown(KeyCode.ZERO)) select = 0;
+  if (Keyboard.isDown(KeyCode.ZERO) ||
+      Keyboard.isDown(KeyCode.TILDE)) select = 0;
   if (Keyboard.isDown(KeyCode.ONE)) select = 1;
   if (Keyboard.isDown(KeyCode.TWO)) select = 2;
   if (Keyboard.isDown(KeyCode.THREE)) select = 3;

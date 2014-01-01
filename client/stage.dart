@@ -42,7 +42,7 @@ class Stage {
       "mousedown" : Mouse.down
     });
   }
-  
+    
   void draw() { // draw the stage to the screen
     if (instance != null) { // ie only if we have recieved an update already
       view.clear(); // Clear the screen

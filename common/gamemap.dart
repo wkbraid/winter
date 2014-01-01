@@ -22,9 +22,12 @@ class GameMap {
 
   List<List<int>> tdata; // Row major representation of the tile data
   
+  String up,down,left,right; // mapids for the maps adjacent to this one
+  
   List<Instance> instances = []; // The instances of this map
 
-  GameMap(this.id,List<Actor> actors, this.tdata) {
+  GameMap(this.id,List<Actor> actors, this.tdata,
+      {this.up,this.down,this.left,this.right}) {
     Instance world = new Instance(); // create the main world instance
     addInstance(world);
     for (Actor act in actors) { // add all the actors to the world
@@ -57,7 +60,7 @@ class GameMap {
     if (x >= 0 && x < tdata[0].length*ts && y >= 0 && y < tdata.length*ts)
       return tdata[y ~/ ts][x ~/ ts];
     else
-      return 1; // everything outside the map is unwalkable by default
+      return Tile.AIR; // everything outside the map walkable by default to allow moving right to the edge
   }
   
   
