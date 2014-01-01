@@ -56,3 +56,16 @@ class Pickupable extends Inanimate {
     }
   }
 }
+
+class Bank extends Inanimate {
+  // actor that's interacted with to access your bank inventory
+  Bank(x, y) : super(x,y){
+    height = 30;
+    width = 60;
+    color = "gold";
+  }
+  
+  void interact(Hero hero){
+    hero.overlay = 1;
+  }
+}

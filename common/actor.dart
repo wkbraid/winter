@@ -180,6 +180,7 @@ class Hero extends Being {
 
   String name; // The name of the character this hero represents
   String mapid; // The map the hero is currently on
+  num overlay;
   
   // Inventory inv; // The hero's inventory
 
@@ -196,6 +197,7 @@ class Hero extends Being {
     width = 20;
     height = 20;
     color = "lightgreen";
+    overlay = 0;
     
     target = this; // target yourself
     
@@ -206,39 +208,48 @@ class Hero extends Being {
   }
   
   void update(num dt) {
-    if (hp < 0) {
-      print("$name is dead.");
-      hp = stats.hpmax;
-    }
-    aimx = input["mousex"]; // aim at the mouse position
-    aimy = input["mousey"];
-    vx += (input["right"] - input["left"])*stats.speed*dt;
-    if (edges.up.contains(Tile.LADDER) && input["up"] > 0) {
-      vy -= stats.speed*dt*5 + g*dt; // move upwards countering gravity
-    } else if (vy >= 0 && (Tile.solid(edges.down) || edges.down.contains(Tile.CLOUD)) 
-        && !Tile.solid(edges.up) && input["up"] > 0) {
-      vy -= stats.jump;
-    }
+    if(overlay == 0){
+      if (hp < 0) {
+        print("$name is dead.");
+        hp = stats.hpmax;
+      }
+      aimx = input["mousex"]; // aim at the mouse position
+      aimy = input["mousey"];
+      vx += (input["right"] - input["left"])*stats.speed*dt;
+      if (edges.up.contains(Tile.LADDER) && input["up"] > 0) {
+        vy -= stats.speed*dt*5 + g*dt; // move upwards countering gravity
+      } else if (vy >= 0 && (Tile.solid(edges.down) || edges.down.contains(Tile.CLOUD)) 
+          && !Tile.solid(edges.up) && input["up"] > 0) {
+        vy -= stats.jump;
+      }
+      
     
+      if (input["mousedown"]) {
+        spells["pellet"].cast();
+      }
   
-    if (input["mousedown"]) {
-      spells["pellet"].cast();
+      if(mp < stats.mpmax)
+        mp += dt/stats.mpmax; // replenish mp
+      if(mp > stats.mpmax) // make sure hp is never above hpmax
+        mp = stats.mpmax;
+      if(hp > stats.hpmax)
+        hp = stats.hpmax; // make sure mp is never above mpmax
     }
-
-    if(mp < stats.mpmax)
-      mp += dt/stats.mpmax; // replenish mp
-    if(mp > stats.mpmax) // make sure hp is never above hpmax
-      mp = stats.mpmax;
-    if(hp > stats.hpmax)
-      hp = stats.hpmax; // make sure mp is never above mpmax
-    
+    else{
+      if(input["up"] != 0)
+        overlay = 0;
+    }
     super.update(dt);
   }
   
+  //Calls on nearby actors' interact function if pressing down and touching them.
   void collide(Actor other) {
-    if (input["down"] != 0)
+    if (input["down"] != 0){
+      print("made it");
       other.interact(this);
+    }
   }
+//old collide code in case we need it
  // if (other is Pickupable && input["down"] != 0) {
  //   other.dead = inv.put(other.item); // pick up the item
  //   if (other.item is Equipable)
@@ -270,6 +281,7 @@ class Hero extends Being {
     data["inv"] = inv.pack();
     data["base"] = base.pack();
     data["buffs"] = buffs.map((buff) => buff.pack()).toList();
+    data["overlay"] = overlay;
     return data;
     }
   unpackRest(data) { // unpack semi-secret data
@@ -277,6 +289,7 @@ class Hero extends Being {
     base.unpack(data["base"]);
     buffs = data["buffs"].map((buffd) => new Buff.fromPack(buffd)).toList();
     unpack(data);
+    overlay = data["overlay"];
     }
 }
 
