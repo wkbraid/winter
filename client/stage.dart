@@ -47,10 +47,13 @@ class Stage {
     if (instance != null) { // ie only if we have recieved an update already
       view.clear(); // Clear the screen
       view.drawInstance(instance); // Draw the map
+<<<<<<< HEAD
       view.drawInv(hero); // Draw the inventory
       view.drawStats(hero); // Draw the health and mana bars (possibly other stats later)
       view.drawOverlay(hero);
       
+=======
+>>>>>>> 33c5fea2bff9ef3d3a5dc1df2ddc994d80fef14f
     }
   }
 }

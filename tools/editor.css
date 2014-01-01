@@ -1,0 +1,43 @@
+
+body {
+  background-color: #F8F8F8;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.2em;
+  margin: 15px;
+}
+
+h1, p {
+  color: #333;
+}
+
+#container {
+  height: 600px;
+  width: 810px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+#area {
+  position:relative;
+  float:left;
+}
+
+#output {
+  float: left;
+  height: 146px;
+  width: 480px;
+  margin: 0px;
+}
+#controls {
+  color: #ffffff;
+  float: left;
+  padding: 5px;
+  margin: 0px;
+  width: 314px;
+  height: 142px;
+  background-color: #330033;
+}

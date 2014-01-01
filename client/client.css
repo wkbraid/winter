@@ -33,6 +33,47 @@ h1, p {
   width:809px;
   border:none;
   cursor:default;
+  overflow:hidden;
+}
+
+#inventory {
+  position:relative;
+  float:right;
+  left:900px;
+  top:29px;
+  height:389px;
+  width:550px;
+  background-color:#AD8533;
+  border:1px solid #663300;
+  opacity:0.8;
+  overflow:hidden;
+  transition: left 2s;
+  -webkit-transition: left 2s;
+}
+
+#equipment {
+  position:relative;
+  float:left;
+  width:65px;
+  height:389px;
+  border-right:1px solid #663300;
+}
+
+#backpack{
+  position:relative;
+  float:right;
+  width:480px;
+  height:389px;
+}
+
+.bp_obj {
+  float:left;
+  position:relative;
+  margin-top:15px;
+  margin-left:15px;
+  height:30px;
+  width:30px;
+  border:1px solid black;
 }
 
 #bottom-bar {
@@ -43,7 +84,7 @@ h1, p {
   background-color:#AD8533;
   border:1px solid #663300;
   overflow:hidden;
-  opacity:0.8;
+  opacity:1;
 }
 
 #chat {
@@ -54,7 +95,7 @@ h1, p {
   margin-left:15px;
   margin-top:5px;
   width:350px;
-  height:144px;
+  height:138px;
   text-align:center;
 }
 
@@ -116,7 +157,6 @@ h1, p {
 #stats{
   position:relative;
   float:left;
-  height:150px;
   background-color:none;
   opacity:0.8;
   border:none;
