@@ -7,6 +7,7 @@ class Tile {
   static const int CLOUD = 2;
   static const int LADDER = 3;
   static const int ICE = 4;
+  static const int BANK = 10; //we should eventually make a new subclass out of interactable tiles
   
   // Are there any solid tiles?
   static bool solid(List<int> ts) =>

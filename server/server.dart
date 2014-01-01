@@ -1,4 +1,9 @@
 // file: server.dart
+// contains
+// main function
+// Server
+// GameServer
+// Client
 import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
