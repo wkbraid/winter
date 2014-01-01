@@ -1,4 +1,11 @@
 // file: actor.dart
+
+//contains:
+// Edges
+// Actor
+// Being
+// Stats
+// Inventory
 part of common;
 
 class Edges {
@@ -94,6 +101,10 @@ class Actor {
     edges.right.add(instance.map.get(x+dx+width/2,y+height/2));
   }
   
+  void interact(Hero hero){
+    return;
+  }
+  
   // ==== PACKING ====
   Actor.fromPack(data) {
     unpack(data);
@@ -143,6 +154,7 @@ class Being extends Actor {
     }
   }
   
+ 
   // ==== PACKING ====
   // Client should not get all data
   Being.fromPack(data) : super.fromPack(data) {
@@ -224,14 +236,17 @@ class Hero extends Being {
   }
   
   void collide(Actor other) {
-    if (other is Pickupable && input["down"] != 0) {
-      other.dead = inv.put(other.item); // pick up the item
-      if (other.item is Equipable)
-        inv.equip(other.item); // equip it right away
-    } else if (other is Portal && input["down"] != 0) {
-      other.open(this);
-    }
+    if (input["down"] != 0)
+      other.interact(this);
   }
+ // if (other is Pickupable && input["down"] != 0) {
+ //   other.dead = inv.put(other.item); // pick up the item
+ //   if (other.item is Equipable)
+ //     inv.equip(other.item); // equip it right away
+ // } else if (other is Portal && input["down"] != 0) {
+ //   other.interact(this);
+ // }
+//}
   
   // ==== PACKING ====
   Hero.fromPack(data) : super.fromPack(data) {

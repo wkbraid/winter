@@ -1,4 +1,9 @@
 // file: item.dart
+// contains:
+// Item
+// Equipable
+// Equipaple items
+// Other items
 part of common;
 
 class Item {
