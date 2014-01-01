@@ -64,17 +64,19 @@ class Viewport {
   
   void drawInv(Hero hero){
     // draw the hero's items in the gui
-    int i = 0;
-    querySelector("#inventory").children = [];
+    int i = 1;
     
     for (Item key in hero.inv.backpack.keys) {
+      if(i <= 7){
       int count = hero.inv.backpack[key];
-      DivElement obj = new DivElement();
-      obj.className = "inv_obj";
-      querySelector("#inventory").children.add(obj);
+      TableCellElement obj = querySelector(".items td:nth-child("+i.toString()+")");
+      obj.id = key.id;
+      obj.classes.remove("empty");
       obj.style.background = key.color;
+      obj.style.border = "1px solid black";
       obj.text = count.toString();
       i++;
+      }
     }
   }
 
@@ -87,6 +89,6 @@ class Viewport {
     querySelector(".health").text = hero.hp.toString(); // print health
     querySelector(".mana").style.width = hero.mp.toString() + "px"; // set manabar to mp, takes a little to catch up with game logic
     querySelector(".mana").text = hero.mp.toInt().toString(); // print mana
-  }
+ }
   
 }
