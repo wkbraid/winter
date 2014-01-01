@@ -22,7 +22,42 @@ class Instance {
     var tmp = heros.values.toList(); // copy to stop concurrency issues
     for (Hero hero in tmp) {
       hero.update(dt); // update each player on the map
+      if (hero.x > ts*mwidth) {
+        if (map.right != null) {
+          hero.x = ts*mwidth - hero.x;
+          hero.mapid = map.right;
+        } else {
+          hero.x = ts*mwidth; // stop the hero falling off completely
+          hero.vx = 0;
+        }
+      } else if (hero.x < 0) {
+        if ( map.left != null) {
+          hero.x = ts*mwidth + hero.x;
+          hero.mapid = map.left;
+        } else {
+          hero.x = 0;
+          hero.vx = 0;
+        }
+      }
+      if (hero.y > ts*mheight) {
+        if (map.down != null) {
+          hero.y = ts*mheight - hero.y;
+          hero.mapid = map.down;
+        } else {
+          hero.y = ts*mheight;
+          hero.vy = 0;
+        }
+      } else if (hero.y < 0) {
+        if (map.up != null) {
+          hero.y = ts*mheight + hero.y;
+          hero.mapid = map.up;
+        } else {
+          hero.y = 0;
+          hero.vy = 0;
+        }
+      }
     }
+    
     
     // remove the dead actors
     actors.removeWhere((act) => act.dead);
