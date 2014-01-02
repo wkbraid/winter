@@ -45,11 +45,10 @@ class Game {
     new Timer(new Duration(milliseconds:interval),loop); // start the loop again
   }
   
-  
   void start(e) { // We are connected, start the game (should not be called directly)
     if (!connected) return; // game must be connected to the server to start
     print("Connected. Logging in");
-    gui = new Gui();
+    gui = new Gui(send);
     gui.login((username) {      
       send({"cmd":"login","user":username});
       print("about to send");
@@ -77,6 +76,8 @@ class Game {
     } else if (data["cmd"] == "update") {
       if (stage != null) // TODO: better checking for logged in
         stage.receive(data); // forward things to the stage
+    } else if (data["cmd"] == "chat") {
+      gui.chat.add(data["say"]);
     }
   }
   

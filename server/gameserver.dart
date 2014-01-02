@@ -5,6 +5,7 @@ part of server;
 
 class GameServer {
   // The game server, manages the world and everything in it
+
   Map<int,Client> clients = {}; // connected clients
   bool up = false; // is the server running?
   
@@ -96,6 +97,26 @@ class Client {
     acc.hero.input = data; // Update the hero's latest input information
   }
   
+  void chatParse(data) {
+    String msg = data["msg"];
+    // All info from the client should be in the form cmd <arg> <arg> ...
+    if (msg.startsWith('say')) { // speach can have whitespace
+      chatCmd("say", [msg.substring(4)]);
+    } else { // trim unneccessary whitespace
+      msg = msg.trim();
+      msg = msg.replaceAll(new RegExp(r'\s{2,}'), '');
+      List<String> args = msg.split(' ');
+      chatCmd(args.first, args.skip(1).toList());
+    }
+  }
+  
+  void chatCmd(String cmd, List<String> args) {
+    // REMEMBER to sanitize user input
+    if (cmd == "say") {
+      gsrv.send({"cmd":"chat","say":args[0]});
+    }
+  }
+  
   void update() { // Send updates to the client
     if (!loggedin) return;
     if (map.id != acc.hero.mapid) { // the hero's map has changed
@@ -119,9 +140,10 @@ class Client {
       login(data); // attempt to login the client
     else if (data["cmd"] == "logout")
       logout();
-    else if (data["cmd"] == "input") {
+    else if (data["cmd"] == "input") // key/mouse input from the client
       input(data);
-    }
+    else if (data["cmd"] == "chat") // chat input
+      chatParse(data);
   }
   
   void send(data) { // Send message only to this client

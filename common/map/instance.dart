@@ -163,7 +163,10 @@ class Instance {
     
     actors = []; // Clear the list of actors
     for (var ad in data["actors"]) { // unpack each actor
-      actors.add(new Actor.fromPack(ad));
+      if (ad["being"])
+        actors.add(new Being.fromPack(ad));
+      else
+        actors.add(new Actor.fromPack(ad));
     }
     
     map.unpack(data["map"]);
