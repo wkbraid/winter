@@ -114,7 +114,7 @@ h1, p {
 .nav {
   position:relative;
   float:right;
-  margin-right:50px;
+  margin-right:44px;
   border:none;
   background-color:none;
   margin-top:5px;
@@ -134,7 +134,7 @@ h1, p {
 .hotbar {
   position:relative;
   float:right;
-  margin-right:40px;
+  margin-right:66px;
   height:110px;
   width:300px;
   overflow:hidden;

@@ -1,5 +1,5 @@
 // file: actor.dart
-// contains: Edges, Actor, Being, Hero
+// contains: Edges, Actor, Being
 
 part of common;
 

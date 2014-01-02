@@ -53,7 +53,10 @@ class Viewport {
   void drawActor(Actor act) {
     ctx.fillStyle = act.color;
     ctx.fillRect(act.x-act.width/2, act.y-act.height/2, act.width, act.height);
-    
+    if(act is Being){    
+      ctx.fillStyle = "red";
+      ctx.fillRect(act.x-act.width/2, act.y-act.height, act.hp/act.stats.hpmax*act.width, 5);
+    }
   }
   
  

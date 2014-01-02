@@ -79,6 +79,7 @@ Map<String, GameMap> maps = {
        new Pickupable(260, 100, new Thing5()),
        new Pickupable(280, 100, new Thing6()),
        new Pickupable(170, 100, new Thing3()),
+       new RandEnemy(200,100,new Stats(hpmax:100)),
        new Portal(740,150,100,100,"test1")],
        [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1],
