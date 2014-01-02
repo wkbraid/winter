@@ -10,9 +10,9 @@ class ChatHandler {
   
   var send; // Send function taken from gui
   
-  ChatHandler(String inid, String outid, this.send) {
-    output = querySelector("#$outid");
-    input = querySelector("#$inid");
+  ChatHandler(String inclass, String outclass, this.send) {
+    output = querySelector(".$outclass");
+    input = querySelector(".$inclass");
     
     input.onChange.listen(handleInput);
     add("Hello World");

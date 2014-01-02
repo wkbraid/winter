@@ -9,7 +9,7 @@
   <body>
     <div>
       <div id="username">
-      Username: <input type="text" id="textfield" name="username">
+        Username: <input type="text" id="textfield" name="username">
         <button id="logMeIn">Submit!</button>
       </div>
     </div>
@@ -19,25 +19,26 @@
       
       <div id="overlay"> <!--Holds the GUI-->
       
-        <div id="stats"> <!--Health and Mana Bar-->
-          <div id="bar"><div class="health"></div></div>
-          <div id="bar"><div class="mana"></div></div>
+        <div class="stats"> <!--Health and Mana Bar-->
+          <div class="bar"><div class="health"></div></div>
+          <div class="bar"><div class="mana"></div></div>
         </div>
         
-        <div id="inventory"> <!--Inventory Page-->
-          <div id="equipment">
+        <!--Inventory Page-->
+        <div class="inventory">
+          <div class="equipment">
           </div>
-          <div id="backpack">
+          <div class="backpack">
           </div>
         </div>
         
-        <div id="bottom-bar"> <!--Bottom Bar: Chat, Navigation, Hotbars-->
+        <!--Bottom Bar: Chat, Navigation, Hotbars-->
+        <div id="bottom-bar">
           <div id="chat">
-            <div id="chatOutput">
-
-            </div>
-            <input type="text" id ="chatInput"></input>
+            <div class="chatOutput"></div>
+            <input type="text" class="chatInput"></input>
           </div>
+          
           <table class="nav">
           <tr>
             <td>inv</td>
@@ -47,6 +48,7 @@
             <td>5</td>
           </tr>
           </table>
+          
           <div class="hotbar">
           <table class="items"> <!--Item Hotbar-->
             <tr><td class="empty"> </td><td class="empty"> </td><td class="empty"> </td><td class="empty"> </td><td class="empty"> </td><td class="empty"> </td><td class="empty"> </td></tr>

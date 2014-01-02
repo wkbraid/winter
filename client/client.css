@@ -1,227 +1,222 @@
-
 body {
-  background-color: #F8F8F8;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 14px;
-  font-weight: normal;
-  line-height: 1.2em;
-  margin: 15px;
+    background-color: #F8F8F8;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.2em;
+    margin: 15px;
 }
 
-h1, p {
-  color: #333;
+h1,p {
+    color: #333;
 }
 
 #container {
-  height: 600px;
-  width: 810px;
-  margin-left: auto;
-  margin-right: auto;
-  border: 1px solid #ccc;
-  background-color: #fff;
+    height: 600px;
+    width: 810px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #ccc;
+    background-color: #fff;
 }
 
 #area {
-  position:relative;
-  float:left;
+    position: relative;
+    float: left;
 }
 
 #overlay {
-  position:absolute;
-  float:left;
-  height:599px;
-  width:809px;
-  border:none;
-  cursor:default;
-  overflow:hidden;
+    position: absolute;
+    float: left;
+    height: 599px;
+    width: 809px;
+    border: none;
+    cursor: default;
+    overflow: hidden;
 }
 
-#inventory {
-  position:relative;
-  float:right;
-  left:900px;
-  top:29px;
-  height:389px;
-  width:550px;
-  background-color:#AD8533;
-  border:1px solid #663300;
-  opacity:0.8;
-  overflow:hidden;
-  transition: left 2s;
-  -webkit-transition: left 2s;
+.inventory {
+    position: relative;
+    float: right;
+    left: 900px;
+    top: 29px;
+    height: 389px;
+    width: 550px;
+    background-color: #AD8533;
+    border: 1px solid #630;
+    opacity: 0.8;
+    overflow: hidden;
+    transition: left 2s;
+    -webkit-transition: left 2s;
+    -moz-transition: left 2s;
+    -o-transition: left 2s;
 }
 
-#equipment {
-  position:relative;
-  float:left;
-  width:65px;
-  height:389px;
-  border-right:1px solid #663300;
+.equipment {
+    position: relative;
+    float: left;
+    width: 65px;
+    height: 389px;
+    border-right: 1px solid #630;
 }
 
-#backpack{
-  position:relative;
-  float:right;
-  width:480px;
-  height:389px;
+.backpack {
+    position: relative;
+    float: right;
+    width: 480px;
+    height: 389px;
 }
 
 .bp_obj {
-  float:left;
-  position:relative;
-  margin-top:15px;
-  margin-left:15px;
-  height:30px;
-  width:30px;
-  border:1px solid black;
+    float: left;
+    position: relative;
+    margin-top: 15px;
+    margin-left: 15px;
+    height: 30px;
+    width: 30px;
+    border: 1px solid #000;
 }
 
 #bottom-bar {
-  position:absolute;
-  bottom:0;
-  width:100%;
-  height:150px;
-  background-color:#AD8533;
-  border:1px solid #663300;
-  overflow:hidden;
-  opacity:1;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 150px;
+    background-color: #AD8533;
+    border: 1px solid #630;
+    overflow: hidden;
+    opacity: 1;
 }
 
 #chat {
-  position:relative;
-  padding: 0px;
-  margin-left: 3px;
-  float:left;
-  width:400px;
-  height:150px;
+    position: relative;
+    padding: 0;
+    margin-left: 3px;
+    float: left;
+    width: 400px;
+    height: 150px;
 }
 
-#chatOutput {
-  padding: 0px;
-  margin: 0px;
-  margin-bottom: 5px;
-  background-color: #cfa755;
-  height: 123px;
-  width: 400px;
-  overflow-y: scroll;
+.chatOutput {
+    padding: 0;
+    margin: 0;
+    margin-bottom: 5px;
+    background-color: #cfa755;
+    height: 123px;
+    width: 400px;
+    overflow-y: scroll;
 }
-#chatInput {
-  padding: 0px;
-  margin: 0px;
-  width: 397px;
+
+.chatInput {
+    padding: 0;
+    margin: 0;
+    width: 397px;
 }
 
 .nav {
-  position:relative;
-  float:right;
-  margin-right:44px;
-  border:none;
-  background-color:none;
-  margin-top:5px;
-  height:35px;
-  border-spacing:25px 0px;
-  border-collapse:separate;
+    position: relative;
+    float: right;
+    margin-right: 44px;
+    margin-top: 5px;
+    height: 35px;
+    border-spacing: 25px 0;
+    border-collapse: separate;
 }
 
 .nav td {
-  background-color:yellow;
-  border:1px solid #663300;
-  height:35px;
-  width:35px;
-  text-align:center;
+    background-color: #FF0;
+    border: 1px solid #630;
+    height: 35px;
+    width: 35px;
+    text-align: center;
 }
 
 .hotbar {
-  position:relative;
-  float:right;
-  margin-right:66px;
-  height:110px;
-  width:300px;
-  overflow:hidden;
+    position: relative;
+    float: right;
+    margin-right: 66px;
+    height: 110px;
+    width: 300px;
+    overflow: hidden;
 }
 
-.hotbar table{
-  margin-top:3px;
-  border-spacing:5px 5px;
-  border-collapse:separate;
-  border:1px solid black;
-  height:40px;
-  width:300px;
-  border:1px solid #663300;
-  background-color:#C9AB6B;
+.hotbar table {
+    margin-top: 3px;
+    border-spacing: 5px 5px;
+    border-collapse: separate;
+    border: 1px solid #000;
+    height: 40px;
+    width: 300px;
+    border: 1px solid #630;
+    background-color: #C9AB6B;
 }
 
-.hotbar td{
-  position:relative;
-  text-align:center;
-  table-layout:fixed;
-  height:35px;
-  width:35px;
-  padding:0;
+.hotbar td {
+    position: relative;
+    text-align: center;
+    table-layout: fixed;
+    height: 35px;
+    width: 35px;
+    padding: 0;
 }
 
 .empty {
-  background-color:#998251;
-  border:none;
-  border:1px solid #857148;
+    background-color: #998251;
+    border: none;
+    border: 1px solid #857148;
 }
 
-#stats{
-  position:relative;
-  float:left;
-  background-color:none;
-  opacity:0.8;
-  border:none;
+.stats {
+    position: relative;
+    float: left;
+    opacity: 0.8;
 }
 
-#bar{
-  position:relative;
-  border:1px solid black;
-  height:15px;
-  margin-left:10px;
-  margin-top:5px;
-  transition: width 1s;
-  -webkit-transition: width 1s;
-  background-color:white;
+.bar {
+    position: relative;
+    border: 1px solid #000;
+    height: 15px;
+    margin-left: 10px;
+    margin-top: 5px;
+    transition: width 1s;
+    -webkit-transition: width 1s;
+    -moz-transition: left 2s;
+    -o-transition: left 2s;
+    background-color: #FFF;
 }
 
-.health{
-  height:15px;
-  background-color:red;
-  transition: width 1s;
-  -webkit-transition: width 1s;
+.health {
+    height: 15px;
+    background-color: red;
+    transition: width 1s;
+    -webkit-transition: width 1s;
+    -moz-transition: left 2s;
+    -o-transition: left 2s;
 }
 
-.mana{
-  height:15px;
-  background-color:blue;
-  transition: width 1s;
-  -webkit-transition: width 1s;
+.mana {
+    height: 15px;
+    background-color: blue;
+    transition: width 1s;
+    -webkit-transition: width 1s;
+    -moz-transition: left 2s;
+    -o-transition: left 2s;
 }
 
 #sample_text_id {
-  font-size: 24pt;
-  text-align: center;
-  margin-top: 140px;
+    font-size: 24pt;
+    text-align: center;
+    margin-top: 140px;
 }
 
-#instructions {
-  position: relative;
-  height: 400px;
-  width: 500px;
-  border: none;
-  float: left;
-  padding-left: 10px;
+.form {
+    position: relative;
+    width: 200px;
+    height: 30px;
+    float: left;
 }
 
-#form {
-  position: relative;
-  width  : 200px;
-  height : 30px;
-  float: left;
-}
-
-#button {
-   position: relative;
-   float: left;
+.button {
+    position: relative;
+    float: left;
 }
