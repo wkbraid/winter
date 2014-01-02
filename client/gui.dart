@@ -9,9 +9,14 @@ import '../common.dart';
 class Gui {
   //Handles the graphical user interface
   void login(callback) {
-    querySelector("#logMeIn").onClick.listen((e) {
+    querySelector("#logMeIn").onClick.listen((e) { // login on click of button
       InputElement tf = querySelector("#textfield");
       callback(tf.value);
+    });
+    querySelector("#textfield").onKeyUp.listen( // login when enter is pressed
+        (e) {if (e.keyCode == KeyCode.ENTER){
+               InputElement tf = querySelector("#textfield");
+               callback(tf.value);}
     });
   }
   
