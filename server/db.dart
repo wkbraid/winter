@@ -24,7 +24,8 @@ Map<String,Account> accs = {
 // Maps indexed by mapid
 Map<String, GameMap> maps = {
   "lefty" : new GameMap("lefty",
-      [],
+      [new Mob(100,100,[new RandEnemy(100,100,new Stats(hpmax: 10)),
+                      new RandEnemy(600,100,new Stats(hpmax: 10))])],
       [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],

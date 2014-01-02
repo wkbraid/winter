@@ -3,6 +3,36 @@
 
 part of common;
 
+class Mob extends Actor {
+  // A mob of enemies 
+  
+  List<Enemy> enemies; // the component enemies of the mob
+  
+  Mob(x,y,this.enemies) : super(x,y) {
+    width = 50;
+    height = 50;
+    color = "yellow";
+  }
+  
+  void update(dt) {
+    super.update(dt);
+  }
+  
+  void collide(Actor other) {
+    if (other is Hero) {
+      // All mobs are aggressive for now
+      Battle battle = new Battle();
+      instance.map.addInstance(battle); // The battle takes place on the map
+      
+      // TODO: make instance portals disappear when the battle begins
+      instance.addActor(new InstancePortal(x,y,battle)); // place portals to enter the battle
+      instance.addActor(new InstancePortal(other.x,other.y,battle));
+      battle.addActor(this);
+      battle.addHero(other); // add the contestants to the battle
+    }
+  }
+}
+
 class Enemy extends Being {
   // Basic enemy class, abstracts most functionality other than AI decisions
   
