@@ -23,3 +23,4 @@ part 'common/map/actor/actor.dart';
 part 'common/map/actor/enemy.dart';
 part 'common/map/actor/projectile.dart';
 part 'common/map/actor/inanimate.dart';
+part 'common/map/actor/hero.dart';

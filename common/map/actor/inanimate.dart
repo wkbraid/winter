@@ -19,18 +19,28 @@ class Portal extends Inanimate {
   num targx, targy; // the end position of going through the portal
   String targmap; // the map we are going to
   
-  Portal(x,y,targx,targy,targmap) : super(x,y) {
+  Portal(x,y,this.targx,this.targy,this.targmap) : super(x,y) {
     height = 30;
     width = 30;
-    this.targx = targx;
-    this.targy = targy;
-    this.targmap = targmap;
   }
   void interact(Hero hero) {
     // open the portal and go through it
     hero.mapid = targmap;
     hero.x = targx;
     hero.y = targy;
+  }
+}
+
+class InstancePortal extends Inanimate {
+  // Takes Beings to a different instance of the map they are on
+  Instance targinstance;
+  InstancePortal(x,y,this.targinstance) : super(x,y) {
+    height = 30;
+    width = 30;
+    color = "lightpurple";
+  }
+  void interact(Hero hero) {
+    targinstance.addHero(hero);
   }
 }
 

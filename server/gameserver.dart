@@ -100,7 +100,7 @@ class Client {
   void chatParse(data) {
     String msg = data["msg"];
     // All info from the client should be in the form cmd <arg> <arg> ...
-    if (msg.startsWith('say')) { // speach can have whitespace
+    if (msg.startsWith('say')) { // speech can have whitespace
       chatCmd("say", [msg.substring(4)]);
     } else { // trim unneccessary whitespace
       msg = msg.trim();
@@ -114,14 +114,14 @@ class Client {
     // REMEMBER to sanitize user input
     if (cmd == "say") {
       if (args[0].length > 0)
-      gsrv.send({"cmd":"chat","say":args[0]});
+      gsrv.send({"cmd":"chat","say": acc.user + ": " + args[0]});
     }
   }
   
   void update() { // Send updates to the client
     if (!loggedin) return;
     if (map.id != acc.hero.mapid) { // the hero's map has changed
-      if (!gsrv.maps.containsKey(acc.hero.mapid)) // chech that the map is loaded
+      if (!gsrv.maps.containsKey(acc.hero.mapid)) // check that the map is loaded
         gsrv.maps[acc.hero.mapid] = db.maps[acc.hero.mapid]; // if not load the map
       if (gsrv.maps[acc.hero.mapid].addHero(acc.hero)) { // try to add the hero to the new map
         map = gsrv.maps[acc.hero.mapid];

@@ -67,12 +67,10 @@ class Viewport {
   static const BANKOVERLAY = 1;
   
   void drawOverlay(Hero hero){
-    print(hero.overlay);
     ctx.fillStyle = "grey";
     switch(hero.overlay){
       case 0: break;
       case 1:
-        print("and got here");
         ctx.fillRect(100, 100, 400, 300);
         break;
       default: break;

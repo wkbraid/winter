@@ -3,12 +3,23 @@
 
 part of common;
 
-class BattleInstance extends Instance {
+class Battle extends Instance {
   // An instance of a map on which a battle is taking place
   
   Map<bool,List<Being>> teams = {true: [], false:[]};
   
-  
+  void addActor(Actor act) {
+    if (act.instance != null)
+      act.instance.removeActor(act);
+    if (act is Mob) { // add a mob to the fight
+      for (Enemy enemy in act.enemies) {
+        addActor(enemy);
+      }
+    } else {
+      actors.add(act);
+      act.instance = this;
+    }
+  }
 }
 
 class Instance {
@@ -115,7 +126,7 @@ class Instance {
   // === Heros ===
   bool addHero(Hero hero) { // Add a player to the instance
     if (heros.containsKey(hero.name))
-      print("Warning! Hero already on map");
+      print("Warning! Hero ${hero.name} already on map");
     if (hero.instance != null) {
       hero.instance.removeHero(hero); // remove the hero from the old instance
     }
@@ -127,15 +138,15 @@ class Instance {
     heros.remove(hero.name);
   }
   
-  // === Being ===
-  bool addBeing(Being being) { // Beings could get slightly special treatment, (used in battles)
-    addActor(being); // but not in default instances
-  }
-  
   // === Actors ===
   void addActor(Actor act) { // Add an actor to the map
     actors.add(act);
+    if (act.instance != null)
+      act.instance.removeActor(act); // Remove the actor from its previous instance
     act.instance = this;
+  }
+  void removeActor(Actor act) {
+    actors.remove(act);
   }
   
   Instance.fromPack(data) {

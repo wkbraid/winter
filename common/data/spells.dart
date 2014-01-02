@@ -5,7 +5,6 @@ part of common;
 //===========================================
 // Game Spells
 //===========================================
-// NB: Summon spells (which create beings) should use map.addBeing() to allow teams in battles
 class PelletSpell extends Spell {
   // simple missile spell
 
