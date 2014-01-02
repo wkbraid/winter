@@ -12,22 +12,28 @@ class Gui {
   
   ChatHandler chat;
   
+  //Overlay types
+  static const NO_OVERLAY = 0;
+  static const INVENTORY_OVERLAY = 1;
+  static const STATS_OVERLAY = 2;
+  static const BANK_OVERLAY = 3;
+  static const NPC_CHAT_OVERLAY = 4;
+  static const MAP_OVERLAY = 5;
+  // Number that determines what overlay is covering the main game screen (if any).
+  int overlayStatus;
+  
   var send; // Send function taken from game
   
   Gui(this.send) {
     chat = new ChatHandler("chatInput","chatOutput",send);
+    overlayStatus = 0;
   }
   
   //Handles the graphical user interface
   void login(callback) {
-    querySelector("#logMeIn").onClick.listen((e) { // login on click of button
+    querySelector("#logMeIn").onClick.listen((e) {
       InputElement tf = querySelector("#textfield");
       callback(tf.value);
-    });
-    querySelector("#textfield").onKeyUp.listen( // login when enter is pressed
-        (e) {if (e.keyCode == KeyCode.ENTER){
-               InputElement tf = querySelector("#textfield");
-               callback(tf.value);}
     });
   }
   
@@ -88,4 +94,16 @@ class Gui {
     querySelector(".mana").style.width = hero.mp.toString() + "px"; // set manabar to mp, takes a little to catch up with game logic
     querySelector(".mana").text = hero.mp.toInt().toString(); // print mana
  }
+  
+  void drawOverlay(Hero hero){
+    switch(hero.overlay){
+      case NO_OVERLAY: break;
+      case INVENTORY_OVERLAY: break;
+      case STATS_OVERLAY: break;
+      case BANK_OVERLAY: break;
+      case NPC_CHAT_OVERLAY: break;
+      case MAP_OVERLAY: break;
+      default: break;
+    }
+  }
 }
