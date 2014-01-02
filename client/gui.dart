@@ -6,7 +6,18 @@ library gui;
 import 'dart:html';
 import '../common.dart';
 
+part 'gui/chathandler.dart';
+
 class Gui {
+  
+  ChatHandler chat;
+  
+  var send; // Send function taken from game
+  
+  Gui(this.send) {
+    chat = new ChatHandler("chatInput","chatOutput",send);
+  }
+  
   //Handles the graphical user interface
   void login(callback) {
     querySelector("#logMeIn").onClick.listen((e) {
