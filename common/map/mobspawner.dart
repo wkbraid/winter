@@ -27,6 +27,7 @@ class MobSpawner {
   }
   
   Point choosePosition() {
-    return new Point(150,150);
+    var rand = new Random();
+    return new Point(rand.nextInt(mwidth*ts),rand.nextInt(mheight*ts));
   }
 }

@@ -9,26 +9,43 @@ class Mob extends Actor {
   List<Enemy> enemies; // the component enemies of the mob
   
   Mob(x,y,this.enemies) : super(x,y) {
-    width = 50;
-    height = 50;
+    width = 20;
+    height = 20;
     color = "yellow";
   }
   
-  void update(dt) {
-    super.update(dt);
+  void update(dt) { // Stolen random enemy movement for now
+    // decide whether we should randomly jump
+    var rand = new Random();
+    if (rand.nextDouble() < 0.01 && edges.down.contains(Tile.WALL))
+      vy -= 18;
+    // now decide which way we should push
+    if (vx.abs() < 1)
+      vx += (rand.nextDouble() - 0.5)*dt;
+    else
+      vx += vx/1400*dt;
+    
+    super.update(dt); // physics and move the enemy
+  }
+  
+  void fight(Hero hero) { // start a fight with a hero
+    if (hero.instance is Battle) {
+      print("Tried to start two battles at once");
+      return;
+    }
+    Battle battle = new Battle();
+    instance.map.addInstance(battle); // The battle takes place on the map
+    
+    instance.addActor(new BattlePortal(x,y,battle)); // place portals to enter the battle
+    instance.addActor(new BattlePortal(hero.x,hero.y,battle));
+    battle.addActor(this);
+    battle.addHero(hero); // add the contestants to the battle
   }
   
   void collide(Actor other) {
     if (other is Hero) {
       // All mobs are aggressive for now
-      Battle battle = new Battle();
-      instance.map.addInstance(battle); // The battle takes place on the map
-      
-      // TODO: make instance portals disappear when the battle begins
-      instance.addActor(new BattlePortal(x,y,battle)); // place portals to enter the battle
-      instance.addActor(new BattlePortal(other.x,other.y,battle));
-      battle.addActor(this);
-      battle.addHero(other); // add the contestants to the battle
+      fight(other);
     }
   }
 }
