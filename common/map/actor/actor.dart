@@ -159,12 +159,14 @@ class Being extends Actor {
     var data = super.pack();
     data["hp"] = hp;
     data["mp"] = mp;
+    data["stats"] = stats.pack();
     data["being"] = true; // tell the instance that this is a being
     return data;
   }
   unpack(data) {
     mp = data["mp"];
     hp = data["hp"];
+    base.unpack(data["stats"]);
     super.unpack(data);
   }
 }
