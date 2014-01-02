@@ -25,8 +25,8 @@ class Mob extends Actor {
       instance.map.addInstance(battle); // The battle takes place on the map
       
       // TODO: make instance portals disappear when the battle begins
-      instance.addActor(new InstancePortal(x,y,battle)); // place portals to enter the battle
-      instance.addActor(new InstancePortal(other.x,other.y,battle));
+      instance.addActor(new BattlePortal(x,y,battle)); // place portals to enter the battle
+      instance.addActor(new BattlePortal(other.x,other.y,battle));
       battle.addActor(this);
       battle.addHero(other); // add the contestants to the battle
     }

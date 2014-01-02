@@ -6,7 +6,25 @@ part of common;
 class Battle extends Instance {
   // An instance of a map on which a battle is taking place
   
-  Map<bool,List<Being>> teams = {true: [], false:[]};
+  List<BattlePortal> entrances = []; // A list of all the entrances to the battle
+  
+  void end() { // The battle has ended!
+    var tmp = heros.values.toList();
+    for (Hero hero in tmp) {
+      map.addHero(hero); // Add the heros back to the main map
+    }
+  }
+  
+  void update(dt) {
+    if (actors.length == 0)
+      end(); // pretend the heros won
+    
+    super.update(dt);
+  }
+  
+  void edge(Hero hero) {
+    edgeCorrect(hero); // no other maps from battles
+  }
   
   void addActor(Actor act) {
     if (act.instance != null)
@@ -38,40 +56,7 @@ class Instance {
     var tmp = heros.values.toList(); // copy to stop concurrency issues
     for (Hero hero in tmp) {
       hero.update(dt); // update each player on the map
-      if (hero.x > ts*mwidth) {
-        if (map.right != null) {
-          hero.x = ts*mwidth - hero.x;
-          hero.mapid = map.right;
-        } else {
-          hero.x = ts*mwidth; // stop the hero falling off completely
-          hero.vx = 0;
-        }
-      } else if (hero.x < 0) {
-        if ( map.left != null) {
-          hero.x = ts*mwidth + hero.x;
-          hero.mapid = map.left;
-        } else {
-          hero.x = 0;
-          hero.vx = 0;
-        }
-      }
-      if (hero.y > ts*mheight) {
-        if (map.down != null) {
-          hero.y = ts*mheight - hero.y;
-          hero.mapid = map.down;
-        } else {
-          hero.y = ts*mheight;
-          hero.vy = 0;
-        }
-      } else if (hero.y < 0) {
-        if (map.up != null) {
-          hero.y = ts*mheight + hero.y;
-          hero.mapid = map.up;
-        } else {
-          hero.y = 0;
-          hero.vy = 0;
-        }
-      }
+      edge(hero);
     }
     
     
@@ -80,9 +65,45 @@ class Instance {
     tmp = actors.toList(); // take a copy for concurrency
     for (Actor act in tmp) { // update all other actors
       act.update(dt);
+      edgeCorrect(act);
     }
     
     collide(); // check for collision
+  }
+  
+  void edge(Hero hero) { // check if a hero should be transported off the edge
+    if (hero.x > ts*mwidth && map.right != null) {
+      hero.x = ts*mwidth - hero.x;
+      hero.mapid = map.right;
+    } else if (hero.x < 0 && map.left != null) {
+      hero.x = ts*mwidth + hero.x;
+      hero.mapid = map.left;
+    } else if (hero.y > ts*mheight && map.down != null) {
+      hero.y = ts*mheight - hero.y;
+      hero.mapid = map.down;
+    } else if (hero.y < 0 && map.up != null) {
+      hero.y = ts*mheight + hero.y;
+      hero.mapid = map.up;
+    } else {
+      edgeCorrect(hero); // no maps, stop the hero from falling off
+    }
+  }
+  
+  void edgeCorrect(Actor act) {
+    if (act.x > ts*mwidth) {
+      act.x = ts*mwidth;
+      act.vx = 0;
+    } else if (act.x < 0) {
+      act.x = 0;
+      act.vx = 0;
+    }
+    if (act.y > ts*mheight) {
+      act.y = ts*mheight;
+      act.vy = 0;
+    } else if (act.x < 0) {
+      act.y = 0;
+      act.vy = 0;
+    }
   }
   
   

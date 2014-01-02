@@ -31,16 +31,17 @@ class Portal extends Inanimate {
   }
 }
 
-class InstancePortal extends Inanimate {
+class BattlePortal extends Inanimate {
   // Takes Beings to a different instance of the map they are on
-  Instance targinstance;
-  InstancePortal(x,y,this.targinstance) : super(x,y) {
+  Battle battle; // The battle this portal leads to
+  BattlePortal(x,y,this.battle) : super(x,y) {
+    battle.entrances.add(this); // add ourselves to the markers on the target instance so that we can be removed
     height = 30;
     width = 30;
     color = "lightpurple";
   }
   void interact(Hero hero) {
-    targinstance.addHero(hero);
+    battle.addHero(hero);
   }
 }
 
