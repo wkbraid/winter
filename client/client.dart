@@ -41,7 +41,8 @@ class Game {
     stage.update(interval); // update the stage
     stage.draw();
     gui.drawInv(hero); // Draw the inventory
-    gui.drawStats(hero); // Draw the health and mana bars (possibly other stats later)
+    gui.drawBars(hero); // Draw the health and mana bars (possibly other stats later)
+    gui.drawStats(hero); // Draw the stats
     new Timer(new Duration(milliseconds:interval),loop); // start the loop again
   }
   

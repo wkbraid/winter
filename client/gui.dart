@@ -39,13 +39,82 @@ class Gui {
   
   void listen(){
     querySelector(".nav tr td:nth-child(1)").onClick.listen(
-        (e) => toggleVisible(querySelector(".inventory")));
+        (e) { emptyWindow([querySelector(".stats")]);
+              querySelector(".equipment").classes.remove("hide");
+              querySelector(".backpack").classes.remove("hide");
+              toggleVisible(querySelector(".window")); // creates some problems when switching between pages, should be fixed with enum
+         });
+    querySelector(".nav tr td:nth-child(2)").onClick.listen(
+        (e) { emptyWindow([querySelector(".equipment"), querySelector(".backpack")]);
+              querySelector(".stats").classes.remove("hide");
+              toggleVisible(querySelector(".window"));
+         });
+  }
+  
+  void drawOverlay(Hero hero){
+    DivElement window = querySelector(".window");
+    DivElement equipment = querySelector(".equipment");
+    DivElement backpack = querySelector(".backpack");
+    DivElement stats = querySelector(".stats");
+    switch(hero.overlay){
+      case NO_OVERLAY: 
+        hide(window);
+        emptyWindow([equipment, backpack, stats]);
+        return;
+      case INVENTORY_OVERLAY: 
+        hide(window);
+        emptyWindow([stats]);
+        fillWindow([equipment, backpack]);
+        drawInv(hero);
+        show(window);
+        return;
+      case STATS_OVERLAY: 
+        hide(window);
+        emptyWindow([equipment, backpack]);
+        fillWindow([stats]);
+        show(window);
+        return;
+      case BANK_OVERLAY: 
+        hide(window);
+        emptyWindow([equipment, backpack, stats]);
+        show(window);
+        return;
+      case NPC_CHAT_OVERLAY: // may not use window
+        hide(window);
+        emptyWindow([equipment, backpack, stats]);
+        show(window);
+        return;
+      case MAP_OVERLAY: 
+        hide(window);
+        emptyWindow([equipment, backpack, stats]);
+        show(window);
+        return;
+      default: break;
+    }
+  }
+  
+  void emptyWindow(List<DivElement> divs){
+    for(DivElement div in divs)
+      div.classes.add("hide");
+  }
+  
+  void fillWindow(List<DivElement> divs){
+    for(DivElement div in divs)
+      div.classes.remove("hide");
   }
   
   void toggleVisible(DivElement div){
     if (div.style.left == "900px")
       div.style.left = "-5px";
     else div.style.left = "900px";
+  }
+  
+  void show(DivElement div){ 
+    div.style.left = "-5px";
+  }
+  
+  void hide(DivElement div){
+    div.style.left == "900px";
   }
   
   void drawInv(Hero hero){
@@ -80,9 +149,14 @@ class Gui {
       }
     }
   }
-
   
   void drawStats(Hero hero){
+    querySelector(".stats").text = hero.name + " Speed: " + hero.stats.speed.toString()
+                                   + " Jump: " + hero.stats.jump.toString();
+ }
+
+  
+  void drawBars(Hero hero){
     // draw the hero's stats in the gui
     querySelector(".bar:nth-child(1)").style.width = hero.stats.hpmax.toString() + "px"; // set healthbar border to max hp
     querySelector(".bar:nth-child(2)").style.width = hero.stats.mpmax.toString() + "px"; //set manabar holder to max mp
@@ -91,16 +165,4 @@ class Gui {
     querySelector(".mana").style.width = hero.mp.toString() + "px"; // set manabar to mp, takes a little to catch up with game logic
     querySelector(".mana").text = hero.mp.toInt().toString(); // print mana
  }
-  
-  void drawOverlay(Hero hero){
-    switch(hero.overlay){
-      case NO_OVERLAY: break;
-      case INVENTORY_OVERLAY: break;
-      case STATS_OVERLAY: break;
-      case BANK_OVERLAY: break;
-      case NPC_CHAT_OVERLAY: break;
-      case MAP_OVERLAY: break;
-      default: break;
-    }
-  }
 }

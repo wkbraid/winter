@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="client.css">
   </head>
   <body>
+  
+    <!--Login-->
     <div>
       <div id="username">
         Username: <input type="text" id="textfield" name="username">
@@ -14,21 +16,28 @@
       </div>
     </div>
       
+    <!--Contains Game-->
     <div id="container">
       <canvas id="area" width="810px" height="600px"></canvas> <!--Holds the game-->
       
-      <div id="overlay"> <!--Holds the GUI-->
+      <!--Holds the GUI-->
+      <div id="overlay">
       
-        <div class="stats"> <!--Health and Mana Bar-->
+        <!--Health and Mana Bar-->
+        <div class="hpmp"> 
           <div class="bar"><div class="health"></div></div>
           <div class="bar"><div class="mana"></div></div>
         </div>
         
-        <!--Inventory Page-->
-        <div class="inventory">
+        <!--All GUI Windows-->
+        <div class="window">
+          <!--Inventory-->
           <div class="equipment">
           </div>
           <div class="backpack">
+          </div>
+          <!--Stats-->
+          <div class="stats">
           </div>
         </div>
         
@@ -41,8 +50,8 @@
           
           <table class="nav">
           <tr>
-            <td>inv</td>
-            <td>2</td>
+            <td>inv</td> 
+            <td>stats</td>
             <td>3</td>
             <td>4</td>
             <td>5</td>
