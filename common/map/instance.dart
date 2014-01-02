@@ -106,7 +106,13 @@ class Instance {
       act.vx = 0;
     }
     if (act.y > ts*mheight) {
-      act.y = ts*mheight;
+      if (act is Being || act is Mob) {
+        act.x = act.lastSolid.x;
+        act.y = act.lastSolid.y;
+        act.vx = 0;
+      } else {
+        act.y = ts*mheight;
+      }
       act.vy = 0;
     } else if (act.x < 0) {
       act.y = 0;

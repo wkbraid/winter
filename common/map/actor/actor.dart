@@ -27,6 +27,8 @@ class Actor {
   
   num vx = 0; num vy = 0; // Actor velocity
   
+  Point lastSolid = new Point(0,0); // The last place we were standing on something solid
+  
   Actor(this.x,this.y); // Create a default actor at the given position 
  
   
@@ -148,6 +150,12 @@ class Being extends Actor {
     for (Buff buff in buffs) { // update buffs
       buff.update(dt);
     }
+  }
+  
+  num collideY(dy) {
+    if (Tile.solid(edges.down) || edges.down.contains(Tile.CLOUD))
+      lastSolid = new Point(x,y); // remember this spot as a solid place
+    return super.collideY(dy);
   }
   
  

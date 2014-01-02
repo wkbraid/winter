@@ -5,7 +5,7 @@ part of common;
 
 class Projectile extends Actor {
   num damage; // how much damage it does
-  Actor caster; // who cast the projectile
+  Being caster; // who cast the projectile
   
   Projectile(x,y,vx,vy,damage,caster) : super(x,y) {
     this.vx = vx;
@@ -43,6 +43,9 @@ class Projectile extends Actor {
     if (other is Being && other != caster) {
       dead = true;
       other.hp -= damage; // damage the actor
+    } else if (other is Mob && caster is Hero) {
+      // start a fight with the mob
+      other.fight(caster);
     }
   }
 }
