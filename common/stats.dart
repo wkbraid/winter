@@ -1,5 +1,5 @@
 // file: stats.dart
-// contains: Stat, Inventory
+// contains: Stats, Inventory
 
 part of common;
 
