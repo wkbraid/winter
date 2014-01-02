@@ -113,6 +113,7 @@ class Client {
   void chatCmd(String cmd, List<String> args) {
     // REMEMBER to sanitize user input
     if (cmd == "say") {
+      if (args[0].length > 0)
       gsrv.send({"cmd":"chat","say":args[0]});
     }
   }
