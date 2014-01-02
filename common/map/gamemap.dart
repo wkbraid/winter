@@ -29,12 +29,19 @@ class GameMap {
   
   List<Instance> instances = []; // The instances of this map
 
+  MobSpawner spawner;
+  
   GameMap(this.id,List<Actor> actors, this.tdata,
-      {this.up,this.down,this.left,this.right}) {
+      {this.spawner, this.up,this.down,this.left,this.right}) {
     Instance world = new Instance(); // create the main world instance
     addInstance(world);
     for (Actor act in actors) { // add all the actors to the world
       world.addActor(act);
+    }
+    
+    if (spawner != null) {
+      spawner.map = this;
+      spawner.start(); // start spawning mobs
     }
   }
   
@@ -43,6 +50,11 @@ class GameMap {
       return instances.first.addHero(hero); // try to add the hero to the instance
     }
     return false;
+  }
+  void addActor(Actor act) {
+    if (instances.first != null ) { // There needs to be an instance to add it to
+      instances.first.addActor(act); // try to add the hero to the instance
+    }
   }
   
   void addInstance(Instance instance) {

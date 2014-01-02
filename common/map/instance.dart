@@ -8,11 +8,19 @@ class Battle extends Instance {
   
   List<BattlePortal> entrances = []; // A list of all the entrances to the battle
   
+  Battle() {
+    print("New Battle!");
+  }
+  
   void end() { // The battle has ended!
     var tmp = heros.values.toList();
     for (Hero hero in tmp) {
       map.addHero(hero); // Add the heros back to the main map
     }
+    for (BattlePortal bp in entrances) {
+      bp.instance.removeActor(bp); // remove the portals
+    }
+    open = false; // this instance is no longer open
   }
   
   void update(dt) {

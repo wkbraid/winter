@@ -3,6 +3,7 @@
 library common;
 
 import 'dart:math';
+import 'dart:async';
 
 part 'common/constants.dart';
 part 'common/account.dart';
@@ -18,6 +19,7 @@ part 'common/data/buffs.dart';
 // Map related files
 part 'common/map/gamemap.dart';
 part 'common/map/instance.dart';
+part 'common/map/mobspawner.dart';
 
 part 'common/map/actor/actor.dart';
 part 'common/map/actor/enemy.dart';

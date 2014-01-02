@@ -41,7 +41,10 @@ Map<String, GameMap> maps = {
        [1,0,0,0,0,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0],
        [1,0,0,0,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0],
        [1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1]],
-       right: "test1",down:"test1"),
+       spawner: new MobSpawner(20000,[
+          () => new RandEnemy(100,100, new Stats(hpmax: 10)),
+          () => new RandEnemy(600,100, new Stats(hpmax: 50))
+       ]), right: "test1",down:"test1"),
   "test1" : new GameMap("test1",
       [new Pickupable(140,100,new HealthPotion()),
        new Pickupable(400,100,new PropellorHat()),
