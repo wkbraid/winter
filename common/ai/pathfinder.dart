@@ -44,9 +44,12 @@ class PathAction {
 class PathFinder {
   // Handles basic macro pathfinding techniques
 
+  PathEnemy act;
   GameMap map; // The map we are traversing
   
-  PathFinder(this.map);
+  PathFinder(this.act) {
+    map = act.instance.map;
+  }
   
   // Find a path from src to targ
   List<PathAction> find(Point src, Point trg) {
@@ -90,42 +93,72 @@ class PathFinder {
 
     // left and right
     for (int dx = -1; dx <= 1; dx += 2) {
-      if (!Tile.solid(map.getT(cur.x+dx,cur.y)) && Tile.solid(map.getT(cur.x+dx,cur.y+1)))
+      if (!Tile.solid(map.getT(cur.x+dx,cur.y)))
         que.add(new PathAction(cur.x+dx,cur.y,PathAction.WALK,dist:cur.dist+1,parent:cur));
     }
   }
   
   // Try all possible fall moves from the current position (and add them to the que)
   void fall(PathAction cur, PriorityQueue<PathAction> que) {
-
-    // currently fall directly down only
-    // fall either left or right
-    for (int dx = -1; dx <= 1; dx += 2) {
-      if (!Tile.solid(map.getT(cur.x+dx,cur.y)) &&
-          !Tile.solid(map.getT(cur.x+dx, cur.y+1))) { // we can move in that direction
-        // check downwards, void means we checked all the way to the bottom of the map
-        for (int dy = 1; map.getT(cur.x+dx, cur.y+dy+1) != Tile.VOID; dy += 1) {
-          if (Tile.solid(map.getT(cur.x+dx, cur.y+dy+1))) {
-            que.add(new PathAction(cur.x+dx,cur.y+dy,PathAction.FALL,
-                dist:cur.dist+dx.abs()+dy,parent:cur));
-            break; // we hit the bottom of something
-          }
+    // assume vy starts at zero at the beginning of any fall
+    // s = ut + 1/2 at^2 => t = sqrt(2s/a)
+    
+    num speed = 1.2; // Should be in pixels per millisecond (but maybe not)
+    
+    for (int dy = 1; dy + cur.y < mheight; dy ++) { // check rows below the player
+      // Check the valid row of blocks beneath us
+      
+      num rng = sqrt(2*dy*ts/g)*speed ~/ ts; // the range of blocks accessible
+      for (int dx = -rng; dx <= rng; dx++) {
+        if (Tile.solid(map.getT(cur.x+dx,cur.y+dy+1))
+            && !solidRect(cur.x,cur.y,cur.x+dx,cur.y+dy)) {
+          // there is a valid landing zone
+          que.add(new PathAction(cur.x+dx,cur.y+dy,PathAction.FALL,
+              dist:cur.dist+dx.abs()+dy,parent:cur));
         }
       }
     }
+  }
+  
+  // check if there are any solid blocks in the rectangle
+  bool solidRect(int x1, int y1, int x2, int y2) {
+    if (x1 > x2) return solidRect(x2,y1,x1,y2); // make sure our rectangle is well orientated
+    if (y1 > y2) return solidRect(x1,y2,x2,y1);
+    for (int i = x1; i <= x2; i++) {
+      for (int j = y1; j <= y2; j++) {
+        if (Tile.solid(map.getT(i, j))) return true;
+      }
+    }
+    return false;
   }
   
   // Try all possible fall moves from the current position (and add them to the que)
   void jump(PathAction cur, PriorityQueue<PathAction> que) {
     if (!Tile.solid(map.getT(cur.x,cur.y+1))) return; // Need to be standing on something solid
     
-    // currently jump straight up a fixed distance and then fall
-    int jumph = -4; // jump up to 4 blocks
-    for (int dy = 0; dy >= jumph; dy--) {
-      if (Tile.solid(map.getT(cur.x, cur.y+dy-1)) || dy == jumph) { // we would hit something
-        que.add(new PathAction(cur.x,cur.y+dy,PathAction.JUMP,
-            dist: cur.dist+dy.abs(), parent: cur));
-        break;
+    // This requires two steps:
+    // (1) Find t, time to reach height dy*h
+    //    s=ut + 1/2at^2
+    //   using quadratic formula:
+    //    t = -u - sqrt(u^2 -as)
+    // (2) Find rng, horz distance travellable in that time
+    //    rng = t*speed
+    
+    num speed = 500;
+    int jumph = -4;
+    
+    // current problem: since lower jumps are checked we start falls with vy
+    
+    for (int dy = jumph; dy <= 0; dy++) { // look upwards
+      num rng = ((act.jv - sqrt(act.jv*act.jv - g*dy.abs()*ts))*speed) ~/ ts;
+      for (int dx = -rng; dx <= rng; dx ++) {
+        // either this is a max jump or we hit our head
+        if (dy == jumph || Tile.solid(map.getT(cur.x+dx,cur.y+dy-1))) {
+          if (!solidRect(cur.x,cur.y,cur.x+dx,cur.y+dy)) { // if there is nothing in the way
+            que.add(new PathAction(cur.x+dx,cur.y+dy,PathAction.JUMP,
+                dist: cur.dist+dy.abs()+dx.abs(), parent: cur));
+          }
+        }
       }
     }
   }
