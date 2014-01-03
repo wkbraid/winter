@@ -21,13 +21,13 @@ List<List<int>> tdata =
  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,1,1],
  [1,0,1,1,1,1,1,1,1,1,0,0,0,0,2,2,2,0,0,0,0,0,0,0,0,0,1],
  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
- [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1],
+ [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1],
  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
  [1,0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1],
  [1,0,0,0,0,1,1,1,0,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1],
  [1,0,0,0,1,1,1,1,0,0,1,1,1,1,0,0,0,1,0,0,1,0,0,0,0,0,1],
- [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1]];
+ [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]];
 
 Viewport view;
 GameMap map; // The map we are testing on
@@ -70,6 +70,7 @@ void loop() {
   view.clear();
   view.drawInstance(map.instances.first); // draw the instance the test is on
   drawMouse();
+  drawSource();
   drawPath(path);
   
   new Timer(new Duration(milliseconds:interval),loop);
@@ -81,6 +82,12 @@ void drawMouse() {
   int ty = Mouse.y ~/ ts;
   ctx.strokeStyle = "darkorange";
   ctx.strokeRect(tx*ts,ty*ts,ts,ts);
+}
+
+void drawSource() {
+  var ctx = view.ctx;
+  ctx.strokeStyle = "orange";
+  ctx.strokeRect(src.x*ts,src.y*ts,ts,ts);
 }
 
 void drawPath(List<PathAction> path) {

@@ -10,6 +10,7 @@ class PathAction {
   static const SIT = 0; // Do nothing and we're there
   static const WALK = 1;
   static const FALL = 2;
+  static const JUMP = 3;
   
   Point pos; // The position of the action in tile coords
   int get x => pos.x;
@@ -75,6 +76,9 @@ class PathFinder {
         
         // try falling
         fall(cur, que);
+        
+        // try jumping
+        jump(cur, que);
       }
     }
     return []; // We couldn't reach the point
@@ -93,8 +97,7 @@ class PathFinder {
   
   // Try all possible fall moves from the current position (and add them to the que)
   void fall(PathAction cur, PriorityQueue<PathAction> que) {
-    if (!Tile.solid(map.getT(cur.x,cur.y+1))) return; // Need to be standing on something solid
-  
+
     // currently fall directly down only
     // fall either left or right
     for (int dx = -1; dx <= 1; dx += 2) {
@@ -109,5 +112,19 @@ class PathFinder {
         }
       }
     }
+  }
+  
+  // Try all possible fall moves from the current position (and add them to the que)
+  void jump(PathAction cur, PriorityQueue<PathAction> que) {
+    if (!Tile.solid(map.getT(cur.x,cur.y+1))) return; // Need to be standing on something solid
+    
+    // currently jump straight up a fixed distance and then fall
+    int jumph = -4; // jump up to 4 blocks
+    for (int dy = -1; dy >= jumph; dy--) {
+      if (Tile.solid(map.getT(cur.x, cur.y+dy)))
+        return; // We would hit something
+    }
+    que.add(new PathAction(cur.x,cur.y+jumph,PathAction.JUMP,
+        dist: cur.dist+jumph.abs(), parent: cur));
   }
 }
