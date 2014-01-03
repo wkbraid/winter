@@ -5,3 +5,7 @@ packages:
     description: browser
     source: hosted
     version: "0.8.10+3"
+  priority_queue:
+    description: priority_queue
+    source: hosted
+    version: "0.1.1"

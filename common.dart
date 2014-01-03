@@ -15,6 +15,7 @@ part 'common/stats.dart';
 part 'common/data/items.dart';
 part 'common/data/spells.dart';
 part 'common/data/buffs.dart';
+part 'common/data/enemies.dart';
 
 // Map related files
 part 'common/map/gamemap.dart';

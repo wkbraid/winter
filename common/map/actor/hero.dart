@@ -45,8 +45,8 @@ class Hero extends Being {
       vx += (input["right"] - input["left"])*stats.speed*dt;
       if (edges.up.contains(Tile.LADDER) && input["up"] > 0) {
         vy -= stats.speed*dt*5 + g*dt; // move upwards countering gravity
-      } else if (vy >= 0 && (Tile.solid(edges.down) || edges.down.contains(Tile.CLOUD)) 
-          && !Tile.solid(edges.up) && input["up"] > 0) {
+      } else if (vy >= 0 && (Tile.anysolid(edges.down) || edges.down.contains(Tile.CLOUD)) 
+          && !Tile.anysolid(edges.up) && input["up"] > 0) {
         vy -= stats.jump;
       }
       

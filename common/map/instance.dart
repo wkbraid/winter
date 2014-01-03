@@ -6,6 +6,8 @@ part of common;
 class Battle extends Instance {
   // An instance of a map on which a battle is taking place
   
+  int prep = 2000; // Time left in the preparation phase in miliseconds
+  
   List<BattlePortal> entrances = []; // A list of all the entrances to the battle
   
   Battle() {
@@ -24,9 +26,11 @@ class Battle extends Instance {
   }
   
   void update(dt) {
+    prep -= dt; // count down till the battle begins
     if (actors.length == 0)
       end(); // pretend the heros won
     
+    if (prep > 0) return;
     super.update(dt);
   }
   

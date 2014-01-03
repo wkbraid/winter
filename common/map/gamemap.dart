@@ -13,8 +13,12 @@ class Tile {
                               // knarr: NO! interactable tiles are called actors :P
   
   // Are there any solid tiles?
-  static bool solid(List<int> ts) =>
-    ts.any((t) => t == WALL || t == ICE);
+  static bool anysolid(List<int> ts) =>
+    ts.any(solid);
+  
+  // Is this tile solid
+  static bool solid(int t) =>
+      t == WALL || t == ICE;
 }
 
 class GameMap {
@@ -70,13 +74,18 @@ class GameMap {
     }
   }
   
-  // get the tile at position x,y
-  num get(x,y) {
-    if (x >= 0 && x < tdata[0].length*ts && y >= 0 && y < tdata.length*ts)
-      return tdata[y ~/ ts][x ~/ ts];
+  // get the tile at position x,y map coords
+  num get(x,y) =>
+    getT(x ~/ ts, y ~/ ts);
+  
+  num getT(x,y) { // get the tile at position x,y tile coords
+    if (x >= 0 && x < tdata[0].length && y >= 0 && y < tdata.length)
+      return tdata[y][x];
     else
       return Tile.VOID; // outside the map is void, only walkable to heros
   }
+  
+  
   
   
   // ==== PACKING ====

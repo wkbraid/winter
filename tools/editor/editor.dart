@@ -4,8 +4,8 @@ import 'dart:html';
 import 'dart:convert';
 import 'dart:async';
 
-import '../client/util/utils.dart';
-import '../common.dart';
+import '../../client/util/utils.dart';
+import '../../common.dart';
 
 Viewport view;
 

@@ -2,3 +2,4 @@ name: jump
 description: A sample web application
 dependencies:
   browser: any
+  priority_queue: any

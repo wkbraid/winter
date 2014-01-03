@@ -57,11 +57,11 @@ class Actor {
   }
   
   num collideX(num dx) { // check for collisions in the x direction
-    if (dx < 0 && Tile.solid(edges.left)) {
+    if (dx < 0 && Tile.anysolid(edges.left)) {
       x = ((x+dx-width/2) ~/ ts)*ts + ts + width/2;
       vx = 0;
       return 0; // how much further we should move
-    } else if (dx > 0 && Tile.solid(edges.right)) {
+    } else if (dx > 0 && Tile.anysolid(edges.right)) {
       x = ((x+dx+width/2) ~/ ts)*ts - width/2 - 0.001;
       vx = 0;
       return 0; // how much further we should move
@@ -69,11 +69,11 @@ class Actor {
     return dx; // No collision
   }
   num collideY(num dy) { // check for collisions in the y direction
-    if (dy < 0 && Tile.solid(edges.up)) {
+    if (dy < 0 && Tile.anysolid(edges.up)) {
       y = ((y+dy-height/2) ~/ ts)*ts + ts + height/2;
       vy = 0;
      return 0; // how much further we should move
-    } else if (dy > 0 && (Tile.solid(edges.down) || edges.down.contains(Tile.CLOUD))) {
+    } else if (dy > 0 && (Tile.anysolid(edges.down) || edges.down.contains(Tile.CLOUD))) {
       y = ((y+dy+height/2) ~/ ts)*ts - height/2 - 0.001;
       vy = 0;
       return 0; // how much further we should move
@@ -153,7 +153,7 @@ class Being extends Actor {
   }
   
   num collideY(dy) {
-    if (Tile.solid(edges.down) || edges.down.contains(Tile.CLOUD))
+    if (Tile.anysolid(edges.down) || edges.down.contains(Tile.CLOUD))
       lastSolid = new Point(x,y); // remember this spot as a solid place
     return super.collideY(dy);
   }
