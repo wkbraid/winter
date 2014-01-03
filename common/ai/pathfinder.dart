@@ -101,9 +101,10 @@ class PathFinder {
     // currently fall directly down only
     // fall either left or right
     for (int dx = -1; dx <= 1; dx += 2) {
-      if (!Tile.solid(map.getT(cur.x+dx,cur.y))) { // we can move in that direction
+      if (!Tile.solid(map.getT(cur.x+dx,cur.y)) &&
+          !Tile.solid(map.getT(cur.x+dx, cur.y+1))) { // we can move in that direction
         // check downwards, void means we checked all the way to the bottom of the map
-        for (int dy = 0; map.getT(cur.x+dx, cur.y+dy+1) != Tile.VOID; dy += 1) {
+        for (int dy = 1; map.getT(cur.x+dx, cur.y+dy+1) != Tile.VOID; dy += 1) {
           if (Tile.solid(map.getT(cur.x+dx, cur.y+dy+1))) {
             que.add(new PathAction(cur.x+dx,cur.y+dy,PathAction.FALL,
                 dist:cur.dist+dx.abs()+dy,parent:cur));
@@ -120,11 +121,12 @@ class PathFinder {
     
     // currently jump straight up a fixed distance and then fall
     int jumph = -4; // jump up to 4 blocks
-    for (int dy = -1; dy >= jumph; dy--) {
-      if (Tile.solid(map.getT(cur.x, cur.y+dy)))
-        return; // We would hit something
+    for (int dy = 0; dy >= jumph; dy--) {
+      if (Tile.solid(map.getT(cur.x, cur.y+dy-1)) || dy == jumph) { // we would hit something
+        que.add(new PathAction(cur.x,cur.y+dy,PathAction.JUMP,
+            dist: cur.dist+dy.abs(), parent: cur));
+        break;
+      }
     }
-    que.add(new PathAction(cur.x,cur.y+jumph,PathAction.JUMP,
-        dist: cur.dist+jumph.abs(), parent: cur));
   }
 }

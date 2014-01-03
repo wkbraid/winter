@@ -18,6 +18,8 @@ class PathEnemy extends Enemy {
   
   void update(dt) {
     vx = 0;
+    
+    // NB: if it gets off its path it is useless
     if (path.isNotEmpty) {
       PathAction next = path.first;
       if (x.round() == next.x*ts + ts/2 && y ~/ ts == next.y) { // currently need to reach node exactly
