@@ -5,12 +5,9 @@ library playground;
 import 'dart:async';
 import 'dart:html';
 
-import 'package:priority_queue/priority_queue.dart';
 
 import '../../client/util/utils.dart';
 import '../../common.dart';
-
-part 'pathfinder.dart';
 
 List<List<int>> tdata =
 [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -34,15 +31,15 @@ GameMap map; // The map we are testing on
 
 int interval = 30;
 
-Point src = new Point(1,13); // The point our path finding should start from
 Point trg;
 
 PathFinder pfinder;
-List<PathAction> path = [];
+PathEnemy test;
 
 void main() {
   view = new Viewport(querySelector("#area"));
-  map = new GameMap("playground",[],tdata);
+  test = new PathEnemy(45,405,new Stats(hpmax:10));
+  map = new GameMap("playground",[test],tdata);
   pfinder = new PathFinder(map);
   
   Mouse.init();
@@ -55,11 +52,12 @@ void main() {
 
 void press(e) { // the mouse was pressed
   if (Keyboard.isDown(KeyCode.SHIFT)) {
-    src = new Point(Mouse.x ~/ ts,Mouse.y ~/ ts);
+    Point src = new Point(Mouse.x ~/ ts,Mouse.y ~/ ts);
+    test.x = src.x*ts + ts/2;
+    test.y = src.y*ts + ts/2;
   } else {
     trg = new Point(Mouse.x ~/ ts, Mouse.y ~/ ts);
-    path = pfinder.find(src,trg); // Try to find a path from src to trg
-    print(path);
+    test.path = pfinder.find(new Point(test.x ~/ ts, test.y ~/ ts),trg); // Try to find a path from src to trg
   }
 }
 
@@ -70,8 +68,7 @@ void loop() {
   view.clear();
   view.drawInstance(map.instances.first); // draw the instance the test is on
   drawMouse();
-  drawSource();
-  drawPath(path);
+  drawPath(test.path);
   
   new Timer(new Duration(milliseconds:interval),loop);
 }
@@ -82,12 +79,6 @@ void drawMouse() {
   int ty = Mouse.y ~/ ts;
   ctx.strokeStyle = "darkorange";
   ctx.strokeRect(tx*ts,ty*ts,ts,ts);
-}
-
-void drawSource() {
-  var ctx = view.ctx;
-  ctx.strokeStyle = "orange";
-  ctx.strokeRect(src.x*ts,src.y*ts,ts,ts);
 }
 
 void drawPath(List<PathAction> path) {

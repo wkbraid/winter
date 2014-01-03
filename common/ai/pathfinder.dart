@@ -1,7 +1,7 @@
 // file: pathfinder.dart
 // contains: PathAction, PathFinder
 
-part of playground;
+part of common;
 
 class PathAction {
   // Represents one step along a macro path to travel

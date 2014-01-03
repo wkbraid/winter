@@ -5,11 +5,16 @@ library common;
 import 'dart:math';
 import 'dart:async';
 
+import 'package:priority_queue/priority_queue.dart';
+
 part 'common/constants.dart';
 part 'common/account.dart';
 part 'common/spell.dart';
 part 'common/item.dart';
 part 'common/stats.dart';
+
+// Ai related stuff
+part 'common/ai/pathfinder.dart';
 
 // Specific item/spell/buff references
 part 'common/data/items.dart';
