@@ -115,7 +115,7 @@ class PathFinder {
     }
   }
   
-  // Try all possible fall moves from the current position (and add them to the que)
+  // Try all possible jump moves from the current position (and add them to the que)
   void jump(PathAction cur, PriorityQueue<PathAction> que) {
     if (!Tile.solid(map.getT(cur.x,cur.y+1))) return; // Need to be standing on something solid
     

@@ -33,7 +33,7 @@ class Game {
     view = new Viewport(querySelector("#area")); // setup the game viewport
     stage = new Stage(hero,view,this.send);
     new Timer(new Duration(milliseconds:interval),loop); // start the main game loop
-    gui.listen();
+    gui.listen(hero);
   }
   
   void loop() { // the main game loop

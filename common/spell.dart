@@ -9,6 +9,7 @@ class Spell {
   DateTime lastcast; // last time when the spell was cast 
   num mana = 5; // mana cost
   Being caster; // the caster of the spell
+  String color; // color for the gui
   
   Spell(this.caster) {
     lastcast = new DateTime.utc(2013); // a long time ago

@@ -37,18 +37,28 @@ class Gui {
     });
   }
   
-  void listen(){
+  void listen(Hero hero){
+    // inv button
     querySelector(".nav tr td:nth-child(1)").onClick.listen(
-        (e) { emptyWindow([querySelector(".stats")]);
-              querySelector(".equipment").classes.remove("hide");
-              querySelector(".backpack").classes.remove("hide");
-              toggleVisible(querySelector(".window")); // creates some problems when switching between pages, should be fixed with enum
-         });
+        (e) { hero.overlay = toggleOverlay(INVENTORY_OVERLAY, hero.overlay);
+              print(hero.overlay);
+              drawOverlay(hero);
+    });
+    // stats button
     querySelector(".nav tr td:nth-child(2)").onClick.listen(
-        (e) { emptyWindow([querySelector(".equipment"), querySelector(".backpack")]);
-              querySelector(".stats").classes.remove("hide");
-              toggleVisible(querySelector(".window"));
+        (e) { hero.overlay = toggleOverlay(STATS_OVERLAY, hero.overlay);
+              print(hero.overlay);
+              drawOverlay(hero);
          });
+  }
+  
+  // If the requested overlay is already assigned to hero, assign NO_OVERLAY
+  int toggleOverlay(int requested, int old){
+    print(old);
+    if(old == requested){
+      return NO_OVERLAY;}
+    else
+      return requested;
   }
   
   void drawOverlay(Hero hero){
@@ -62,30 +72,24 @@ class Gui {
         emptyWindow([equipment, backpack, stats]);
         return;
       case INVENTORY_OVERLAY: 
-        hide(window);
         emptyWindow([stats]);
         fillWindow([equipment, backpack]);
-        drawInv(hero);
         show(window);
         return;
       case STATS_OVERLAY: 
-        hide(window);
         emptyWindow([equipment, backpack]);
         fillWindow([stats]);
         show(window);
         return;
       case BANK_OVERLAY: 
-        hide(window);
         emptyWindow([equipment, backpack, stats]);
         show(window);
         return;
       case NPC_CHAT_OVERLAY: // may not use window
-        hide(window);
         emptyWindow([equipment, backpack, stats]);
         show(window);
         return;
       case MAP_OVERLAY: 
-        hide(window);
         emptyWindow([equipment, backpack, stats]);
         show(window);
         return;
@@ -103,7 +107,7 @@ class Gui {
       div.classes.remove("hide");
   }
   
-  void toggleVisible(DivElement div){
+  void toggleVisible(DivElement div){ // probably will remove later
     if (div.style.left == "900px")
       div.style.left = "-5px";
     else div.style.left = "900px";
@@ -124,14 +128,14 @@ class Gui {
     querySelector(".equipment").children=[];
     for (Item key in hero.inv.backpack.keys) {
       int count = hero.inv.backpack[key];
-      if(i <= 7){
+      if(i <= 7){ // go in the hotbar
       TableCellElement obj = querySelector(".items td:nth-child("+i.toString()+")");
       obj.classes.remove("empty");
       obj.style.background = key.color;
       obj.style.border = "1px solid black";
       obj.text = count.toString();
       }
-      if (i > 7){
+      if (i > 7){ // go in the backpack
         DivElement obj = new DivElement();
         obj.classes.add("bp_obj");
         obj.style.background = key.color;
@@ -140,7 +144,7 @@ class Gui {
       }
       i++;
     }
-    for(Equipable eq in hero.inv.equipment){
+    for(Equipable eq in hero.inv.equipment){ // draws equipment
       if(eq != null){
         DivElement obj = new DivElement();
         obj.classes.add("bp_obj");
@@ -150,11 +154,26 @@ class Gui {
     }
   }
   
+void drawSpells(Hero hero){
+    int i = 1;
+    for (Spell spell in hero.spells){
+      if(i <= 7){
+        TableCellElement obj = querySelector(".items td:nth-child("+i.toString()+")");
+        obj.classes.remove("empty");
+        obj.style.background = spell.color;
+        obj.style.border = "1px solid black";
+      }
+    }
+  }
+  
   void drawStats(Hero hero){
     querySelector(".stats").text = hero.name + " Speed: " + hero.stats.speed.toString()
                                    + " Jump: " + hero.stats.jump.toString();
  }
-
+  
+  drawQuests(Hero hero){
+    
+  }
   
   void drawBars(Hero hero){
     // draw the hero's stats in the gui
