@@ -19,6 +19,7 @@ class Gui {
   static const BANK_OVERLAY = 3;
   static const NPC_CHAT_OVERLAY = 4;
   static const MAP_OVERLAY = 5;
+  static const SPELLS_OVERLAY = 6;
   // Number that determines what overlay is covering the main game screen (if any).
   int overlayStatus;
   
@@ -50,6 +51,12 @@ class Gui {
               print(hero.overlay);
               drawOverlay(hero);
          });
+    // spells button
+    querySelector(".nav tr td:nth-child(3)").onClick.listen(
+        (e) { hero.overlay = toggleOverlay(SPELLS_OVERLAY, hero.overlay);
+              print(hero.overlay);
+              drawOverlay(hero);
+         });
   }
   
   // If the requested overlay is already assigned to hero, assign NO_OVERLAY
@@ -66,44 +73,50 @@ class Gui {
     DivElement equipment = querySelector(".equipment");
     DivElement backpack = querySelector(".backpack");
     DivElement stats = querySelector(".stats");
+    TableElement spells = querySelector(".all_spells");
     switch(hero.overlay){
       case NO_OVERLAY: 
         hide(window);
-        emptyWindow([equipment, backpack, stats]);
+        emptyWindow([equipment, backpack, stats, spells]);
         return;
       case INVENTORY_OVERLAY: 
-        emptyWindow([stats]);
+        emptyWindow([stats, spells]);
         fillWindow([equipment, backpack]);
         show(window);
         return;
       case STATS_OVERLAY: 
-        emptyWindow([equipment, backpack]);
+        emptyWindow([equipment, backpack, spells]);
         fillWindow([stats]);
         show(window);
         return;
       case BANK_OVERLAY: 
-        emptyWindow([equipment, backpack, stats]);
+        emptyWindow([equipment, backpack, stats, spells]);
         show(window);
         return;
       case NPC_CHAT_OVERLAY: // may not use window
-        emptyWindow([equipment, backpack, stats]);
+        emptyWindow([equipment, backpack, stats, spells]);
         show(window);
         return;
       case MAP_OVERLAY: 
+        emptyWindow([equipment, backpack, stats, spells]);
+        show(window);
+        return;
+      case SPELLS_OVERLAY:
         emptyWindow([equipment, backpack, stats]);
+        fillWindow([spells]);
         show(window);
         return;
       default: break;
     }
   }
   
-  void emptyWindow(List<DivElement> divs){
-    for(DivElement div in divs)
+  void emptyWindow(List<Element> divs){
+    for(Element div in divs)
       div.classes.add("hide");
   }
   
-  void fillWindow(List<DivElement> divs){
-    for(DivElement div in divs)
+  void fillWindow(List<Element> divs){
+    for(Element div in divs)
       div.classes.remove("hide");
   }
   
@@ -125,7 +138,7 @@ class Gui {
     // draw the hero's items in the gui
     int i = 1;
     querySelector(".backpack").children=[];
-    querySelector(".equipment").children=[];
+    querySelector(".equipment").children=[]; // REWRITING, will be changed to UPDATING
     for (Item key in hero.inv.backpack.keys) {
       int count = hero.inv.backpack[key];
       if(i <= 7){ // go in the hotbar
@@ -155,7 +168,9 @@ class Gui {
   }
   
 void drawSpells(Hero hero){
-    print(hero.spells);
+    TableElement spells = querySelector(".all_spells");
+    TableRowElement temp = querySelector(".TEMP");
+    spells.children = [temp]; // REWRITING, will be changed to UPDATING
     int i = 1;
     for (String spell in hero.spells.keys){
       if(i <= 7){
@@ -163,9 +178,14 @@ void drawSpells(Hero hero){
         obj.classes.remove("empty");
         obj.style.background = hero.spells[spell].color;
         obj.text = spell;
-        print(hero.spells[spell]);
         obj.style.border = "1px solid black";
       }
+      TableRowElement sp = new TableRowElement();
+      sp.insertCell(0).text = spell;
+      sp.insertCell(1).text = "Well, it probably does something.";
+      sp.insertCell(2).text = hero.spells[spell].mana.toString();
+      sp.insertCell(3).text = hero.spells[spell].cooldown.toString();
+      spells.children.add(sp);
       i++;
     }
   }

@@ -29,8 +29,8 @@ class Hero extends Being {
     target = this; // target yourself
     
     spells = {
-      "pellet" : new PelletSpell(this),
-      "poison" : new PoisonSpell(this)
+      "Pellet" : new PelletSpell(this),
+      "Poison" : new PoisonSpell(this)
     }; 
   }
   
@@ -52,7 +52,7 @@ class Hero extends Being {
       
     
       if (input["mousedown"]) {
-        spells["pellet"].cast();
+        spells["Pellet"].cast();
       }
   
       if(mp < stats.mpmax)

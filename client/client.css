@@ -90,6 +90,22 @@ h1,p {
   font-size:15pt;
 }
 
+.all_spells {
+  position:relative;
+  float:left;
+  width:100%;
+  overflow:auto;
+  border:none;
+  table-layout:fixed;
+}
+
+.all_spells td{
+  text-align:center;
+  table-layout:fixed;
+  height:30px;
+  border:1px solid black;
+}
+
 #bottom-bar {
     position: absolute;
     bottom: 0;
@@ -171,6 +187,8 @@ h1,p {
     height: 35px;
     width: 35px;
     padding: 0;
+    overflow:hidden;
+    font-size:9pt;
 }
 
 .empty {
