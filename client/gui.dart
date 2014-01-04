@@ -161,7 +161,7 @@ void drawSpells(Hero hero){
       if(i <= 7){
         TableCellElement obj = querySelector(".spells td:nth-child("+i.toString()+")");
         obj.classes.remove("empty");
-        obj.style.background = "blue";
+        obj.style.background = hero.spells[spell].color;
         obj.text = spell;
         print(hero.spells[spell]);
         obj.style.border = "1px solid black";

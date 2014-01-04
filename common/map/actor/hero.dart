@@ -124,7 +124,7 @@ class Hero extends Being {
     unpack(data);
     overlay = data["overlay"];
     for (var kvpair in data["spells"]) {
-      spells[kvpair["key"]] = kvpair["value"];
+      spells[kvpair["key"]] = new Spell.fromPack(kvpair["value"]);
     }
 
     }
