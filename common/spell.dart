@@ -29,6 +29,23 @@ class Spell {
     }
     return false; // nothing happened
   }
+  
+  // ==== PACKING ====
+  Spell.fromPack(data) {
+    unpack(data);
+  }
+  pack() {
+    return {
+      "cooldown" : cooldown,
+      "color" : color,
+      "mana" : mana,
+    };
+  }
+  unpack(data) {
+    cooldown = data["cooldown"];
+    color = data["color"];
+    mana = data["mana"];
+  }
 }
 
 class Buff {

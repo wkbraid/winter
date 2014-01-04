@@ -155,14 +155,18 @@ class Gui {
   }
   
 void drawSpells(Hero hero){
+    print(hero.spells);
     int i = 1;
-    for (Spell spell in hero.spells){
+    for (String spell in hero.spells.keys){
       if(i <= 7){
-        TableCellElement obj = querySelector(".items td:nth-child("+i.toString()+")");
+        TableCellElement obj = querySelector(".spells td:nth-child("+i.toString()+")");
         obj.classes.remove("empty");
-        obj.style.background = spell.color;
+        obj.style.background = "blue";
+        obj.text = spell;
+        print(hero.spells[spell]);
         obj.style.border = "1px solid black";
       }
+      i++;
     }
   }
   

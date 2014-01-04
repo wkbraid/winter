@@ -5,7 +5,7 @@ library common;
 import 'dart:math';
 import 'dart:async';
 
-import 'package:priority_queue/priority_queue.dart';
+import 'packages/priority_queue/priority_queue.dart';
 
 part 'common/constants.dart';
 part 'common/account.dart';

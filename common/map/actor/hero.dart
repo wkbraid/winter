@@ -108,6 +108,13 @@ class Hero extends Being {
     data["base"] = base.pack();
     data["buffs"] = buffs.map((buff) => buff.pack()).toList();
     data["overlay"] = overlay;
+    data["spells"] = [];
+    var tmp = spells.keys.toList();
+    
+    for (String spell in tmp)  {
+      data["spells"].add({"key":spell,"value":spells[spell].pack()});
+    }
+   
     return data;
     }
   unpackRest(data) { // unpack semi-secret data
@@ -116,5 +123,9 @@ class Hero extends Being {
     buffs = data["buffs"].map((buffd) => new Buff.fromPack(buffd)).toList();
     unpack(data);
     overlay = data["overlay"];
+    for (var kvpair in data["spells"]) {
+      spells[kvpair["key"]] = kvpair["value"];
+    }
+
     }
 }
