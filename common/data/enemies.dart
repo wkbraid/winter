@@ -11,6 +11,8 @@ class PathEnemy extends Enemy {
   // Simple Enemy, follows paths found by PathFinder
   List<PathAction> path = [];
   
+  num jv = 22; // initial jump velocity
+  
   PathEnemy(x,y,base) : super(x,y,base) {
     width = ts - 1;
     height = ts - 1;
@@ -22,16 +24,23 @@ class PathEnemy extends Enemy {
     // NB: if it gets off its path it is useless
     if (path.isNotEmpty) {
       PathAction next = path.first;
+      if (y ~/ ts > next.y && next.type != PathAction.JUMP) {
+        // We are probably off course
+        print("We're lost!");
+      }
+      
       if (x.round() == next.x*ts + ts/2 && y ~/ ts == next.y) { // currently need to reach node exactly
         path.removeAt(0); // move onto the next node
-        update(dt);
+        return;
+      } else if (x.round() == (next.x*ts + ts/2) && y < next.y*ts + ts/2 && next.type == PathAction.JUMP) {
+        // we jumped above the goal
+        path.removeAt(0);
         return;
       }
-      if (next.type == PathAction.WALK || next.type == PathAction.FALL) {
-        vx = (next.x*ts + ts/2 - x)*(dt/10)/(next.x*ts + ts/2 - x).abs();
-        vx = (next.x*ts + ts/2 - x).abs() > vx.abs() ? vx : next.x*ts + ts/2 - x; // if we are close move there exactly
-      } else if (next.type == PathAction.JUMP && Tile.anysolid(edges.down)) {
-        vy -= 22;
+      vx = (next.x*ts + ts/2 - x)*(dt/6)/(next.x*ts + ts/2 - x).abs();
+      vx = (next.x*ts + ts/2 - x).abs() > vx.abs() ? vx : next.x*ts + ts/2 - x; // if we are close move there exactly
+      if (next.type == PathAction.JUMP && Tile.anysolid(edges.down)) {
+        vy -= jv;
       }
     }
     vy += g*dt;
