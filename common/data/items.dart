@@ -42,7 +42,7 @@ class ChainMailCape2 extends Equipable {
   ChainMailCape2() : super("Cape of Chain Mail - The Better Kind",Equipable.CAPE) {
     desc = "Chain mail! Look at all these links... the more steel between me and my enemy, the better.";
     color = "orange";
-    stats.speed = -3/1000; //decreases speed by 0.2
+    stats.speed = -2/1000; //decreases speed by 0.2
     stats.hpmax = 100; //doubles max health
   }
 }

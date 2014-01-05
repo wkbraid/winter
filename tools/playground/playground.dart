@@ -40,7 +40,7 @@ void main() {
   view = new Viewport(querySelector("#area"));
   test = new PathEnemy(45,405,new Stats(hpmax:10));
   map = new GameMap("playground",[test],tdata);
-  pfinder = new PathFinder(test);
+  pfinder = new PathFinder(map);
   
   Mouse.init();
   Keyboard.init();

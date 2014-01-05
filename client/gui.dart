@@ -15,6 +15,7 @@ class Gui {
   static const BANK_OVERLAY = 3;
   static const NPC_CHAT_OVERLAY = 4;
   static const MAP_OVERLAY = 5;
+  static const SPELLS_OVERLAY = 6;
   // Number that determines what overlay is covering the main game screen (if any).
   int overlayStatus;
   
@@ -41,9 +42,10 @@ class Gui {
   }
   
   void draw() {
-    drawInv(stage.hero); // Draw the inventory
-    drawBars(stage.hero); // Draw the health and mana bars (possibly other stats later)
-    drawStats(stage.hero); // Draw the stats
+    drawInv(); // Draw the inventory
+    drawSpells();; // Draw spells
+    drawBars(); // Draw the health and mana bars (possibly other stats later)
+    drawStats(); // Draw the stats
   }
   
   void receive(data) { // receive data sent from the server
@@ -56,72 +58,92 @@ class Gui {
   }
   
   void listen(){
+    // inv button
     querySelector(".nav tr td:nth-child(1)").onClick.listen(
-        (e) { emptyWindow([querySelector(".stats")]);
-              querySelector(".equipment").classes.remove("hide");
-              querySelector(".backpack").classes.remove("hide");
-              toggleVisible(querySelector(".window")); // creates some problems when switching between pages, should be fixed with enum
-         });
+        (e) { overlayStatus = toggleOverlay(INVENTORY_OVERLAY, overlayStatus);
+              drawOverlay();
+    });
+    // stats button
     querySelector(".nav tr td:nth-child(2)").onClick.listen(
-        (e) { emptyWindow([querySelector(".equipment"), querySelector(".backpack")]);
-              querySelector(".stats").classes.remove("hide");
-              toggleVisible(querySelector(".window"));
+        (e) { overlayStatus = toggleOverlay(STATS_OVERLAY, overlayStatus);
+              drawOverlay();
          });
+    // spells button
+    querySelector(".nav tr td:nth-child(3)").onClick.listen(
+        (e) { overlayStatus = toggleOverlay(SPELLS_OVERLAY, overlayStatus);
+              drawOverlay();
+         });
+    querySelector(".npc").onClick.listen(
+        (e) { overlayStatus = NO_OVERLAY;
+              drawOverlay();
+        });
   }
   
-  void drawOverlay(Hero hero){
+  // If the requested overlay is already assigned to hero, assign NO_OVERLAY
+  int toggleOverlay(int requested, int old){
+    if(old == requested)
+      return NO_OVERLAY;
+    else
+      return requested;
+  }
+  
+  void drawOverlay(){
     DivElement window = querySelector(".window");
     DivElement equipment = querySelector(".equipment");
     DivElement backpack = querySelector(".backpack");
     DivElement stats = querySelector(".stats");
+
+    TableElement spells = querySelector(".all_spells");
+    DivElement npc = querySelector(".npc");
+
     switch(overlayStatus){
       case NO_OVERLAY: 
         hide(window);
-        emptyWindow([equipment, backpack, stats]);
+        emptyWindow([equipment, backpack, stats, spells, npc]);
         return;
       case INVENTORY_OVERLAY: 
-        hide(window);
-        emptyWindow([stats]);
+        emptyWindow([stats, spells, npc]);
         fillWindow([equipment, backpack]);
-        drawInv(hero);
         show(window);
         return;
       case STATS_OVERLAY: 
-        hide(window);
-        emptyWindow([equipment, backpack]);
+        emptyWindow([equipment, backpack, spells, npc]);
         fillWindow([stats]);
         show(window);
         return;
       case BANK_OVERLAY: 
-        hide(window);
-        emptyWindow([equipment, backpack, stats]);
+        emptyWindow([equipment, backpack, stats, spells, npc]);
         show(window);
         return;
       case NPC_CHAT_OVERLAY: // may not use window
         hide(window);
-        emptyWindow([equipment, backpack, stats]);
-        show(window);
+        emptyWindow([equipment, backpack, stats, spells]);
+        fillWindow([npc]); // need a delay or needs to use window
         return;
       case MAP_OVERLAY: 
-        hide(window);
-        emptyWindow([equipment, backpack, stats]);
+        emptyWindow([equipment, backpack, stats, spells, npc]);
+        show(window);
+        return;
+      case SPELLS_OVERLAY:
+        emptyWindow([equipment, backpack, stats, npc]);
+        fillWindow([spells]);
         show(window);
         return;
       default: break;
     }
   }
   
-  void emptyWindow(List<DivElement> divs){
-    for(DivElement div in divs)
+  void emptyWindow(List<Element> divs){
+    for(Element div in divs)
       div.classes.add("hide");
   }
   
-  void fillWindow(List<DivElement> divs){
-    for(DivElement div in divs)
+  void fillWindow(List<Element> divs){
+    for(Element div in divs)
       div.classes.remove("hide");
   }
   
-  void toggleVisible(DivElement div){
+  void toggleVisible(DivElement div){ // probably will remove later
     if (div.style.left == "900px")
       div.style.left = "-5px";
     else div.style.left = "900px";
@@ -132,24 +154,24 @@ class Gui {
   }
   
   void hide(DivElement div){
-    div.style.left == "900px";
+    div.style.left = "900px";
   }
   
-  void drawInv(Hero hero){
+  void drawInv(){
     // draw the hero's items in the gui
     int i = 1;
     querySelector(".backpack").children=[];
-    querySelector(".equipment").children=[];
-    for (Item key in hero.inv.backpack.keys) {
-      int count = hero.inv.backpack[key];
-      if(i <= 7){
+    querySelector(".equipment").children=[]; // REWRITING, will be changed to UPDATING
+    for (Item key in stage.hero.inv.backpack.keys) {
+      int count = stage.hero.inv.backpack[key];
+      if(i <= 7){ // go in the hotbar
       TableCellElement obj = querySelector(".items td:nth-child("+i.toString()+")");
       obj.classes.remove("empty");
       obj.style.background = key.color;
       obj.style.border = "1px solid black";
       obj.text = count.toString();
       }
-      if (i > 7){
+      if (i > 7){ // go in the backpack
         DivElement obj = new DivElement();
         obj.classes.add("bp_obj");
         obj.style.background = key.color;
@@ -158,7 +180,7 @@ class Gui {
       }
       i++;
     }
-    for(Equipable eq in hero.inv.equipment){
+    for(Equipable eq in stage.hero.inv.equipment){ // draws equipment
       if(eq != null){
         DivElement obj = new DivElement();
         obj.classes.add("bp_obj");
@@ -168,19 +190,45 @@ class Gui {
     }
   }
   
-  void drawStats(Hero hero){
-    querySelector(".stats").text = hero.name + " Speed: " + hero.stats.speed.toString()
-                                   + " Jump: " + hero.stats.jump.toString();
- }
-
+void drawSpells(){
+    TableElement spells = querySelector(".all_spells");
+    TableRowElement temp = querySelector(".TEMP");
+    spells.children = [temp]; // REWRITING, will be changed to UPDATING
+    int i = 1;
+    for (String spell in stage.hero.spells.keys){
+      if(i <= 7){
+        TableCellElement obj = querySelector(".spells td:nth-child("+i.toString()+")");
+        obj.classes.remove("empty");
+        obj.style.background = stage.hero.spells[spell].color;
+        obj.text = spell;
+        obj.style.border = "1px solid black";
+      }
+      TableRowElement sp = new TableRowElement();
+      sp.insertCell(0).text = spell;
+      sp.insertCell(1).text = "This does something, probably";
+      sp.insertCell(2).text = stage.hero.spells[spell].mana.toString();
+      sp.insertCell(3).text = stage.hero.spells[spell].cooldown.toString();
+      spells.children.add(sp);
+      i++;
+    }
+  }
   
-  void drawBars(Hero hero){
+  void drawStats(){
+    querySelector(".stats").text = stage.hero.name + " Speed: " + stage.hero.stats.speed.toString()
+                                   + " Jump: " + stage.hero.stats.jump.toString();
+ }
+  
+  drawQuests(){
+    
+  }
+  
+  void drawBars(){
     // draw the hero's stats in the gui
-    querySelector(".bar:nth-child(1)").style.width = hero.stats.hpmax.toString() + "px"; // set healthbar border to max hp
-    querySelector(".bar:nth-child(2)").style.width = hero.stats.mpmax.toString() + "px"; //set manabar holder to max mp
-    querySelector(".health").style.width = hero.hp.toString() + "px"; // set healthbar to hp
-    querySelector(".health").text = hero.hp.toString(); // print health
-    querySelector(".mana").style.width = hero.mp.toString() + "px"; // set manabar to mp, takes a little to catch up with game logic
-    querySelector(".mana").text = hero.mp.toInt().toString(); // print mana
+    querySelector(".bar:nth-child(1)").style.width = stage.hero.stats.hpmax.toString() + "px"; // set healthbar border to max hp
+    querySelector(".bar:nth-child(2)").style.width = stage.hero.stats.mpmax.toString() + "px"; //set manabar holder to max mp
+    querySelector(".health").style.width = stage.hero.hp.toString() + "px"; // set healthbar to hp
+    querySelector(".health").text = stage.hero.hp.toString(); // print health
+    querySelector(".mana").style.width = stage.hero.mp.toString() + "px"; // set manabar to mp, takes a little to catch up with game logic
+    querySelector(".mana").text = stage.hero.mp.toInt().toString(); // print mana
  }
 }

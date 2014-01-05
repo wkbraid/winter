@@ -29,8 +29,8 @@ class Hero extends Being {
     target = this; // target yourself
     
     spells = {
-      "pellet" : new PelletSpell(this),
-      "poison" : new PoisonSpell(this)
+      "Pellet" : new PelletSpell(this),
+      "Poison" : new PoisonSpell(this)
     }; 
   }
   
@@ -49,7 +49,6 @@ class Hero extends Being {
       vy -= stats.jump;
     }
     
-  
     if (input["mousedown"]) {
       spells["pellet"].cast();
     }
@@ -101,6 +100,12 @@ class Hero extends Being {
     data["inv"] = inv.pack();
     data["base"] = base.pack();
     data["buffs"] = buffs.map((buff) => buff.pack()).toList();
+    data["spells"] = [];
+    var tmp = spells.keys.toList();
+    
+    for (String spell in tmp)  {
+      data["spells"].add({"key":spell,"value":spells[spell].pack()});
+    }
     return data;
     }
   unpackRest(data) { // unpack semi-secret data
@@ -108,5 +113,8 @@ class Hero extends Being {
     base.unpack(data["base"]);
     buffs = data["buffs"].map((buffd) => new Buff.fromPack(buffd)).toList();
     unpack(data);
+    for (var kvpair in data["spells"]) {
+      spells[kvpair["key"]] = new Spell.fromPack(kvpair["value"]);
     }
+  }
 }

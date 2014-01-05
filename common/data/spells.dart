@@ -11,6 +11,7 @@ class PelletSpell extends Spell {
   PelletSpell(caster) : super(caster) {
     mana = 10;
     cooldown = 200;
+    color = "purple";
   }
   
   void effects() {
@@ -28,6 +29,7 @@ class PoisonSpell extends Spell {
   // poisons the caster's target
   PoisonSpell(caster) : super(caster) {
     mana = 10; cooldown = 500;
+    color = "green";
   }
   void effects() {
     caster.target.buffs.add(new PoisonBuff(caster.target));
