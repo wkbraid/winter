@@ -44,6 +44,7 @@ class Game {
     gui.drawSpells(hero);; // Draw spells
     gui.drawBars(hero); // Draw the health and mana bars (possibly other stats later)
     gui.drawStats(hero); // Draw the stats
+    gui.check(hero);
     new Timer(new Duration(milliseconds:interval),loop); // start the loop again
   }
   

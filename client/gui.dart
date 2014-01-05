@@ -38,32 +38,46 @@ class Gui {
     });
   }
   
+  // check for place-sensitive overlays
+  void check(Hero hero){
+   /* Can't be done until gui can send to client (wil automatically close inv, stats, etc.)
+    if(hero.overlay == NO_OVERLAY){
+      overlayStatus = hero.overlay;
+      drawOverlay(hero);
+    }*/ 
+    if (hero.overlay == NPC_CHAT_OVERLAY){
+      overlayStatus = hero.overlay;
+      drawOverlay(hero);
+    }
+  }
+  
+  // check for button-sensitive overlays
   void listen(Hero hero){
     // inv button
     querySelector(".nav tr td:nth-child(1)").onClick.listen(
-        (e) { hero.overlay = toggleOverlay(INVENTORY_OVERLAY, hero.overlay);
-              print(hero.overlay);
+        (e) { overlayStatus = toggleOverlay(INVENTORY_OVERLAY, overlayStatus);
               drawOverlay(hero);
     });
     // stats button
     querySelector(".nav tr td:nth-child(2)").onClick.listen(
-        (e) { hero.overlay = toggleOverlay(STATS_OVERLAY, hero.overlay);
-              print(hero.overlay);
+        (e) { overlayStatus = toggleOverlay(STATS_OVERLAY, overlayStatus);
               drawOverlay(hero);
          });
     // spells button
     querySelector(".nav tr td:nth-child(3)").onClick.listen(
-        (e) { hero.overlay = toggleOverlay(SPELLS_OVERLAY, hero.overlay);
-              print(hero.overlay);
+        (e) { overlayStatus = toggleOverlay(SPELLS_OVERLAY, overlayStatus);
               drawOverlay(hero);
          });
+    querySelector(".npc").onClick.listen(
+        (e) { overlayStatus = NO_OVERLAY;
+              drawOverlay(hero);
+        });
   }
   
   // If the requested overlay is already assigned to hero, assign NO_OVERLAY
   int toggleOverlay(int requested, int old){
-    print(old);
-    if(old == requested){
-      return NO_OVERLAY;}
+    if(old == requested)
+      return NO_OVERLAY;
     else
       return requested;
   }
@@ -74,35 +88,38 @@ class Gui {
     DivElement backpack = querySelector(".backpack");
     DivElement stats = querySelector(".stats");
     TableElement spells = querySelector(".all_spells");
-    switch(hero.overlay){
+    DivElement npc = querySelector(".npc");
+    switch(overlayStatus){
       case NO_OVERLAY: 
         hide(window);
-        emptyWindow([equipment, backpack, stats, spells]);
+        emptyWindow([equipment, backpack, stats, spells, npc]);
+        print(hero.overlay);
         return;
       case INVENTORY_OVERLAY: 
-        emptyWindow([stats, spells]);
+        emptyWindow([stats, spells, npc]);
         fillWindow([equipment, backpack]);
         show(window);
         return;
       case STATS_OVERLAY: 
-        emptyWindow([equipment, backpack, spells]);
+        emptyWindow([equipment, backpack, spells, npc]);
         fillWindow([stats]);
         show(window);
         return;
       case BANK_OVERLAY: 
-        emptyWindow([equipment, backpack, stats, spells]);
+        emptyWindow([equipment, backpack, stats, spells, npc]);
         show(window);
         return;
       case NPC_CHAT_OVERLAY: // may not use window
+        hide(window);
         emptyWindow([equipment, backpack, stats, spells]);
-        show(window);
+        fillWindow([npc]); // need a delay or needs to use window
         return;
       case MAP_OVERLAY: 
-        emptyWindow([equipment, backpack, stats, spells]);
+        emptyWindow([equipment, backpack, stats, spells, npc]);
         show(window);
         return;
       case SPELLS_OVERLAY:
-        emptyWindow([equipment, backpack, stats]);
+        emptyWindow([equipment, backpack, stats, npc]);
         fillWindow([spells]);
         show(window);
         return;
@@ -131,7 +148,7 @@ class Gui {
   }
   
   void hide(DivElement div){
-    div.style.left == "900px";
+    div.style.left = "900px";
   }
   
   void drawInv(Hero hero){
@@ -182,7 +199,7 @@ void drawSpells(Hero hero){
       }
       TableRowElement sp = new TableRowElement();
       sp.insertCell(0).text = spell;
-      sp.insertCell(1).text = "Well, it probably does something.";
+      sp.insertCell(1).text = "This does something, probably";
       sp.insertCell(2).text = hero.spells[spell].mana.toString();
       sp.insertCell(3).text = hero.spells[spell].cooldown.toString();
       spells.children.add(sp);

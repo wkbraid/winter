@@ -75,6 +75,8 @@ class Enemy extends Being {
     if (other is Hero) {// attack the hero
       other.hp -= 1;
     }
+    if(other is NPC && other.killable) // didn't like it when this was added as an or to the above
+      other.hp -= 1;
   }
   //==== PACKING ====
   // Client does not need to know anything special about enemies

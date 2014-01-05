@@ -40,7 +40,10 @@ class Projectile extends Actor {
   }
   
   void collide(Actor other) {
-    if (other is Being && other != caster) {
+    if (other is Being && other != caster && !(other is NPC)) {
+      dead = true;
+      other.hp -= damage; // damage the actor
+    } else if (other is NPC && other.killable) { // repeated because checking for NPC gave a warning
       dead = true;
       other.hp -= damage; // damage the actor
     } else if (other is Mob && caster is Hero) {

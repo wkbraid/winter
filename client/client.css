@@ -39,6 +39,20 @@ h1,p {
   display:none;
 }
 
+.npc {
+  position: relative;
+  float: right;
+  right: 150px;
+  top: 100px;
+  width: 525px;
+  height: 200px;
+  overflow: auto;
+  border: 1px solid #630;
+  background-color: #AD8533;
+  color: black;
+  opacity: .7;
+}
+
 .window {
     position: relative;
     float: right;
@@ -188,7 +202,7 @@ h1,p {
     width: 35px;
     padding: 0;
     overflow:hidden;
-    font-size:9pt;
+    font-size: 8pt;
 }
 
 .empty {

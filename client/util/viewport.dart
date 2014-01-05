@@ -61,7 +61,7 @@ class Viewport {
   
  
   
-  
+  /*
   //OverLay Constants
   static const NOVERLAY = 0;
   static const BANKOVERLAY = 1;
@@ -75,6 +75,6 @@ class Viewport {
         break;
       default: break;
     }
-  }
+  }*/
   
 }
