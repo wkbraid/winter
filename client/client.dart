@@ -1,14 +1,19 @@
 // file: client.dart
 // contains: Game, 
 
+library client;
+
 import 'dart:html';
 import 'dart:convert';
 import 'dart:async';
 
 import '../common.dart'; // common libs
 import 'util/utils.dart';
-import 'stage.dart';
-import 'gui.dart';
+
+part 'stage.dart';
+
+part 'gui.dart';
+part 'gui/chathandler.dart';
 
 void main() {
   var g = new Game()..connect('127.0.0.1',23193);
@@ -31,8 +36,9 @@ class Game {
   void begin() { // We have successfully logged in, begin the game
     if (!loggedin) return;
     view = new Viewport(querySelector("#area")); // setup the game viewport
-    stage = new Stage(hero,view,this.send);
+    stage = new Stage(hero,view,gui,this.send);
     new Timer(new Duration(milliseconds:interval),loop); // start the main game loop
+    gui.stage = stage;
     gui.listen();
   }
   
@@ -40,9 +46,8 @@ class Game {
     if (!loggedin) return;
     stage.update(interval); // update the stage
     stage.draw();
-    gui.drawInv(hero); // Draw the inventory
-    gui.drawBars(hero); // Draw the health and mana bars (possibly other stats later)
-    gui.drawStats(hero); // Draw the stats
+    gui.update(interval);
+    gui.draw();
     new Timer(new Duration(milliseconds:interval),loop); // start the loop again
   }
   
@@ -79,6 +84,8 @@ class Game {
         stage.receive(data); // forward things to the stage
     } else if (data["cmd"] == "chat") {
       gui.chat.add(data["say"]);
+    } else if (data["cmd"] == "npc") {
+      gui.receive(data);
     }
   }
   

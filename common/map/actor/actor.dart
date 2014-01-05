@@ -16,8 +16,6 @@ class Actor {
   
   Instance instance; // The instance the actor is part of
   
-  bool team;
-  
   num x,y; // Actor position in map coordinates
   num width = 10, height = 10; // Actor dimensions
   Edges edges = new Edges();
@@ -124,6 +122,8 @@ class Actor {
 }
 
 class Being extends Actor {
+  
+  bool team; // Team this being is in, used for battles
   
   List<Buff> buffs = []; // Buffs currently affecting this being
       // should be made into a heap eventually probably

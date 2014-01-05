@@ -1,16 +1,12 @@
 // file: gui.dart
 // contains: Gui
 
-library gui;
-
-import 'dart:html';
-import '../common.dart';
-
-part 'gui/chathandler.dart';
+part of client;
 
 class Gui {
   
-  ChatHandler chat;
+  ChatHandler chat; // Handles user chat
+  Stage stage; // The stage part of the gui
   
   //Overlay types
   static const NO_OVERLAY = 0;
@@ -37,6 +33,28 @@ class Gui {
     });
   }
   
+  void update(int dt) {
+    if (Keyboard.isDown(KeyCode.ESC)) {
+      overlayStatus = NO_OVERLAY; // escape from current overlay
+      print("overlay closed");
+    }
+  }
+  
+  void draw() {
+    drawInv(stage.hero); // Draw the inventory
+    drawBars(stage.hero); // Draw the health and mana bars (possibly other stats later)
+    drawStats(stage.hero); // Draw the stats
+  }
+  
+  void receive(data) { // receive data sent from the server
+    if (data["cmd"] == "npc") {
+      print("Gui recieved npc message: ${data["conversation"]}");
+      print("NPC chat overlay open, hit escape to re-enable keyboard controls");
+      // Open an overlay here
+      overlayStatus = NPC_CHAT_OVERLAY;
+    }
+  }
+  
   void listen(){
     querySelector(".nav tr td:nth-child(1)").onClick.listen(
         (e) { emptyWindow([querySelector(".stats")]);
@@ -56,7 +74,7 @@ class Gui {
     DivElement equipment = querySelector(".equipment");
     DivElement backpack = querySelector(".backpack");
     DivElement stats = querySelector(".stats");
-    switch(hero.overlay){
+    switch(overlayStatus){
       case NO_OVERLAY: 
         hide(window);
         emptyWindow([equipment, backpack, stats]);

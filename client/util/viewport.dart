@@ -58,23 +58,4 @@ class Viewport {
       ctx.fillRect(act.x-act.width/2, act.y-act.height, act.hp/act.stats.hpmax*act.width, 5);
     }
   }
-  
- 
-  
-  
-  //OverLay Constants
-  static const NOVERLAY = 0;
-  static const BANKOVERLAY = 1;
-  
-  void drawOverlay(Hero hero){
-    ctx.fillStyle = "grey";
-    switch(hero.overlay){
-      case 0: break;
-      case 1:
-        ctx.fillRect(100, 100, 400, 300);
-        break;
-      default: break;
-    }
-  }
-  
 }

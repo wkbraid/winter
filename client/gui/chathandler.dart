@@ -1,7 +1,7 @@
 // file: chathandler.dart
 // contains: ChatHandler
 
-part of gui;
+part of client;
 
 class ChatHandler {
   

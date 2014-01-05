@@ -5,13 +5,26 @@ part of common;
 
 class Battle extends Instance {
   // An instance of a map on which a battle is taking place
+  bool begun = false; // Has the battle proper begun?
   
-  int prep = 2000; // Time left in the preparation phase in miliseconds
+  int prep = 2000; // Length of the preparation phase in milliseconds
+  
+  Map<bool,List<Being>> teams = {true: [], false: []}; // Two teams
   
   List<BattlePortal> entrances = []; // A list of all the entrances to the battle
   
   Battle() {
     print("New Battle!");
+    new Timer(new Duration(milliseconds:prep), start);
+  }
+  
+  void start() {
+    // start the battle proper
+    for (BattlePortal bp in entrances) {
+      bp.instance.removeActor(bp); // remove the portals
+    }
+    
+    begun = true;
   }
   
   void end() { // The battle has ended!
@@ -19,16 +32,16 @@ class Battle extends Instance {
     for (Hero hero in tmp) {
       map.addHero(hero); // Add the heros back to the main map
     }
-    for (BattlePortal bp in entrances) {
-      bp.instance.removeActor(bp); // remove the portals
-    }
     open = false; // this instance is no longer open
   }
   
   void update(dt) {
-    prep -= dt; // count down till the battle begins
+    if (!begun) return; // Don't update the stage
+    
     if (actors.length == 0)
       end(); // pretend the heros won
+    
+    super.update(dt);
     
     if (prep > 0) return;
     super.update(dt);

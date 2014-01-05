@@ -75,6 +75,7 @@ class Bank extends Inanimate {
   }
   
   void interact(Hero hero){
-    hero.overlay = 1;
+    // pretend the bank is an npc for now
+    hero.npcHandler.add(new Conversation());
   }
 }
