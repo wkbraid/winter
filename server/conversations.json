@@ -1,0 +1,77 @@
+{
+  "dialog": 
+    {"Ro": {
+      "intro": "Welcome to the land of...wait, where am I?",
+        "message": [
+          {
+            "number": "0",
+            "#text": "And who might you be, young one?",
+            "choices": [
+              {
+                  "#text": "Why should I tell an old man like you?",
+                  "nextMessage": "1"
+              },
+              {
+                  "#text": "I'm your worst nightmare.",
+                  "nextMessage": "2"
+              },
+              {
+                  "#text": "My name is account.",
+                  "nextMessage": "3"
+              }
+             ]
+          },
+          {
+            "number": "1",
+            "#text": "Well, youre an uppity one, aren't you? No matter."
+          },
+          {
+            "number": "2",
+            "#text": "Ha! Settle down, let's not get ahead of ourselves."
+          },
+          {
+            "number": "3",
+            "#text": "Wow, seems like you haven't sorted out your JSON very well yet."
+          },
+          {
+            "number": "4",
+            "mode": "restart",
+            "#text": "My name is Ro, and I am a lifelong scholar of the magic energy found here. Would you appease an old man and listen for a bit about it?",
+            "choices": [
+              {
+                  "#text": "I don't have time for this!",
+                  "nextMessage": "5"
+              },
+              {
+                  "#text": "Maybe later.",
+                  "nextMessage": "6"
+              },
+              {
+                  "#text": "Alright, tell me about magic.",
+                  "nextMessage": "7"
+              }
+             ]
+          },
+          {
+            "number": "5",
+            "#text": "Be on your way then. I don't have time for rude adventurers."
+          },
+          {
+            "number": "6",
+            "#text": "Fine, I'll be waiting here if you ever want to hear about magic."
+          },
+          {
+            "number": "7",
+            "#text": "Finally, someone I can force to listen to me!"
+          },
+          {
+            "number": "8",
+            "condition": "magic",
+            "#text": "I actually have nothing to say right now about this, maybe one day one of my creators will delete this whole script anyway!"
+          }
+        ]
+      
+    }
+   }
+  
+}

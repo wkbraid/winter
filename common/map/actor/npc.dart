@@ -3,6 +3,8 @@
 
 part of common;
 
+Hero hero;
+
 class NPC extends Being {
   // Basic NPC format
   
@@ -10,6 +12,7 @@ class NPC extends Being {
   String name; // Name of the NPC
   
   NPC(x,y,base) : super(x,y,base) {
+    name = "Ro"; // temp
     width = 20;
     height = 20;
     color = "lightblue";
@@ -24,7 +27,7 @@ class NPC extends Being {
   }
   
   void interact(Hero hero) {
-    // hero.overlay = 4;
+    //hero.conv = true;
   }
 
   //==== PACKING ====

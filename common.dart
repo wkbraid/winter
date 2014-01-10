@@ -12,7 +12,8 @@ part 'common/account.dart';
 part 'common/spell.dart';
 part 'common/item.dart';
 part 'common/stats.dart';
-part 'common/npchandler.dart';
+part 'common/quest.dart';
+part 'common/conversation.dart';
 
 // Ai related stuff
 part 'common/ai/pathfinder.dart';

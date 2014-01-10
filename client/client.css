@@ -33,6 +33,7 @@ h1,p {
     border: none;
     cursor: default;
     overflow: hidden;
+    pointer-events:none;
 }
 
 .hide {
@@ -51,6 +52,7 @@ h1,p {
   background-color: #AD8533;
   color: black;
   opacity: .7;
+  pointer-events:auto;
 }
 
 .window {
@@ -68,6 +70,7 @@ h1,p {
     -webkit-transition: left 2s;
     -moz-transition: left 2s;
     -o-transition: left 2s;
+    pointer-events:auto;
 }
 
 .equipment {
@@ -129,6 +132,7 @@ h1,p {
     border: 1px solid #630;
     overflow: hidden;
     opacity: 1;
+    pointer-events:auto;
 }
 
 #chat {
@@ -215,6 +219,7 @@ h1,p {
     position: relative;
     float: left;
     opacity: 0.8;
+    pointer-events:auto;
 }
 
 .bar {

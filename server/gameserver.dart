@@ -65,7 +65,7 @@ class Client {
   Account acc; // The logged in account
   GameMap map; // The game map the hero is currently on
   
-  NpcHandler npc; // Handles npc interactions between this client and its gui
+  ConvHandler npc; // Handles npc interactions between this client and its gui
   
   Client(this.ws,this.gsrv) {
     print('Client [${ws.hashCode}] connected');
@@ -83,8 +83,7 @@ class Client {
       map = gsrv.maps[acc.hero.mapid];
       map.addHero(acc.hero);
       
-      npc = new NpcHandler(acc.hero,send); // Get ready to handle npc interactions
-      acc.hero.npcHandler = npc;
+      npc = new ConvHandler(acc.hero,send); // Get ready to handle npc interactions
       
       // TODO should send more detailed information than hero.pack() provides to client
       send({"cmd":"login","success":true,"hero":acc.hero.pack()});
@@ -140,7 +139,7 @@ class Client {
     });
   }
   
-  void receive(msg) { // recieve a message from the client
+  void receive(msg) { // receive a message from the client
     var data = JSON.decode(msg);
     if (data["cmd"] == "login")
       login(data); // attempt to login the client
@@ -151,7 +150,7 @@ class Client {
     else if (data["cmd"] == "chat") // chat input
       chatParse(data);
     else if (data["cmd"] == "npc") // npc interactions (eg conversation/trade)
-      npc.recieve(data); // pass the data to the NpcHandler
+      npc.receive(data); // pass the data to the ConvHandler
   }
   
   void send(data) { // Send message only to this client

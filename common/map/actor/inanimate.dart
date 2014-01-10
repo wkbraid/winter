@@ -76,6 +76,6 @@ class Bank extends Inanimate {
   
   void interact(Hero hero){
     // pretend the bank is an npc for now
-    hero.npcHandler.add(new Conversation());
+    //hero.convHandler.add(new Conversation(bank));
   }
 }

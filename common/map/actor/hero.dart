@@ -10,7 +10,7 @@ class Hero extends Being {
   String name; // The name of the character this hero represents
   String mapid; // The map the hero is currently on
 
-  NpcHandler npcHandler;
+  bool conv; // if there is a conversation occurring
 
   Stats get stats => base + inv.stats + buffs.fold(new Stats(), (acc,buff) => acc + buff.stats);
   
@@ -50,7 +50,7 @@ class Hero extends Being {
     }
     
     if (input["mousedown"]) {
-      spells["pellet"].cast();
+      spells["Pellet"].cast();
     }
 
     if(mp < stats.mpmax)

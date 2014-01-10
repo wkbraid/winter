@@ -45,7 +45,7 @@ class Stage {
   }
     
   void draw() { // draw the stage to the screen
-    if (instance != null) { // ie only if we have recieved an update already
+    if (instance != null) { // ie only if we have received an update already
       view.clear(); // Clear the screen
       view.drawInstance(instance); // Draw the map
     }

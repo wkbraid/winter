@@ -37,6 +37,7 @@ class Gui {
   void update(int dt) {
     if (Keyboard.isDown(KeyCode.ESC)) {
       overlayStatus = NO_OVERLAY; // escape from current overlay
+      drawOverlay();
       print("overlay closed");
     }
   }
@@ -50,10 +51,12 @@ class Gui {
   
   void receive(data) { // receive data sent from the server
     if (data["cmd"] == "npc") {
-      print("Gui recieved npc message: ${data["conversation"]}");
+      print("Gui received npc message: ${data["message"]}");
       print("NPC chat overlay open, hit escape to re-enable keyboard controls");
       // Open an overlay here
       overlayStatus = NPC_CHAT_OVERLAY;
+      querySelector(".npc").text = data["message"];
+      drawOverlay();
     }
   }
   
@@ -76,6 +79,10 @@ class Gui {
     querySelector(".npc").onClick.listen(
         (e) { overlayStatus = NO_OVERLAY;
               drawOverlay();
+        });
+    querySelector("#area").onClick.listen(
+        (e) {
+          // add the server-gui stuff
         });
   }
   

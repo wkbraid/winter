@@ -10,6 +10,7 @@ import '../common.dart';
 import 'db.dart' as db;
 
 part 'gameserver.dart';
+part 'convhandler.dart';
 
 void main() {
   new Server('0.0.0.0',23193).start(); // start the main server
