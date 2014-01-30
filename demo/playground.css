@@ -19,6 +19,7 @@ h1, p {
   margin-right: auto;
   border: 1px solid #ccc;
   background-color: #fff;
+  text-align: right;
 }
 
 #area {
